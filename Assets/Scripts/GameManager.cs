@@ -9,13 +9,13 @@ public class GameManager : MonoBehaviour
     private const int gridHeight = 18;
     private const float cellSize = 1f;
 
-    public Grid<int> gridMap;
+    public Grid<Cell> gridMap;
 
     public static GameManager Instance { get; private set; }
     void Awake()
     {
         Instance= this;
-        gridMap = new Grid<int>(gridWidth, gridHeight, cellSize, gridOriginPosition,()=>0);
+        gridMap = new Grid<Cell>(gridWidth, gridHeight, cellSize, gridOriginPosition,(int x,int y)=>new Cell(x,y));
     }
 
     // Update is called once per frame

@@ -15,7 +15,7 @@ public class Grid <TGridObject>
     private TGridObject[,] gridArray;
     private TextMesh[,] worldTextRef;
     bool showDebug;
-    public Grid(int width, int height,float cellSize,Vector3 originPosition,Func<TGridObject> CreateGridObject)
+    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<int,int,TGridObject> CreateGridObject)
     {
         this.width = width; 
         this.height = height;
@@ -29,7 +29,7 @@ public class Grid <TGridObject>
         {
             for (int j = 0; j < height; j++)
             {
-                gridArray[i, j] = CreateGridObject();
+                gridArray[i, j] = CreateGridObject(i,j);
             }
 
         }
@@ -39,7 +39,7 @@ public class Grid <TGridObject>
             {
                 for (int j = 0; j < height; j++)
                 {
-                    worldTextRef[i, j] = UtilsClass.CreateWorldText(gridArray[i, j]?.ToString(), null, GetWorldPosition(i, j) + new Vector3(cellSize, cellSize, 0f) / 2, 40, Color.white, TextAnchor.MiddleCenter);
+                    worldTextRef[i, j] = UtilsClass.CreateWorldText(gridArray[i, j]?.ToString(), null, GetWorldPosition(i, j) + new Vector3(cellSize, cellSize, 0f) / 2, 20, Color.white, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i, j + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i + 1, j), Color.white, 100f);
 
@@ -100,13 +100,66 @@ public class Grid <TGridObject>
     {
         return cellSize;
     }
-    public Vector2 GetIndices(Vector3 worldPosition)
+    public Vector3 GetOriginPosition()
     {
-        Vector2 cell = new()
+        return originPosition;
+    }
+    public void GetIndices(Vector3 worldPosition,out int x,out int y)
+    {
+        x = (int)((worldPosition - originPosition).x / cellSize);
+        y = (int)((worldPosition - originPosition).y / cellSize);
+
+    }
+    public void PathFindTest(List<Vector3> directions,Vector2 start)
+    {
+        Debug.Log(directions.Count);
+        foreach(Vector3 direction in directions)
         {
-            x = (int)((worldPosition - originPosition).x / cellSize),
-            y = (int)((worldPosition - originPosition).y / cellSize)
-        };
-        return cell;
+            string dir="";
+            if(direction.x == 0)
+            {
+                if(direction.y == -1)
+                {
+                    dir = "D";
+                }
+                else if (direction.y == 1)
+                {
+                    dir = "U";
+                }
+            }
+            else if (direction.x == -1)
+            {
+                if (direction.y == -1)
+                {
+                    dir = "DL";
+                }
+                else if (direction.y == 0)
+                {
+                    dir = "L";
+                }
+                else if (direction.y == 1)
+                {
+                    dir = "UL";
+                }
+            }
+            else if (direction.x == 1)
+            {
+                if (direction.y == -1)
+                {
+                    dir = "DR";
+                }
+                else if (direction.y == 0)
+                {
+                    dir = "R";
+                }
+                else if (direction.y == 1)
+                {
+                    dir = "UR";
+                }
+            }
+            worldTextRef[(int)start.x, (int)start.y].text = dir;
+            worldTextRef[(int)start.x, (int)start.y].color = Color.green;
+            start = new Vector2(start.x+direction.x, start.y+direction.y);
+        }
     }
 }
