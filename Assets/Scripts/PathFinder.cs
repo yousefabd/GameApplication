@@ -51,12 +51,7 @@ public class PathFinder
             
             if(currentNode == pathGrid[targetX,targetY])
             {
-<<<<<<< Updated upstream
-                Debug.Log("foundPath");
-                return RetracePath(targetNode); ;
-=======
                 return RetracePath(currentNode); ;
->>>>>>> Stashed changes
             }
             //else traverse to the neighbors of the chosen node
             int[] xMove = { -1, -1, -1, 0, 0, 1, 1, 1 };
@@ -78,13 +73,8 @@ public class PathFinder
                 {
                     continue;
                 }
-<<<<<<< Updated upstream
-                PathNode neighbor = gridMap.GetValue(X,Y).GetPathNode();
-                if (gridMap.GetValue(X, Y).entity != Entity.SAFE || visitedCells.Contains(neighbor))
-=======
                 PathNode neighbor = pathGrid[X,Y] = new PathNode(X,Y);
                 if (gridMap.GetValue(X, Y).GetEntity() != Entity.SAFE || closedSet.Contains(neighbor))
->>>>>>> Stashed changes
                 {
                     continue;
                 }
