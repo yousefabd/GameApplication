@@ -8,28 +8,17 @@ public enum Entity
 }
 public class Cell
 {
-<<<<<<< Updated upstream
-    public Entity entity = Entity.SAFE;
-    public int X;
-    public int Y;
-    public PathNode pathNode;
-=======
     private Entity entity = Entity.SAFE;
     private Character character;
     private int X;
     private int Y;
->>>>>>> Stashed changes
+
     public Cell(int X,int Y)
     {
         this.X = X;
         this.Y = Y;
     }
-<<<<<<< Updated upstream
-    
-    public PathNode GetPathNode()
-    {
-        return pathNode;
-=======
+
     public Entity GetEntity()
     {
         return entity;
@@ -57,7 +46,6 @@ public class Cell
     public void GetXY(out int x, out int y)
     {
         x=this.X; y=this.Y;
->>>>>>> Stashed changes
     }
     public override string ToString()
     {
