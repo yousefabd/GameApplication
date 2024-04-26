@@ -54,6 +54,10 @@ public class Grid <TGridObject>
     {
         return new Vector3(x, y) * cellSize + originPosition;
     }
+    public Vector3 GetWorldPositionCentered(int x, int y)
+    {
+        return new Vector3(x, y) * cellSize + originPosition + new Vector3(cellSize, cellSize, 0f) / 2;
+    }
     public void SetValue(int x, int y, TGridObject value)
     {
         if (x >= 0 && y >= 0 && x < width && y < height)
@@ -65,12 +69,14 @@ public class Grid <TGridObject>
             }
         }
     }
-    public void SetValue(Vector3 worldPosition, TGridObject value)
+    public void SetValue(Vector3 worldPosition, Func<int, int, TGridObject> createValue)
     {
         int x = (int)((worldPosition - originPosition).x / cellSize);
         int y = (int)((worldPosition - originPosition).y / cellSize);
+        TGridObject value = createValue(x, y);
         SetValue(x, y, value);
     }
+
 
     public TGridObject GetValue(int x, int y)
     {
@@ -109,57 +115,5 @@ public class Grid <TGridObject>
         x = (int)((worldPosition - originPosition).x / cellSize);
         y = (int)((worldPosition - originPosition).y / cellSize);
 
-    }
-    public void PathFindTest(List<Vector3> directions,Vector2 start)
-    {
-        Debug.Log(directions.Count);
-        foreach(Vector3 direction in directions)
-        {
-            string dir="";
-            if(direction.x == 0)
-            {
-                if(direction.y == -1)
-                {
-                    dir = "D";
-                }
-                else if (direction.y == 1)
-                {
-                    dir = "U";
-                }
-            }
-            else if (direction.x == -1)
-            {
-                if (direction.y == -1)
-                {
-                    dir = "DL";
-                }
-                else if (direction.y == 0)
-                {
-                    dir = "L";
-                }
-                else if (direction.y == 1)
-                {
-                    dir = "UL";
-                }
-            }
-            else if (direction.x == 1)
-            {
-                if (direction.y == -1)
-                {
-                    dir = "DR";
-                }
-                else if (direction.y == 0)
-                {
-                    dir = "R";
-                }
-                else if (direction.y == 1)
-                {
-                    dir = "UR";
-                }
-            }
-            worldTextRef[(int)start.x, (int)start.y].text = dir;
-            worldTextRef[(int)start.x, (int)start.y].color = Color.green;
-            start = new Vector2(start.x+direction.x, start.y+direction.y);
-        }
     }
 }

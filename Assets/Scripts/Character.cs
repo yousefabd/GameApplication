@@ -7,7 +7,7 @@ public class Character : MonoBehaviour
 {
     //selected is set to true temporarily for testing
     //private bool selected = true;
-    [SerializeField] private const float moveSpeed = 2f;
+    [SerializeField] private const float moveSpeed = 5f;
     private PathFinder pathFinder;
 
     //State related variables
@@ -16,11 +16,8 @@ public class Character : MonoBehaviour
         IDLE,WALKING
     };
     private List<Vector3> currentPath;
-    private int currentPathIndex = -1;
+    private int currentPathIndex = 0;
     private CharacterState currentCharacterState = CharacterState.IDLE;
-    private float currentMoveDistance = 0f;
-    private float maxMoveDistance = 0f;
-    private Vector3 currentMoveDirection=Vector3.zero;
     private void Start()
     {
         MouseManager.Instance.OnWalk += MouseManager_OnWalk;
@@ -33,60 +30,42 @@ public class Character : MonoBehaviour
             case CharacterState.IDLE:
                 break;
             case CharacterState.WALKING:
-                if (currentMoveDistance >= maxMoveDistance)
-                {
-                    WalkCell();
-                }
-                float moveDistance = moveSpeed * Time.deltaTime;
-                currentMoveDistance += moveDistance;
-                transform.position += currentMoveDirection * moveDistance;
+                WalkPath();
                 break;
         }
     }
     private void MouseManager_OnWalk(Vector3 targetPosition)
     {
-        
+        ToIdle();
         Cell characterCell = GameManager.Instance.gridMap.GetValue(transform.position);
         Cell targetCell = GameManager.Instance.gridMap.GetValue(targetPosition);
         currentPath = pathFinder.FindPath(characterCell, targetCell);
-        Debug.Log(currentPath.Count);
         if (currentPath.Any())
         {
             currentCharacterState = CharacterState.WALKING;
         }
     }
-    private void WalkCell()
+    private void WalkPath()
     {
-        currentMoveDistance = 0f;
-        
-        currentPathIndex++;
-        if (currentPathIndex >= currentPath.Count)
+        if(currentPathIndex == currentPath.Count)
         {
             ToIdle();
         }
         else
         {
-            currentMoveDirection = currentPath[currentPathIndex];
-            currentMoveDirection.Normalize();
-            float cellSize = GameManager.Instance.gridMap.GetCellSize();
-            if (currentMoveDirection.x != 0f && currentMoveDirection.y != 0f)
+            Vector3 nextTarget = currentPath[currentPathIndex];
+            transform.position = Vector3.MoveTowards(transform.position, nextTarget, moveSpeed * Time.deltaTime);
+            if (Vector3.Distance(transform.position, nextTarget) < 0.05)
             {
-                maxMoveDistance = Mathf.Sqrt(2 * cellSize * cellSize);
-            }
-            else
-            {
-                maxMoveDistance = cellSize;
+                currentPathIndex++;
             }
         }
     }
     private void ToIdle()
     {
         currentCharacterState=CharacterState.IDLE;
-        currentPath.Clear();
-        currentPathIndex = -1;
-        currentMoveDistance = 0f;
-        maxMoveDistance = 0f;
-        currentMoveDirection=Vector3.zero;
+        currentPath?.Clear();
+        currentPathIndex = 0;
 
     }
     public static Character Spawn(CharacterSO characterSO,Vector3 position)

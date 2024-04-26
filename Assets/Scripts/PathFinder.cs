@@ -102,9 +102,8 @@ public class PathFinder
         List<Vector3> path=new List<Vector3>();
         PathNode currentNode = target;
         while (currentNode.parent != null) {
-            int xDir= currentNode.X - currentNode.parent.X;
-            int yDir = currentNode.Y-currentNode.parent.Y;
-            path.Add(new Vector3(xDir, yDir));
+
+            path.Add(GameManager.Instance.gridMap.GetWorldPositionCentered(currentNode.X,currentNode.Y));
             currentNode = currentNode.parent;
         }
         path.Reverse();
