@@ -20,16 +20,16 @@ namespace CodeMonkey.MonoBehaviours {
      * */
     public class CameraFollowSetup : MonoBehaviour {
 
-        [SerializeField] private CameraFollow cameraFollow = null;
-        [SerializeField] private Transform followTransform = null;
-        [SerializeField] private float zoom = 50f;
+        [SerializeField] private CameraFollow cameraFollow;
+        [SerializeField] private Transform followTransform;
+        [SerializeField] private float zoom;
 
         private void Start() {
             if (followTransform == null) {
                 Debug.LogError("followTransform is null! Intended?");
-                cameraFollow.Setup(() => Vector3.zero, () => zoom, true, true);
+                cameraFollow.Setup(() => Vector3.zero, () => zoom);
             } else {
-                cameraFollow.Setup(() => followTransform.position, () => zoom, true, true);
+                cameraFollow.Setup(() => followTransform.position, () => zoom);
             }
         }
     }

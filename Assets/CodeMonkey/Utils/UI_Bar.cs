@@ -39,42 +39,23 @@ namespace CodeMonkey.Utils {
             }
         }
 
-        public UI_Bar(GameObject gameObject, RectTransform background, RectTransform bar) {
-            this.gameObject = gameObject;
-            rectTransform = gameObject.GetComponent<RectTransform>();
-            this.background = background;
-            this.bar = bar;
-            size = background.GetComponent<RectTransform>().sizeDelta;
-        }
-
-        public UI_Bar(GameObject gameObject, Transform background, Transform bar) {
-            this.gameObject = gameObject;
-            rectTransform = gameObject.GetComponent<RectTransform>();
-            this.background = background.GetComponent<RectTransform>();
-            this.bar = bar.GetComponent<RectTransform>();
-            size = background.GetComponent<RectTransform>().sizeDelta;
-        }
-
         public UI_Bar(Transform parent, Vector2 anchoredPosition, Vector2 size, Color barColor, float sizeRatio) {
             SetupParent(parent, anchoredPosition, size);
             SetupBar(barColor);
             SetSize(sizeRatio);
         }
-
         public UI_Bar(Transform parent, Vector2 anchoredPosition, Vector2 size, Color barColor, float sizeRatio, Outline outline) {
             SetupParent(parent, anchoredPosition, size);
             if (outline != null) SetupOutline(outline, size);
             SetupBar(barColor);
             SetSize(sizeRatio);
         }
-
         public UI_Bar(Transform parent, Vector2 anchoredPosition, Vector2 size, Color backgroundColor, Color barColor, float sizeRatio) {
             SetupParent(parent, anchoredPosition, size);
             SetupBackground(backgroundColor);
             SetupBar(barColor);
             SetSize(sizeRatio);
         }
-
         public UI_Bar(Transform parent, Vector2 anchoredPosition, Vector2 size, Color backgroundColor, Color barColor, float sizeRatio, Outline outline) {
             SetupParent(parent, anchoredPosition, size);
             if (outline != null) SetupOutline(outline, size);
@@ -82,7 +63,6 @@ namespace CodeMonkey.Utils {
             SetupBar(barColor);
             SetSize(sizeRatio);
         }
-
         private void SetupParent(Transform parent, Vector2 anchoredPosition, Vector2 size) {
             this.size = size;
             gameObject = new GameObject("UI_Bar", typeof(RectTransform));
@@ -94,49 +74,33 @@ namespace CodeMonkey.Utils {
             rectTransform.pivot = new Vector2(0, .5f);
             rectTransform.anchoredPosition = anchoredPosition;
         }
-
         private RectTransform SetupOutline(Outline outline, Vector2 size) {
             return UtilsClass.DrawSprite(outline.color, gameObject.transform, Vector2.zero, size + new Vector2(outline.size, outline.size), "Outline");
         }
-
         private void SetupBackground(Color backgroundColor) {
             background = UtilsClass.DrawSprite(backgroundColor, gameObject.transform, Vector2.zero, Vector2.zero, "Background");
             background.anchorMin = new Vector2(0,0);
             background.anchorMax = new Vector2(1,1);
         }
-
         private void SetupBar(Color barColor) {
             bar = UtilsClass.DrawSprite(barColor, gameObject.transform, Vector2.zero, Vector2.zero, "Bar");
             bar.anchorMin = new Vector2(0,0);
             bar.anchorMax = new Vector2(0,1f);
             bar.pivot = new Vector2(0,.5f);
         }
-
         public void SetSize(float sizeRatio) {
-            bar.sizeDelta = new Vector2(sizeRatio * size.x, 0f);
+            bar.sizeDelta = new Vector2(sizeRatio * size.x, 0);
         }
-
         public void SetColor(Color color) {
             bar.GetComponent<Image>().color = color;
         }
-
         public void SetActive(bool active) {
             gameObject.SetActive(active);
         }
-
-        public Vector2 GetAnchoredPosition() {
-            return rectTransform.anchoredPosition;
-        }
-
-        public Vector2 GetSize() {
-            return rectTransform.sizeDelta;
-        }
-
         public void AddOutline(Outline outline) {
             RectTransform outlineRectTransform = SetupOutline(outline, size);
             outlineRectTransform.transform.SetAsFirstSibling();
         }
-
         public void SetRaycastTarget(bool set) {
             foreach (Transform trans in gameObject.transform) {
                 if (trans.GetComponent<Image>() != null) {
@@ -144,15 +108,12 @@ namespace CodeMonkey.Utils {
                 }
             }
         }
-
         public void DestroySelf() {
             UnityEngine.Object.Destroy(gameObject);
         }
-
         public Button_UI AddButton() {
             return AddButton(null, null, null);
         }
-
         public Button_UI AddButton(Action ClickFunc, Action MouseOverOnceFunc, Action MouseOutOnceFunc) {
             Button_UI buttonUI = gameObject.AddComponent<Button_UI>();
             if (ClickFunc != null)

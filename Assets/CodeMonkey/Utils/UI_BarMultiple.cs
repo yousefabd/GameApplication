@@ -51,7 +51,6 @@ namespace CodeMonkey.Utils {
             barImageArr = barImageList.ToArray();
             SetSizes(defaultSizeList.ToArray());
         }
-
         private void SetupParent(Transform parent, Vector2 anchoredPosition, Vector2 size) {
             gameObject = new GameObject("UI_BarMultiple", typeof(RectTransform));
             rectTransform = gameObject.GetComponent<RectTransform>();
@@ -62,11 +61,9 @@ namespace CodeMonkey.Utils {
             rectTransform.pivot = new Vector2(0, .5f);
             rectTransform.anchoredPosition = anchoredPosition;
         }
-
         private void SetupOutline(Outline outline, Vector2 size) {
             UtilsClass.DrawSprite(outline.color, gameObject.transform, Vector2.zero, size + new Vector2(outline.size, outline.size), "Outline");
         }
-
         private RectTransform SetupBar(Color barColor) {
             RectTransform bar = UtilsClass.DrawSprite(barColor, gameObject.transform, Vector2.zero, Vector2.zero, "Bar");
             bar.anchorMin = new Vector2(0,0);
@@ -74,7 +71,6 @@ namespace CodeMonkey.Utils {
             bar.pivot = new Vector2(0,.5f);
             return bar;
         }
-
         public void SetSizes(float[] sizeArr) {
             if (sizeArr.Length != barArr.Length) {
                 throw new System.Exception("Length doesn't match!");
@@ -87,18 +83,11 @@ namespace CodeMonkey.Utils {
                 pos.x += scaledSize;
             }
         }
-
-        public RectTransform GetBar(int index) {
-            return barArr[index];
-        }
-
         public Vector2 GetSize() {
             return size;
         }
-
         public void DestroySelf() {
             UnityEngine.Object.Destroy(gameObject);
         }
-
     }
 }

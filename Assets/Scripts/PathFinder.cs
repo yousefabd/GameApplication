@@ -13,12 +13,23 @@ public class PathFinder
     {
         
         Grid<Cell> gridMap = GameManager.Instance.gridMap;
+
         //a list of all the possible branches of the path
         List<PathNode> openSet = new List<PathNode>();
-        HashSet<PathNode> visitedCells = new HashSet<PathNode>();
-        PathNode startNode = start.GetPathNode();
-        PathNode targetNode = target.GetPathNode();
-        openSet.Add(startNode);
+        HashSet<PathNode> closedSet = new HashSet<PathNode>();
+        start.GetXY(out int startX, out int startY);
+        target.GetXY(out int targetX,out int targetY);
+        PathNode[,] pathGrid = new PathNode[gridMap.GetWidth(), gridMap.GetHeight()];
+        for(int i = 0; i < gridMap.GetWidth(); i++)
+        {
+            for(int j = 0; j < gridMap.GetHeight(); j++)
+            {
+                pathGrid[i, j] = new PathNode(-1, -1);
+            }
+        }
+        pathGrid[startX,startY]= new PathNode(startX, startY);
+        pathGrid[targetX,targetY]=new PathNode(targetX, targetY);
+        openSet.Add(pathGrid[startX, startY]);
         //while there are still nodes that we can visit
         while (openSet.Count > 0)
         {
@@ -34,14 +45,18 @@ public class PathFinder
             }
             //mark the chosen node as visited
             openSet.Remove(currentNode);
-            visitedCells.Add(currentNode);
+            closedSet.Add(currentNode);
             
             //if we reached our target
             
-            if(currentNode == targetNode)
+            if(currentNode == pathGrid[targetX,targetY])
             {
+<<<<<<< Updated upstream
                 Debug.Log("foundPath");
                 return RetracePath(targetNode); ;
+=======
+                return RetracePath(currentNode); ;
+>>>>>>> Stashed changes
             }
             //else traverse to the neighbors of the chosen node
             int[] xMove = { -1, -1, -1, 0, 0, 1, 1, 1 };
@@ -50,7 +65,8 @@ public class PathFinder
             for(int i = 0; i < 8; i++)
             {
                 
-                currentNode.GetXY(out int X, out int Y);
+                int X=currentNode.X;
+                int Y=currentNode.Y;
                 X += xMove[i];
                 Y += yMove[i];
                 bool safe = 
@@ -62,8 +78,13 @@ public class PathFinder
                 {
                     continue;
                 }
+<<<<<<< Updated upstream
                 PathNode neighbor = gridMap.GetValue(X,Y).GetPathNode();
                 if (gridMap.GetValue(X, Y).entity != Entity.SAFE || visitedCells.Contains(neighbor))
+=======
+                PathNode neighbor = pathGrid[X,Y] = new PathNode(X,Y);
+                if (gridMap.GetValue(X, Y).GetEntity() != Entity.SAFE || closedSet.Contains(neighbor))
+>>>>>>> Stashed changes
                 {
                     continue;
                 }
@@ -72,7 +93,7 @@ public class PathFinder
                 if(newCostToNeighbor<neighbor.gCost || !openSet.Contains(neighbor))
                 {
                     neighbor.gCost = newCostToNeighbor;
-                    neighbor.hCost = GetDistance(neighbor, target.GetPathNode());
+                    neighbor.hCost = GetDistance(neighbor, pathGrid[targetX,targetY]);
                     
                     neighbor.parent = currentNode;
 
@@ -91,10 +112,8 @@ public class PathFinder
         List<Vector3> path=new List<Vector3>();
         PathNode currentNode = target;
         while (currentNode.parent != null) {
-            currentNode.GetXY(out int currentX,out int currentY);
-            currentNode.parent.GetXY(out int parentX, out int parentY);
-            int xDir= currentX - parentX;
-            int yDir = currentY-parentY;
+            int xDir= currentNode.X - currentNode.parent.X;
+            int yDir = currentNode.Y-currentNode.parent.Y;
             path.Add(new Vector3(xDir, yDir));
             currentNode = currentNode.parent;
         }
@@ -103,8 +122,10 @@ public class PathFinder
     }
     int GetDistance(PathNode nodeA,PathNode nodeB)
     {
-        nodeA.GetXY(out int xA, out int yA);
-        nodeB.GetXY(out int xB, out int yB);
+        int xA = nodeA.X;
+        int yA = nodeA.Y;
+        int xB = nodeB.X;
+        int yB = nodeB.Y;
 
         int dstX = Mathf.Abs(xA - xB);
         int dstY = Mathf.Abs(yA - yB);

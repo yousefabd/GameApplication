@@ -30,14 +30,6 @@ namespace CodeMonkey.Utils {
         private Mesh mesh;
 
 
-        public static World_Mesh CreateEmpty(Vector3 position, float eulerZ, Material material, int sortingOrderOffset = 0) {
-            return new World_Mesh(null, position, Vector3.one, eulerZ, material, new Vector3[0], new Vector2[0], new int[0], sortingOrderOffset);
-        }
-        
-        public static World_Mesh Create(Vector3 position, float eulerZ, Material material, Vector3[] vertices, Vector2[] uv, int[] triangles, int sortingOrderOffset = 0) {
-            return new World_Mesh(null, position, Vector3.one, eulerZ, material, vertices, uv, triangles, sortingOrderOffset);
-        }
-
         public static World_Mesh Create(Vector3 position, float eulerZ, float meshWidth, float meshHeight, Material material, UVCoords uvCoords, int sortingOrderOffset = 0) {
             return new World_Mesh(null, position, Vector3.one, eulerZ, meshWidth, meshHeight, material, uvCoords, sortingOrderOffset);
         }
@@ -126,32 +118,6 @@ namespace CodeMonkey.Utils {
 
             SetSortingOrderOffset(sortingOrderOffset);
         }
-        
-        public World_Mesh(Transform parent, Vector3 localPosition, Vector3 localScale, float eulerZ, Material material, Vector3[] vertices, Vector2[] uv, int[] triangles, int sortingOrderOffset) {
-            this.material = material;
-            this.vertices = vertices;
-            this.uv = uv;
-            this.triangles = triangles;
-
-            mesh = new Mesh();
-
-            mesh.vertices = vertices;
-            mesh.uv = uv;
-            mesh.triangles = triangles;
-
-            gameObject = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-            gameObject.transform.parent = parent;
-            gameObject.transform.localPosition = localPosition;
-            gameObject.transform.localScale = localScale;
-            gameObject.transform.localEulerAngles = new Vector3(0, 0, eulerZ);
-
-            gameObject.GetComponent<MeshFilter>().mesh = mesh;
-            gameObject.GetComponent<MeshRenderer>().material = material;
-
-            transform = gameObject.transform;
-
-            SetSortingOrderOffset(sortingOrderOffset);
-        }
 
         private Vector2 ConvertPixelsToUVCoordinates(int x, int y, int textureWidth, int textureHeight) {
             return new Vector2((float)x / textureWidth, (float)y / textureHeight);
@@ -213,10 +179,6 @@ namespace CodeMonkey.Utils {
             return gameObject.GetComponent<Renderer>().sortingOrder;
         }
 
-        public Mesh GetMesh() {
-            return mesh;
-        }
-
         public void Show() {
             gameObject.SetActive(true);
         }
@@ -229,9 +191,5 @@ namespace CodeMonkey.Utils {
             Object.Destroy(gameObject);
         }
 
-        public static void CreateMesh() {
-        }
-
     }
-
 }

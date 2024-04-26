@@ -28,51 +28,33 @@ namespace CodeMonkey.Utils {
         public static UI_Sprite CreateDebugButton(Vector2 anchoredPosition, Vector2 size, Action ClickFunc) {
             return CreateDebugButton(anchoredPosition, size, ClickFunc, Color.green);
         }
-
         public static UI_Sprite CreateDebugButton(Vector2 anchoredPosition, Vector2 size, Action ClickFunc, Color color) {
             UI_Sprite uiSprite = new UI_Sprite(GetCanvasTransform(), Assets.i.s_White, anchoredPosition, size, color);
             uiSprite.AddButton(ClickFunc, null, null);
             return uiSprite;
         }
-
-        public static UI_Sprite CreateDebugButton(Transform parent, Vector2 anchoredPosition, string text, Action ClickFunc) {
-            return CreateDebugButton(parent, anchoredPosition, text, ClickFunc, Color.green);
-        }
-
         public static UI_Sprite CreateDebugButton(Vector2 anchoredPosition, string text, Action ClickFunc) {
             return CreateDebugButton(anchoredPosition, text, ClickFunc, Color.green);
         }
-
-        public static UI_Sprite CreateDebugButton(Transform parent, Vector2 anchoredPosition, string text, Action ClickFunc, Color color) {
-            return CreateDebugButton(parent, anchoredPosition, text, ClickFunc, color, new Vector2(30, 20));
-        }
-
         public static UI_Sprite CreateDebugButton(Vector2 anchoredPosition, string text, Action ClickFunc, Color color) {
-            return CreateDebugButton(GetCanvasTransform(), anchoredPosition, text, ClickFunc, color, new Vector2(30, 20));
+            return CreateDebugButton(anchoredPosition, text, ClickFunc, color, new Vector2(30, 20));
         }
-
-        public static UI_Sprite CreateDebugButton(Transform parent, Vector2 anchoredPosition, string text, Action ClickFunc, Color color, Vector2 padding) {
+        public static UI_Sprite CreateDebugButton(Vector2 anchoredPosition, string text, Action ClickFunc, Color color, Vector2 padding) {
             UI_TextComplex uiTextComplex;
-            UI_Sprite uiSprite = CreateDebugButton(parent, anchoredPosition, Vector2.zero, ClickFunc, color, text, out uiTextComplex);
+            UI_Sprite uiSprite = CreateDebugButton(anchoredPosition, Vector2.zero, ClickFunc, color, text, out uiTextComplex);
             uiSprite.SetSize(new Vector2(uiTextComplex.GetTotalWidth(), uiTextComplex.GetTotalHeight()) + padding);
             return uiSprite;
         }
-
         public static UI_Sprite CreateDebugButton(Vector2 anchoredPosition, Vector2 size, Action ClickFunc, Color color, string text) {
             UI_TextComplex uiTextComplex;
             return CreateDebugButton(anchoredPosition, size, ClickFunc, color, text, out uiTextComplex);
         }
-
         public static UI_Sprite CreateDebugButton(Vector2 anchoredPosition, Vector2 size, Action ClickFunc, Color color, string text, out UI_TextComplex uiTextComplex) {
-            return CreateDebugButton(GetCanvasTransform(), anchoredPosition, size, ClickFunc, color, text, out uiTextComplex);
-        }
-
-        public static UI_Sprite CreateDebugButton(Transform parent, Vector2 anchoredPosition, Vector2 size, Action ClickFunc, Color color, string text, out UI_TextComplex uiTextComplex) {
             if (color.r >= 1f) color.r = .9f;
             if (color.g >= 1f) color.g = .9f;
             if (color.b >= 1f) color.b = .9f;
             Color colorOver = color * 1.1f; // button over color lighter
-            UI_Sprite uiSprite = new UI_Sprite(parent, Assets.i.s_White, anchoredPosition, size, color);
+            UI_Sprite uiSprite = new UI_Sprite(GetCanvasTransform(), Assets.i.s_White, anchoredPosition, size, color);
             uiSprite.AddButton(ClickFunc, () => uiSprite.SetColor(colorOver), () => uiSprite.SetColor(color));
             uiTextComplex = new UI_TextComplex(uiSprite.gameObject.transform, Vector2.zero, 12, '#', text, null, null);
             uiTextComplex.SetTextColor(Color.black);
@@ -94,23 +76,18 @@ namespace CodeMonkey.Utils {
             image = gameObject.GetComponent<Image>();
             image.color = color;
         }
-
         public void SetColor(Color color) {
             image.color = color;
         }
-
         public void SetSprite(Sprite sprite) {
             image.sprite = sprite;
         }
-
         public void SetSize(Vector2 size) {
             rectTransform.sizeDelta = size;
         }
-
         public void SetAnchoredPosition(Vector2 anchoredPosition) {
             rectTransform.anchoredPosition = anchoredPosition;
         }
-
         public Button_UI AddButton(Action ClickFunc, Action MouseOverOnceFunc, Action MouseOutOnceFunc) {
             Button_UI buttonUI = gameObject.AddComponent<Button_UI>();
             if (ClickFunc != null)
@@ -121,11 +98,9 @@ namespace CodeMonkey.Utils {
                 buttonUI.MouseOutOnceFunc = MouseOutOnceFunc;
             return buttonUI;
         }
-
         public void DestroySelf() {
             UnityEngine.Object.Destroy(gameObject);
         }
 
     }
-
 }

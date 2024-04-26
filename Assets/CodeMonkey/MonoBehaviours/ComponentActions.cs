@@ -25,19 +25,16 @@ namespace CodeMonkey.MonoBehaviours {
         public Action OnDisableFunc;
         public Action OnUpdate;
 
-        private void OnDestroy() {
+        void OnDestroy() {
             if (OnDestroyFunc != null) OnDestroyFunc();
         }
-
-        private void OnEnable() {
+        void OnEnable() {
             if (OnEnableFunc != null) OnEnableFunc();
         }
-
-        private void OnDisable() {
+        void OnDisable() {
             if (OnDisableFunc != null) OnDisableFunc();
         }
-
-        private void Update() {
+        void Update() {
             if (OnUpdate != null) OnUpdate();
         }
 
@@ -46,7 +43,6 @@ namespace CodeMonkey.MonoBehaviours {
             GameObject gameObject = new GameObject("ComponentActions");
             AddComponent(gameObject, OnDestroyFunc, OnEnableFunc, OnDisableFunc, OnUpdate);
         }
-
         public static void AddComponent(GameObject gameObject, Action OnDestroyFunc = null, Action OnEnableFunc = null, Action OnDisableFunc = null, Action OnUpdate = null) {
             ComponentActions componentFuncs = gameObject.AddComponent<ComponentActions>();
             componentFuncs.OnDestroyFunc = OnDestroyFunc;
@@ -54,7 +50,6 @@ namespace CodeMonkey.MonoBehaviours {
             componentFuncs.OnDisableFunc = OnDisableFunc;
             componentFuncs.OnUpdate = OnUpdate;
         }
-
     }
 
 }

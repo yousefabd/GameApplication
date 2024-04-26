@@ -22,29 +22,16 @@ namespace CodeMonkey.MonoBehaviours {
      * */
     public class CameraFollow : MonoBehaviour {
 
-        public static CameraFollow Instance { get; private set; }
-
         private Camera myCamera;
         private Func<Vector3> GetCameraFollowPositionFunc;
         private Func<float> GetCameraZoomFunc;
 
-        public void Setup(Func<Vector3> GetCameraFollowPositionFunc, Func<float> GetCameraZoomFunc, bool teleportToFollowPosition, bool instantZoom) {
+        public void Setup(Func<Vector3> GetCameraFollowPositionFunc, Func<float> GetCameraZoomFunc) {
             this.GetCameraFollowPositionFunc = GetCameraFollowPositionFunc;
             this.GetCameraZoomFunc = GetCameraZoomFunc;
-
-            if (teleportToFollowPosition) {
-                Vector3 cameraFollowPosition = GetCameraFollowPositionFunc();
-                cameraFollowPosition.z = transform.position.z;
-                transform.position = cameraFollowPosition;
-            }
-
-            if (instantZoom) {
-                myCamera.orthographicSize = GetCameraZoomFunc();
-            }
         }
 
-        private void Awake() {
-            Instance = this;
+        private void Start() {
             myCamera = transform.GetComponent<Camera>();
         }
 
@@ -65,7 +52,8 @@ namespace CodeMonkey.MonoBehaviours {
         }
 
 
-        private void Update() {
+        // Update is called once per frame
+        void Update() {
             HandleMovement();
             HandleZoom();
         }

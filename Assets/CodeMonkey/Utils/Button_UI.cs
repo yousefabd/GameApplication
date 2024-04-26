@@ -42,7 +42,6 @@ namespace CodeMonkey.Utils {
         public enum HoverBehaviour {
             Custom,
             Change_Color,
-            Change_Color_Auto,
             Change_Image,
             Change_SetActive,
         }
@@ -59,7 +58,7 @@ namespace CodeMonkey.Utils {
         private bool mouseOver;
         private float mouseOverPerSecFuncTimer;
 
-        private Action internalOnPointerEnterFunc = null, internalOnPointerExitFunc = null, internalOnPointerClickFunc = null;
+        private Action internalOnPointerEnterFunc, internalOnPointerExitFunc, internalOnPointerClickFunc;
 
 #if SOUND_MANAGER
         public Sound_Manager.Sound mouseOverSound, mouseClickSound;
@@ -71,23 +70,21 @@ namespace CodeMonkey.Utils {
 
         public virtual void OnPointerEnter(PointerEventData eventData) {
             if (internalOnPointerEnterFunc != null) internalOnPointerEnterFunc();
-            if (hoverBehaviour_Move) transform.GetComponent<RectTransform>().anchoredPosition = posEnter;
+            if (hoverBehaviour_Move) transform.localPosition = posEnter;
             if (hoverBehaviourFunc_Enter != null) hoverBehaviourFunc_Enter();
             if (MouseOverOnceFunc != null) MouseOverOnceFunc();
             if (MouseOverOnceTooltipFunc != null) MouseOverOnceTooltipFunc();
             mouseOver = true;
             mouseOverPerSecFuncTimer = 0f;
         }
-
         public virtual void OnPointerExit(PointerEventData eventData) {
             if (internalOnPointerExitFunc != null) internalOnPointerExitFunc();
-            if (hoverBehaviour_Move) transform.GetComponent<RectTransform>().anchoredPosition = posExit;
+            if (hoverBehaviour_Move) transform.localPosition = posExit;
             if (hoverBehaviourFunc_Exit != null) hoverBehaviourFunc_Exit();
             if (MouseOutOnceFunc != null) MouseOutOnceFunc();
             if (MouseOutOnceTooltipFunc != null) MouseOutOnceTooltipFunc();
             mouseOver = false;
         }
-
         public virtual void OnPointerClick(PointerEventData eventData) {
             if (internalOnPointerClickFunc != null) internalOnPointerClickFunc();
             if (OnPointerClickFunc != null) OnPointerClickFunc(eventData);
@@ -102,24 +99,20 @@ namespace CodeMonkey.Utils {
             if (eventData.button == PointerEventData.InputButton.Middle)
                 if (MouseMiddleClickFunc != null) MouseMiddleClickFunc();
         }
-
         public void Manual_OnPointerExit() {
             OnPointerExit(null);
         }
-
         public bool IsMouseOver() {
             return mouseOver;
         }
-
         public void OnPointerDown(PointerEventData eventData) {
             if (MouseDownOnceFunc != null) MouseDownOnceFunc();
         }
-
         public void OnPointerUp(PointerEventData eventData) {
             if (MouseUpFunc != null) MouseUpFunc();
         }
 
-        private void Update() {
+        void Update() {
             if (mouseOver) {
                 if (MouseOverFunc != null) MouseOverFunc();
                 mouseOverPerSecFuncTimer -= Time.unscaledDeltaTime;
@@ -131,10 +124,9 @@ namespace CodeMonkey.Utils {
             if (MouseUpdate != null) MouseUpdate();
 
         }
-
-        private void Awake() {
-            posExit = transform.GetComponent<RectTransform>().anchoredPosition;
-            posEnter = transform.GetComponent<RectTransform>().anchoredPosition + hoverBehaviour_Move_Amount;
+        void Awake() {
+            posExit = transform.localPosition;
+            posEnter = (Vector2)transform.localPosition + hoverBehaviour_Move_Amount;
             SetHoverBehaviourType(hoverBehaviourType);
 
 #if SOUND_MANAGER
@@ -149,7 +141,6 @@ namespace CodeMonkey.Utils {
             internalOnPointerExitFunc += () => { if (cursorMouseOut != CursorManager.CursorType.None) CursorManager.SetCursor(cursorMouseOut); };
 #endif
         }
-
         public void SetHoverBehaviourType(HoverBehaviour hoverBehaviourType) {
             this.hoverBehaviourType = hoverBehaviourType;
             switch (hoverBehaviourType) {
@@ -165,22 +156,8 @@ namespace CodeMonkey.Utils {
                 hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.gameObject.SetActive(true); };
                 hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.gameObject.SetActive(false); };
                 break;
-            case HoverBehaviour.Change_Color_Auto:
-                Color color = hoverBehaviour_Image.color;
-                if (color.r >= 1f) color.r = .9f;
-                if (color.g >= 1f) color.g = .9f;
-                if (color.b >= 1f) color.b = .9f;
-                Color colorOver = color * 1.3f; // Over color lighter
-                hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.color = colorOver; };
-                hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.color = color; };
-                break;
             }
         }
-
-        public void RefreshHoverBehaviourType() {
-            SetHoverBehaviourType(hoverBehaviourType);
-        }
-            
 
 
 
