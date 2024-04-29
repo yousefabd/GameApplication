@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         //giving a static list of initial characters position temporarily in the future we should get that list from the Map
-        initialCharacterPositions = new List<Vector3> { new Vector3(0.5f, 0.5f, 0) };
+        initialCharacterPositions = new List<Vector3> { new Vector3(0.5f, 0.5f, 0) , new Vector3(-5.5f,2.5f,0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
         CreateGridMap();
         CreatePlayerBase();
     }
@@ -37,10 +37,9 @@ public class GameManager : MonoBehaviour
                 (int x, int y) =>
                 {
                     Cell cell = new Cell(x, y);
-                    cell.SetEntity(Entity.CHARACTER);
                     Vector3 worldPosition = gridMap.GetWorldPositionCentered(x, y);
                     cell.SpawnCharacter(characterSO, worldPosition);
-                    return new Cell(x, y);
+                    return cell;
                 }
             );
         }

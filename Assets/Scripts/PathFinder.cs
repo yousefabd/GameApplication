@@ -11,14 +11,15 @@ public class PathFinder
     private const int symmetric_move = 10;
     public List<Vector3> FindPath(Cell start, Cell target)
     {
-        
+        //cache the gridMap object
         Grid<Cell> gridMap = GameManager.Instance.gridMap;
 
-        //a list of all the possible branches of the path
+        //a set of all the possible branches of the path
         List<PathNode> openSet = new List<PathNode>();
+        //a set of already visited nodes
         HashSet<PathNode> closedSet = new HashSet<PathNode>();
-        start.GetXY(out int startX, out int startY);
-        target.GetXY(out int targetX,out int targetY);
+        start.GetIndices(out int startX, out int startY);
+        target.GetIndices(out int targetX, out int targetY);
         PathNode[,] pathGrid = new PathNode[gridMap.GetWidth(), gridMap.GetHeight()];
         for(int i = 0; i < gridMap.GetWidth(); i++)
         {
@@ -30,6 +31,8 @@ public class PathFinder
         pathGrid[startX,startY]= new PathNode(startX, startY);
         pathGrid[targetX,targetY]=new PathNode(targetX, targetY);
         openSet.Add(pathGrid[startX, startY]);
+        PathNode closestNode = openSet[0];
+        closestNode.hCost = int.MaxValue;
         //while there are still nodes that we can visit
         while (openSet.Count > 0)
         {
@@ -43,15 +46,18 @@ public class PathFinder
                     currentNode = openSet[i];
                 }
             }
+            if(closestNode.hCost > currentNode.hCost)
+            {
+                closestNode = currentNode;
+            }
             //mark the chosen node as visited
             openSet.Remove(currentNode);
             closedSet.Add(currentNode);
-            
+
             //if we reached our target
-            
             if(currentNode == pathGrid[targetX,targetY])
             {
-                return RetracePath(currentNode); ;
+                return RetracePath(currentNode); 
             }
             //else traverse to the neighbors of the chosen node
             int[] xMove = { -1, -1, -1, 0, 0, 1, 1, 1 };
@@ -59,9 +65,8 @@ public class PathFinder
             
             for(int i = 0; i < 8; i++)
             {
-                
-                int X=currentNode.X;
-                int Y=currentNode.Y;
+
+                currentNode.GetIndices(out int X, out int Y);
                 X += xMove[i];
                 Y += yMove[i];
                 bool safe = 
@@ -73,7 +78,8 @@ public class PathFinder
                 {
                     continue;
                 }
-                PathNode neighbor = pathGrid[X,Y] = new PathNode(X,Y);
+                PathNode neighbor = pathGrid[X,Y];
+                neighbor.SetIndices(X, Y);
                 if (gridMap.GetValue(X, Y).GetEntity() != Entity.SAFE || closedSet.Contains(neighbor))
                 {
                     continue;
@@ -95,15 +101,16 @@ public class PathFinder
                 }
             }
         }
-        return new List<Vector3>();
+        //in case no path has been found, retrace the path of the closest node to the target
+        return RetracePath(closestNode);
     }
     List<Vector3> RetracePath(PathNode target)
     {
         List<Vector3> path=new List<Vector3>();
         PathNode currentNode = target;
         while (currentNode.parent != null) {
-
-            path.Add(GameManager.Instance.gridMap.GetWorldPositionCentered(currentNode.X,currentNode.Y));
+            currentNode.GetIndices(out int X, out int Y);
+            path.Add(GameManager.Instance.gridMap.GetWorldPositionCentered(X,Y));
             currentNode = currentNode.parent;
         }
         path.Reverse();
@@ -111,10 +118,8 @@ public class PathFinder
     }
     int GetDistance(PathNode nodeA,PathNode nodeB)
     {
-        int xA = nodeA.X;
-        int yA = nodeA.Y;
-        int xB = nodeB.X;
-        int yB = nodeB.Y;
+        nodeA.GetIndices(out int xA, out int yA);
+        nodeB.GetIndices(out int xB,out int yB);
 
         int dstX = Mathf.Abs(xA - xB);
         int dstY = Mathf.Abs(yA - yB);

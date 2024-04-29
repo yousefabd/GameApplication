@@ -10,13 +10,12 @@ public class Cell
 {
     private Entity entity = Entity.SAFE;
     private Character character;
-    private int X;
-    private int Y;
+    private readonly Indices indices;
 
-    public Cell(int X,int Y)
+    public Cell(int I,int J)
     {
-        this.X = X;
-        this.Y = Y;
+        indices.I= I;
+        indices.J= J;
     }
 
     public Entity GetEntity()
@@ -36,16 +35,31 @@ public class Cell
     {
         if(character != null)
         {
-            Debug.LogError("A character in the cell ("+X+", "+Y+")" + " already exists!");
+            Debug.LogError("A character in the cell ("+indices.I+", "+indices.J+")" + " already exists!");
         }
         else
         {
             character = Character.Spawn(characterSO, position);
+            entity=Entity.CHARACTER;
         }
     }
-    public void GetXY(out int x, out int y)
+    public void ClearCharacter()
     {
-        x=this.X; y=this.Y;
+        entity = Entity.SAFE;
+        character = null;
+    }
+    public void SetCharacter(Character character)
+    {
+        if (character != null)
+        {
+            entity = Entity.CHARACTER;
+        }
+        this.character = character;
+    }
+    public void GetIndices(out int I,out int J)
+    {
+        I=indices.I;
+        J=indices.J;
     }
     public override string ToString()
     {

@@ -6,6 +6,11 @@ using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using static UnityEngine.Rendering.DebugUI;
 using System;
+public struct Indices
+{
+    public int I;
+    public int J;
+}
 public class Grid <TGridObject>
 {
     private int width;
@@ -39,7 +44,7 @@ public class Grid <TGridObject>
             {
                 for (int j = 0; j < height; j++)
                 {
-                    worldTextRef[i, j] = UtilsClass.CreateWorldText(gridArray[i, j]?.ToString(), null, GetWorldPosition(i, j) + new Vector3(cellSize, cellSize, 0f) / 2, 20, Color.white, TextAnchor.MiddleCenter);
+                    worldTextRef[i, j] = UtilsClass.CreateWorldText(gridArray[i, j]?.ToString(), null, GetWorldPosition(i, j) + new Vector3(cellSize, cellSize, 0f) / 2, 15, Color.white, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i, j + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i + 1, j), Color.white, 100f);
 

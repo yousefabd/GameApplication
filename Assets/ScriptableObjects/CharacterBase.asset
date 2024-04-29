@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: d4fb53e1e962b1d4e9f147d6443f0227, type: 3}
   m_Name: CharacterBase
-  m_EditorClassIdentifier: Assembly-CSharp::CharacterSO
-  prefab: {fileID: 0}
-  icon: {fileID: 0}
-  characterName: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7172290462020704586, guid: bba7335e3400f36418f328b748d3cb30, type: 3}
+  icon: {fileID: 21300000, guid: a0e35f6b808bb7447826cc6c69ffe448, type: 3}
+  characterName: Character Base
