@@ -10,6 +10,11 @@ public struct Indices
 {
     public int I;
     public int J;
+    public Indices(int I,int J)
+    {
+        this.I = I;
+        this.J = J;
+    }
 }
 public class Grid <TGridObject>
 {
@@ -76,6 +81,7 @@ public class Grid <TGridObject>
     }
     public void SetValue(Vector3 worldPosition, Func<int, int, TGridObject> createValue)
     {
+        Debug.LogWarning("SetValue function should never be called!");
         int x = (int)((worldPosition - originPosition).x / cellSize);
         int y = (int)((worldPosition - originPosition).y / cellSize);
         TGridObject value = createValue(x, y);
@@ -120,5 +126,15 @@ public class Grid <TGridObject>
         x = (int)((worldPosition - originPosition).x / cellSize);
         y = (int)((worldPosition - originPosition).y / cellSize);
 
+    }
+    public void UpdateValues()
+    {
+        for(int i = 0; i < width; i++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                worldTextRef[i, j].text = gridArray[i,j].ToString();
+            }
+        }
     }
 }

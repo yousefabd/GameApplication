@@ -9,7 +9,7 @@ public class PathFinder
 {
     private const int diagonal_move = 14;
     private const int symmetric_move = 10;
-    public List<Vector3> FindPath(Cell start, Cell target)
+    public List<Vector3> FindPath(Indices start, Indices target)
     {
         //cache the gridMap object
         Grid<Cell> gridMap = GameManager.Instance.gridMap;
@@ -18,8 +18,6 @@ public class PathFinder
         List<PathNode> openSet = new List<PathNode>();
         //a set of already visited nodes
         HashSet<PathNode> closedSet = new HashSet<PathNode>();
-        start.GetIndices(out int startX, out int startY);
-        target.GetIndices(out int targetX, out int targetY);
         PathNode[,] pathGrid = new PathNode[gridMap.GetWidth(), gridMap.GetHeight()];
         for(int i = 0; i < gridMap.GetWidth(); i++)
         {
@@ -28,9 +26,9 @@ public class PathFinder
                 pathGrid[i, j] = new PathNode(-1, -1);
             }
         }
-        pathGrid[startX,startY]= new PathNode(startX, startY);
-        pathGrid[targetX,targetY]=new PathNode(targetX, targetY);
-        openSet.Add(pathGrid[startX, startY]);
+        pathGrid[start.I,start.J]= new PathNode(start.I, start.J);
+        pathGrid[target.I,target.J]=new PathNode(target.I, target.J);
+        openSet.Add(pathGrid[start.I, start.J]);
         PathNode closestNode = openSet[0];
         closestNode.hCost = int.MaxValue;
         //while there are still nodes that we can visit
@@ -55,7 +53,7 @@ public class PathFinder
             closedSet.Add(currentNode);
 
             //if we reached our target
-            if(currentNode == pathGrid[targetX,targetY])
+            if(currentNode == pathGrid[target.I,target.J])
             {
                 return RetracePath(currentNode); 
             }
@@ -89,7 +87,7 @@ public class PathFinder
                 if(newCostToNeighbor<neighbor.gCost || !openSet.Contains(neighbor))
                 {
                     neighbor.gCost = newCostToNeighbor;
-                    neighbor.hCost = GetDistance(neighbor, pathGrid[targetX,targetY]);
+                    neighbor.hCost = GetDistance(neighbor, pathGrid[target.I,target.J]);
                     
                     neighbor.parent = currentNode;
 
@@ -103,6 +101,45 @@ public class PathFinder
         }
         //in case no path has been found, retrace the path of the closest node to the target
         return RetracePath(closestNode);
+    }
+    public List<Indices> FindMultipleTargets(Indices originalTarget,int characterCount)
+    {
+        int gridWidth = GameManager.Instance.GetWidth();
+        int gridHeight = GameManager.Instance.GetHeight();
+        List<Indices> targets = new List<Indices>();
+        targets.Add(originalTarget);
+        characterCount--;
+        bool[,] visited = new bool[gridWidth, gridHeight];
+        visited[originalTarget.I, originalTarget.J] = true;
+        Queue<Indices>queue = new Queue<Indices>();
+        queue.Enqueue(originalTarget);
+        while(queue.Count>0){
+            Indices current = queue.Dequeue();
+            int[] xMove = { -1, 1, 0, 0, -1, -1, 1, 1 };
+            int[] yMove = { 0, 0, -1, 1, -1, 1, -1, 1 };
+            for(int i = 0; i < 8; i++)
+            {
+                if (characterCount <= 0)
+                {
+                    return targets;
+                }
+                int newX = current.I + xMove[i];
+                int newY = current.J + yMove[i];
+                if(newX>=0 && newX<gridWidth && newY>=0 && newY < gridHeight)
+                {
+                    if (!visited[newX, newY] && GameManager.Instance.GetEntity(newX,newY) == Entity.SAFE) 
+                    {
+                        visited[newX,newY]= true;
+                        Indices newTarget = new Indices(newX,newY);
+                        queue.Enqueue(newTarget);
+                        targets.Add(newTarget);
+                        characterCount--;
+                    }
+                }
+            }
+        }
+
+        return targets;
     }
     List<Vector3> RetracePath(PathNode target)
     {

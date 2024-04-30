@@ -30,14 +30,8 @@ public class MouseManager : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
-            gridMap.SetValue(
-                mousePosition,
-                (int i, int j) =>
-                {
-                    Cell newCell = new Cell(i, j);
-                    newCell.SetEntity(Entity.OBSTACLE);
-                    return newCell;
-            });
+            gridMap.GetValue(mousePosition).SetEntity(Entity.OBSTACLE);
+            gridMap.UpdateValues();
         }
         if (Input.GetMouseButtonDown(1))
         {

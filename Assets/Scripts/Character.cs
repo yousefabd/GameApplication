@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,7 +5,7 @@ public class Character : MonoBehaviour
 {
     //selected is set to true temporarily for testing
     //private bool selected = true;
-    [SerializeField] private  float moveSpeed = 5f;
+    [SerializeField] private  float moveSpeed = 3f;
     private PathFinder pathFinder;
     private Grid<Cell> gridMap;
     //State related variables
@@ -21,7 +19,6 @@ public class Character : MonoBehaviour
     private Indices currentGridPosition;
     private void Start()
     {
-        MouseManager.Instance.OnWalk += MouseManager_OnWalk;
         pathFinder = new PathFinder();
         gridMap = GameManager.Instance.gridMap;
         gridMap.GetIndices(transform.position, out currentGridPosition.I, out currentGridPosition.J);
@@ -38,52 +35,26 @@ public class Character : MonoBehaviour
                 break;
         }
     }
-    private void MouseManager_OnWalk(Vector3 targetPosition)
-    {
-        ToIdle();
-        Cell characterCell = gridMap.GetValue(transform.position);
-        Cell targetCell = gridMap.GetValue(targetPosition);
-        currentPath = pathFinder.FindPath(characterCell, targetCell);
-        if (currentPath.Any())
-        {
-            currentCharacterState = CharacterState.WALKING;
-        }
-    }
-    private bool Cast(Vector3 target)
-    {
-        return gridMap.GetValue(target).GetEntity() != Entity.SAFE;
-    }
+    
     private void WalkPath()
     {
         Vector3 nextTarget = currentPath[currentPathIndex];
-        if (!Cast(nextTarget))
+        transform.position = Vector3.MoveTowards(transform.position, nextTarget, moveSpeed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, nextTarget) < 0.05)
         {
-            transform.position = Vector3.MoveTowards(transform.position, nextTarget, moveSpeed * Time.deltaTime);
-            if (Vector3.Distance(transform.position, nextTarget) < 0.05)
+            currentPathIndex++;
+            Cell prevCell = gridMap.GetValue(currentGridPosition.I, currentGridPosition.J);
+            prevCell.ClearCharacter();
+            Cell newCell=gridMap.GetValue(transform.position);
+            newCell.GetIndices(out currentGridPosition.I,out currentGridPosition.J);
+            newCell.SetCharacter(this);
+            gridMap.UpdateValues();
+            if (currentPathIndex == currentPath.Count)
             {
-                currentPathIndex++;
-                gridMap.SetValue(transform.position, (int I, int J) =>
-                {
-                    //move this character on the grid to another cell
-                    Cell cell = new Cell(I, J);
-                    cell.SetCharacter(this);
-                    Cell prev = gridMap.GetValue(currentGridPosition.I, currentGridPosition.J);
-                    prev.ClearCharacter();
-                    currentGridPosition.I = I;
-                    currentGridPosition.J = J;
-                    return cell;
-                });
-                if (currentPathIndex == currentPath.Count)
-                {
-                    ToIdle();
-                }
+                ToIdle();
             }
         }
-        else
-        {
-            Vector3 previousPosition = gridMap.GetWorldPositionCentered(currentGridPosition.I, currentGridPosition.J);
-            transform.position = Vector3.MoveTowards(transform.position, previousPosition, moveSpeed * Time.deltaTime);
-        }
+        
     }
     private void ToIdle()
     {
@@ -97,5 +68,18 @@ public class Character : MonoBehaviour
         Transform characterTransform = Instantiate(characterSO.prefab,position,Quaternion.identity);
         Character character = characterTransform.GetComponent<Character>();
         return character;
+    }
+    public void SetPath(List<Vector3> path)
+    {
+        ToIdle();
+        currentPath = path;
+        if (currentPath.Any())
+        {
+            currentCharacterState = CharacterState.WALKING;
+        }
+    }
+    public Indices GetCurrentPosition()
+    {
+        return currentGridPosition;
     }
 }

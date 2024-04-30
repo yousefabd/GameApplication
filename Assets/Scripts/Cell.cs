@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Entity
@@ -10,6 +11,7 @@ public class Cell
 {
     private Entity entity = Entity.SAFE;
     private Character character;
+    
     private readonly Indices indices;
 
     public Cell(int I,int J)
@@ -31,16 +33,18 @@ public class Cell
         character = this.character;
         return this.character != null;
     }
-    public void SpawnCharacter(CharacterSO characterSO,Vector3 position)
+    public Character SpawnCharacter(CharacterSO characterSO,Vector3 position)
     {
         if(character != null)
         {
             Debug.LogError("A character in the cell ("+indices.I+", "+indices.J+")" + " already exists!");
+            return character;
         }
         else
         {
             character = Character.Spawn(characterSO, position);
             entity=Entity.CHARACTER;
+            return character;
         }
     }
     public void ClearCharacter()
@@ -60,6 +64,10 @@ public class Cell
     {
         I=indices.I;
         J=indices.J;
+    }
+    public Indices GetIndices()
+    {
+        return indices; 
     }
     public override string ToString()
     {

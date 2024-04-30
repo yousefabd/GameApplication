@@ -20,28 +20,68 @@ public class GameManager : MonoBehaviour
         Instance = this;
         //giving a static list of initial characters position temporarily in the future we should get that list from the Map
         initialCharacterPositions = new List<Vector3> { new Vector3(0.5f, 0.5f, 0) , new Vector3(-5.5f,2.5f,0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
+    }
+    private void Start()
+    {
         CreateGridMap();
         CreatePlayerBase();
     }
 
-    private void CreateGridMap()
+    public void CreateGridMap()
     {
-        gridMap = new Grid<Cell>(gridWidth, gridHeight, cellSize, gridOriginPosition, (int x, int y) => new Cell(x, y));
+        gridMap = new Grid<Cell>(gridWidth, gridHeight, cellSize, gridOriginPosition, (int x, int y) =>
+        {
+            Cell cell = new Cell(x, y);
+            cell.SetEntity(Entity.SAFE);
+            return cell;
+        });
     }
-    private void CreatePlayerBase()
+    public void CreatePlayerBase()
     {
         for (int i = 0; i < initialCharacterPositions.Count; i++)
         {
-            gridMap.SetValue(
-                initialCharacterPositions[i],
-                (int x, int y) =>
-                {
-                    Cell cell = new Cell(x, y);
-                    Vector3 worldPosition = gridMap.GetWorldPositionCentered(x, y);
-                    cell.SpawnCharacter(characterSO, worldPosition);
-                    return cell;
-                }
-            );
+            Cell characterCell = gridMap.GetValue(initialCharacterPositions[i]);
+            characterCell.SetEntity(Entity.CHARACTER);
+            Indices indices = characterCell.GetIndices();
+            Character character=characterCell.SpawnCharacter(characterSO, GridToWorldPositionCentered(indices));
+            gridMap.UpdateValues();
+            Player.Instance.AddSelectedCharacter(character);
         }
+    }
+    public void WorldToGridPosition(Vector3 worldPosition,out int i,out int j)
+    {
+        gridMap.GetIndices(worldPosition, out i, out j);
+    }
+    public Vector3 GridToWorldPosition(Indices indices)
+    {
+        return gridMap.GetWorldPosition(indices.I, indices.J);
+    }
+    public Vector3 GridToWorldPositionCentered(Indices indices)
+    {
+        return gridMap.GetWorldPositionCentered(indices.I, indices.J);
+    }
+    public int GetWidth()
+    {
+        return gridWidth;
+    }
+    public int GetHeight()
+    {
+        return gridHeight;
+    }
+    public Entity GetEntity(Vector3 worldPosition)
+    {
+        return gridMap.GetValue(worldPosition).GetEntity();
+    }
+    public Entity GetEntity(int i,int j)
+    {
+        return gridMap.GetValue(i,j).GetEntity();
+    }
+    public void SetEntity(Entity entity,Vector3 worldPosition)
+    {
+        gridMap.GetValue(worldPosition).SetEntity(entity);
+    }
+    public void SetEntity(Entity entity,Indices indices)
+    {
+        gridMap.GetValue(indices.I,indices.J).SetEntity(entity);
     }
 }

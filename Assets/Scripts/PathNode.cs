@@ -5,6 +5,7 @@ using UnityEngine;
 public class PathNode
 {
     private Indices indices;
+    public bool collision;
     public PathNode parent;
 
     public int gCost;
