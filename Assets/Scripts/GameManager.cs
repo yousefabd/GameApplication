@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
             Indices indices = characterCell.GetIndices();
             Character character=characterCell.SpawnCharacter(characterSO, GridToWorldPositionCentered(indices));
             gridMap.UpdateValues();
-            Player.Instance.AddSelectedCharacter(character);
         }
     }
     public void WorldToGridPosition(Vector3 worldPosition,out int i,out int j)
