@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-public class Character : MonoBehaviour
+public class Character : Entity
 {
     //selected is set to true temporarily for testing
     //private bool selected = true;

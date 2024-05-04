@@ -16,7 +16,7 @@ public struct Indices
         this.J = J;
     }
 }
-public class Grid <TGridObject>
+public class Grid<TGridObject>
 {
     private int width;
     private int height;
@@ -25,26 +25,32 @@ public class Grid <TGridObject>
     private TGridObject[,] gridArray;
     private TextMesh[,] worldTextRef;
     bool showDebug;
-    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<int,int,TGridObject> CreateGridObject)
+
+    public void Awake() { 
+
+    }
+
+    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<int, int, TGridObject> CreateGridObject)
     {
-        this.width = width; 
+        this.width = width;
         this.height = height;
         this.cellSize = cellSize;
         this.originPosition = originPosition;
+
+        // Initialize gridArray before the loop
         gridArray = new TGridObject[width, height];
-        worldTextRef = new TextMesh[width, height];
-        showDebug = true;
-        //initialize the grid
+
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-                gridArray[i, j] = CreateGridObject(i,j);
+                gridArray[i, j] = CreateGridObject(i, j);
             }
-
         }
+
         if (showDebug)
         {
+            worldTextRef = new TextMesh[width, height];
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < height; j++)
@@ -52,14 +58,13 @@ public class Grid <TGridObject>
                     worldTextRef[i, j] = UtilsClass.CreateWorldText(gridArray[i, j]?.ToString(), null, GetWorldPosition(i, j) + new Vector3(cellSize, cellSize, 0f) / 2, 15, Color.white, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i, j + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(i, j), GetWorldPosition(i + 1, j), Color.white, 100f);
-
                 }
-
             }
             Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height));
             Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height));
         }
-    }
+    
+}
     public Vector3 GetWorldPosition(int x,int y)
     {
         return new Vector3(x, y) * cellSize + originPosition;
@@ -129,12 +134,21 @@ public class Grid <TGridObject>
     }
     public void UpdateValues()
     {
-        for(int i = 0; i < width; i++)
-        {
-            for(int j = 0; j < height; j++)
+            for (int i = 0; i < width; i++)
             {
-                worldTextRef[i, j].text = gridArray[i,j].ToString();
+                for (int j = 0; j < height; j++)
+                {
+                Debug.Log(
+                "IN");
+                Debug.Log(gridArray[i,j]);
+                if (showDebug && worldTextRef[i, j] != null)
+                {
+                    worldTextRef[i, j].text = gridArray[i, j].ToString();
+                }
             }
         }
+            
+        }
     }
-}
+
+

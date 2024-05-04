@@ -27,7 +27,7 @@ public class MouseManager : MonoBehaviour
         Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log(gridMap.GetValue(mousePosition).ToString());
+            Debug.Log(gridMap.GetValue(mousePosition).ToString()); 
         }
         if (Input.GetMouseButtonDown(0))
         {
