@@ -15,7 +15,6 @@ public class SelectedVisual : MonoBehaviour
 
     private void Character_OnSelect(bool selected)
     {
-        Debug.Log(selected);
         gameObject.SetActive(selected);
     }
 }
