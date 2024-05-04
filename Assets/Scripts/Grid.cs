@@ -47,7 +47,7 @@ public class Grid<TGridObject>
                 gridArray[i, j] = CreateGridObject(i, j);
             }
         }
-
+        showDebug = true;
         if (showDebug)
         {
             worldTextRef = new TextMesh[width, height];
