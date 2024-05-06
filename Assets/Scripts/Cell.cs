@@ -65,7 +65,9 @@ public class Cell
     {
         I=indices.I;
         J=indices.J;
+        return;
     }
+
     public Indices GetIndices()
     {
         return indices; 
@@ -87,4 +89,15 @@ public class Cell
         return GetEntity().ToSafeString();
     }
 
+    public bool isOccupied()
+    {
+        if(this.GetEntity() == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 }

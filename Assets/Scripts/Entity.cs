@@ -4,5 +4,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    public virtual void Spawn() { }
+    public virtual void Spawn(Cell cell,out bool Initiated) {
+        Initiated = false;
+    }
 }
