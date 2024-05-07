@@ -8,4 +8,5 @@ public class BuildingSO : ScriptableObject
     public Transform buildingPrefab;
     public int width,height;
     public Building building { get { return buildingPrefab.GetComponent<Building>(); } }
+    public ResourceGeneratorData resourceGeneratorData;
 }
