@@ -78,7 +78,7 @@ public class PathFinder
                 }
                 PathNode neighbor = pathGrid[X,Y];
                 neighbor.SetIndices(X, Y);
-                if (gridMap.GetValue(X, Y).GetEntity() != Entity.SAFE || closedSet.Contains(neighbor))
+                if (gridMap.GetValue(X, Y).GetEntity() != null || closedSet.Contains(neighbor))
                 {
                     continue;
                 }
@@ -127,7 +127,7 @@ public class PathFinder
                 int newY = current.J + yMove[i];
                 if(newX>=0 && newX<gridWidth && newY>=0 && newY < gridHeight)
                 {
-                    if (!visited[newX, newY] && GameManager.Instance.GetEntity(newX,newY) == Entity.SAFE) 
+                    if (!visited[newX, newY] && GameManager.Instance.GetEntity(newX,newY) == null) 
                     {
                         visited[newX,newY]= true;
                         Indices newTarget = new Indices(newX,newY);

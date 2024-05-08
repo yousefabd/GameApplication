@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
         gridMap = new Grid<Cell>(gridWidth, gridHeight, cellSize, gridOriginPosition, (int x, int y) =>
         {
             Cell cell = new Cell(x, y);
-            cell.SetEntity(Entity.SAFE);
+            cell.SetEntity(null);
             return cell;
         });
     }
@@ -41,11 +41,10 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < initialCharacterPositions.Count; i++)
         {
             Cell characterCell = gridMap.GetValue(initialCharacterPositions[i]);
-            characterCell.SetEntity(Entity.CHARACTER);
             Indices indices = characterCell.GetIndices();
             Character character=characterCell.SpawnCharacter(characterSO, GridToWorldPositionCentered(indices));
+            characterCell.SetEntity(character);
             gridMap.UpdateValues();
-            Player.Instance.AddSelectedCharacter(character);
         }
     }
     public void WorldToGridPosition(Vector3 worldPosition,out int i,out int j)

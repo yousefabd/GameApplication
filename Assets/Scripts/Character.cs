@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-public class Character : MonoBehaviour
+public class Character : Entity
 {
     //selected is set to true temporarily for testing
     //private bool selected = true;
@@ -17,6 +18,10 @@ public class Character : MonoBehaviour
     private int currentPathIndex = 0;
     private CharacterState currentCharacterState = CharacterState.IDLE;
     private Indices currentGridPosition;
+    bool selected = false;
+    //events
+    public event Action <bool> OnSelect;
+
     private void Start()
     {
         pathFinder = new PathFinder();
@@ -51,6 +56,7 @@ public class Character : MonoBehaviour
             gridMap.UpdateValues();
             if (currentPathIndex == currentPath.Count)
             {
+                Player.Instance.OnFinishedPath();
                 ToIdle();
             }
         }
@@ -77,9 +83,19 @@ public class Character : MonoBehaviour
         {
             currentCharacterState = CharacterState.WALKING;
         }
+        else
+        {
+            Player.Instance.OnFinishedPath();
+        }
     }
     public Indices GetCurrentPosition()
     {
         return currentGridPosition;
+    }
+    public void ToggleSelect(bool selected)
+    {
+        this.selected = selected;
+        OnSelect?.Invoke(selected);
+
     }
 }

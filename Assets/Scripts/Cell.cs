@@ -1,15 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum Entity
+public enum EntityEnum
 {
     SAFE,OBSTACLE,BUILDING,CHARACTER
 }
-public class Cell
+public class Cell 
 {
-    private Entity entity = Entity.SAFE;
+    private Entity entity = null;
     private Character character;
     
     private readonly Indices indices;
@@ -43,20 +44,20 @@ public class Cell
         else
         {
             character = Character.Spawn(characterSO, position);
-            entity=Entity.CHARACTER;
+            SetEntity(character);
             return character;
         }
     }
     public void ClearCharacter()
     {
-        entity = Entity.SAFE;
+        entity = null;
         character = null;
     }
     public void SetCharacter(Character character)
     {
         if (character != null)
         {
-            entity = Entity.CHARACTER;
+            SetEntity(character);
         }
         this.character = character;
     }
@@ -64,13 +65,39 @@ public class Cell
     {
         I=indices.I;
         J=indices.J;
+        return;
     }
+
     public Indices GetIndices()
     {
         return indices; 
     }
-    public override string ToString()
+    public string EntityString()
     {
-        return entity.ToString();
+        if (entity != null)
+        {
+            return entity.ToString(); // Assuming Entity has a meaningful ToString() method
+        }
+        else
+        {
+            return "safe"; // Or any other string representing a safe cell
+        }
+    }
+
+     public override String ToString()
+    {
+        return GetEntity().ToSafeString();
+    }
+
+    public bool isOccupied()
+    {
+        if(this.GetEntity() == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

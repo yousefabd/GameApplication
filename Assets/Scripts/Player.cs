@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     private List<Character> selectedCharacters;
     private PathFinder pathFinder;
+    private int movedCharacters = 0;
     public static Player Instance {  get; private set; }
 
     private void Awake()
@@ -21,21 +23,59 @@ public class Player : MonoBehaviour
 
     private void Player_OnWalk(Vector3 targetWorldPosition)
     {
-        Indices targetPosition;
-        Debug.Log(selectedCharacters.Count);
-        GameManager.Instance.WorldToGridPosition(targetWorldPosition,out targetPosition.I,out targetPosition.J);
-        List<Indices> targets=pathFinder.FindMultipleTargets(targetPosition, selectedCharacters.Count);
-        Debug.Log(targets.Count);
-        for (int i = 0; i < targets.Count; i++)
+        if (selectedCharacters.Any())
         {
-            Debug.Log(targets[i].I + "," + targets[i].J);
-            List<Vector3> path = pathFinder.FindPath(selectedCharacters[i].GetCurrentPosition(), targets[i]);
-            selectedCharacters[i].SetPath(path);
+            movedCharacters = 0;
+            Indices targetPosition;
+            GameManager.Instance.WorldToGridPosition(targetWorldPosition, out targetPosition.I, out targetPosition.J);
+            List<Vector3> originalPath = pathFinder.FindPath(selectedCharacters[0].GetCurrentPosition(), targetPosition);
+            Indices newTarget;
+            if (originalPath.Any())
+            {
+                GameManager.Instance.WorldToGridPosition(originalPath[^1], out newTarget.I, out newTarget.J);
+            }
+            else
+            {
+                newTarget = targetPosition;
+            }
+            selectedCharacters[0].SetPath(originalPath);
+            List<Indices> targets = pathFinder.FindMultipleTargets(newTarget, selectedCharacters.Count);
+            for (int i = 1; i < targets.Count; i++)
+            {
+                List<Vector3> path = pathFinder.FindPath(selectedCharacters[i].GetCurrentPosition(), targets[i]);
+                selectedCharacters[i].SetPath(path);
+            }
         }
     }
 
     public void AddSelectedCharacter(Character character)
     {
-        selectedCharacters.Add(character);
+        if (character!=null)
+        {
+            selectedCharacters.Add(character);
+            character.ToggleSelect(true);
+        }
+    }
+
+    public void OnFinishedPath()
+    {
+        movedCharacters++;
+        if (movedCharacters == selectedCharacters.Count)
+        {
+            for (int i = 0; i < selectedCharacters.Count; i++)
+            {
+                Cell cell = GameManager.Instance.gridMap.GetValue(selectedCharacters[i].GetCurrentPosition().I, selectedCharacters[i].GetCurrentPosition().J);
+                cell.SetCharacter(selectedCharacters[i]);
+                GameManager.Instance.gridMap.UpdateValues();
+            }
+        }
+    }
+    public void ClearSelectedCharacters()
+    {
+        for(int i = 0; i < selectedCharacters.Count; i++)
+        {
+            selectedCharacters[i].ToggleSelect(false);
+        }
+        selectedCharacters.Clear();
     }
 }
