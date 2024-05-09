@@ -53,7 +53,7 @@ public class TileAutomata : MonoBehaviour
                     if (grid != null)
                     {
                         // It's safe to access members of grid here
-                        grid.GetValue(x, y).SetEntity(Entity.SAFE);
+                        //grid.GetValue(x, y).SetEntity(Entity.SAFE);
                     }
                 }
                 else
@@ -62,7 +62,7 @@ public class TileAutomata : MonoBehaviour
                     if (grid != null)
                     {
                         // It's safe to access members of grid here
-                        grid.GetValue(x, y).SetEntity(Entity.OBSTACLE);
+                        //grid.GetValue(x, y).SetEntity(Entity.OBSTACLE);
                     }
                 }
             }
