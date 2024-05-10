@@ -160,7 +160,7 @@ public class Grid<TGridObject>
                 if (gridArray[i, j] is Cell gridCell)
                 {
                     Debug.Log(gridCell);
-                    if (gridCell.isOccupied())
+                    if (gridCell.IsOccupied())
                     {
                         return false;
                     }

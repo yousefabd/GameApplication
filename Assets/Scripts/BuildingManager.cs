@@ -25,14 +25,14 @@ public class BuildingManager : MonoBehaviour
             building = buildingSO.building;
             Debug.Log(buildingSO.name);
         }
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("mouse");
-                Cell cell = GameManager.Instance.gridMap.GetValue(GetMouseWorldPosition());
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("mouse");
+            //Cell cell = GridManager.Instance.gridMap.GetValue(GetMouseWorldPosition());
             bool built;
 
-            building.Spawn(cell,out built);               
-            }
+            //building.Spawn(cell,out built);               
+        }
         
     }
     private Vector3 GetMouseWorldPosition()

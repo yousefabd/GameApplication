@@ -4,11 +4,8 @@ using System.Linq;
 using UnityEngine;
 public class Character : Entity
 {
-    //selected is set to true temporarily for testing
-    //private bool selected = true;
     [SerializeField] private  float moveSpeed = 3f;
     private PathFinder pathFinder;
-    private Grid<Cell> gridMap;
     //State related variables
     private enum CharacterState
     {
@@ -18,15 +15,14 @@ public class Character : Entity
     private int currentPathIndex = 0;
     private CharacterState currentCharacterState = CharacterState.IDLE;
     private Indices currentGridPosition;
-    bool selected = false;
+    private bool selected = false;
     //events
     public event Action <bool> OnSelect;
 
     private void Start()
     {
         pathFinder = new PathFinder();
-        gridMap = GameManager.Instance.gridMap;
-        gridMap.GetIndices(transform.position, out currentGridPosition.I, out currentGridPosition.J);
+        GridManager.Instance.WorldToGridPosition(transform.position, out currentGridPosition.I, out currentGridPosition.J);
     
     }
     private void Update()
@@ -48,12 +44,13 @@ public class Character : Entity
         if (Vector3.Distance(transform.position, nextTarget) < 0.05)
         {
             currentPathIndex++;
-            Cell prevCell = gridMap.GetValue(currentGridPosition.I, currentGridPosition.J);
-            prevCell.ClearCharacter();
-            Cell newCell=gridMap.GetValue(transform.position);
-            newCell.GetIndices(out currentGridPosition.I,out currentGridPosition.J);
-            newCell.SetCharacter(this);
-            gridMap.UpdateValues();
+            Indices previousPosition = currentGridPosition;
+            GridManager.Instance.WorldToGridPosition(
+                transform.position,
+                out currentGridPosition.I,
+                out currentGridPosition.J
+            );
+            GridManager.Instance.MoveEntity(previousPosition, currentGridPosition, this);
             if (currentPathIndex == currentPath.Count)
             {
                 Player.Instance.OnFinishedPath();

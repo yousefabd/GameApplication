@@ -10,7 +10,6 @@ public class MouseManager : MonoBehaviour
     [SerializeField] private Transform selectionAreaTransform;
     public static MouseManager Instance { get; private set; }
     public event Action<Vector3> OnWalk;
-    private Grid<Cell> gridMap;
 
     private void Awake()
     {
@@ -19,7 +18,6 @@ public class MouseManager : MonoBehaviour
     }
     private void Start()
     {
-        gridMap =GameManager.Instance.gridMap;
     }
     private void Update()
     {
@@ -27,14 +25,13 @@ public class MouseManager : MonoBehaviour
         Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log(gridMap.GetValue(mousePosition).ToString()); 
+            Debug.Log(GridManager.Instance.GetEntity(mousePosition)?.ToString()); 
         }
         if (Input.GetMouseButtonDown(0))
         {
             //left mouse button pressed
             //gridMap.GetValue(mousePosition).SetEntity(Entity.OBSTACLE);
             startPosition=UtilsClass.GetMouseWorldPosition();
-            gridMap.UpdateValues();
             selectionAreaTransform.gameObject.SetActive(true);
         }
         if (Input.GetMouseButton(0))

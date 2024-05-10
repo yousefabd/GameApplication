@@ -11,13 +11,13 @@ public class Building : Entity
     {
         built = false;
         Indices indices = cell.GetIndices();
-        Vector3 spawnPosition = GameManager.Instance.GridToWorldPosition(indices);
-        bool canBuild = GameManager.Instance.gridMap.CanBuild(cell, buildingSO.width, buildingSO.height);
+        Vector3 spawnPosition = GridManager.Instance.GridToWorldPosition(indices);
+        bool canBuild = false;//GridManager.Instance.gridMap.CanBuild(cell, buildingSO.width, buildingSO.height);
         Debug.Log(canBuild);
         if (canBuild)
         {
             Debug.Log("before Build");
-            GameManager.Instance.gridMap.Build(cell, buildingSO.width, buildingSO.height, this);
+            //GridManager.Instance.gridMap.Build(cell, buildingSO.width, buildingSO.height, this);
             Instantiate(buildingSO.buildingPrefab, spawnPosition, Quaternion.identity);
             built = true;
         }

@@ -27,12 +27,12 @@ public class Player : MonoBehaviour
         {
             movedCharacters = 0;
             Indices targetPosition;
-            GameManager.Instance.WorldToGridPosition(targetWorldPosition, out targetPosition.I, out targetPosition.J);
+            GridManager.Instance.WorldToGridPosition(targetWorldPosition, out targetPosition.I, out targetPosition.J);
             List<Vector3> originalPath = pathFinder.FindPath(selectedCharacters[0].GetCurrentPosition(), targetPosition);
             Indices newTarget;
             if (originalPath.Any())
             {
-                GameManager.Instance.WorldToGridPosition(originalPath[^1], out newTarget.I, out newTarget.J);
+                GridManager.Instance.WorldToGridPosition(originalPath[^1], out newTarget.I, out newTarget.J);
             }
             else
             {
@@ -64,9 +64,7 @@ public class Player : MonoBehaviour
         {
             for (int i = 0; i < selectedCharacters.Count; i++)
             {
-                Cell cell = GameManager.Instance.gridMap.GetValue(selectedCharacters[i].GetCurrentPosition().I, selectedCharacters[i].GetCurrentPosition().J);
-                cell.SetCharacter(selectedCharacters[i]);
-                GameManager.Instance.gridMap.UpdateValues();
+                GridManager.Instance.SetEntity(selectedCharacters[i], selectedCharacters[i].GetCurrentPosition());
             }
         }
     }
