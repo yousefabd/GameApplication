@@ -23,7 +23,7 @@ public class Grid<TGridObject>
     private int height;
     private float cellSize;
     Vector3 originPosition;
-    private TGridObject[,] gridArray;
+    private static TGridObject[,] gridArray;
     private TextMesh[,] worldTextRef;
     bool showDebug;
     public void Awake()
@@ -146,51 +146,9 @@ public class Grid<TGridObject>
         }
 
     }
-    public bool CanBuild(Cell cell, int width, int height)
-    {
-        int I, J;
-        cell.GetIndices(out I, out J);
-
-        for (int i = I; i <= width; i++)
-        {
-            for (int j = J; j <= height; j++)
-            {
-
-
-                if (gridArray[i, j] is Cell gridCell)
-                {
-                    Debug.Log(gridCell);
-                    if (gridCell.isOccupied())
-                    {
-                        return false;
-                    }
-                }
-
-            }
-        }
-        return true;
-    }
-    public void Build(Cell cell, int width, int height, Building building)
-    {
-        Debug.Log(building);
-        Debug.Log(cell);
-        int I, J;
-        cell.GetIndices(out I, out J);
-        Debug.Log(I + J);
-        for (int i = I; i <= (I+width); i++)  
-        {
-            for (int j = J; j <= (J+height); j++)  
-            {
-                Debug.Log(" am in the loop");
-                if (gridArray[i, j] is Cell gridCell)
-                {
-                    gridCell.SetEntity(building);
-                }
-            }
-        }
-        return;
-    }
-    public TGridObject[,] GetGridArray()
+    
+    
+    public static TGridObject[,] GetGridArray()
     {
         return gridArray;
     }

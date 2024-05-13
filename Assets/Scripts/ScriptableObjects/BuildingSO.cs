@@ -7,6 +7,7 @@ public class BuildingSO : ScriptableObject
     public string stringName;
     public Transform buildingPrefab;
     public int width,height;
+    public Vector2 anchorPosition;
     public Building building { get { return buildingPrefab.GetComponent<Building>(); } }
     public ResourceGeneratorData resourceGeneratorData; 
 }
