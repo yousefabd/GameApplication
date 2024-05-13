@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class TileAutomata : MonoBehaviour
 {
-
+    Obstacle test;
 
     [Range(0, 100)]
     public int iniChance;
@@ -53,7 +53,7 @@ public class TileAutomata : MonoBehaviour
                     if (grid != null)
                     {
                         // It's safe to access members of grid here
-                        //grid.GetValue(x, y).SetEntity(Entity.SAFE);
+                        grid.GetValue(x, y).SetEntity(null);
                     }
                 }
                 else
@@ -62,7 +62,7 @@ public class TileAutomata : MonoBehaviour
                     if (grid != null)
                     {
                         // It's safe to access members of grid here
-                        //grid.GetValue(x, y).SetEntity(Entity.OBSTACLE);
+                        grid.GetValue(x, y).SetEntity(test);
                     }
                 }
             }
