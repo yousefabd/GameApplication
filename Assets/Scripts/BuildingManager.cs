@@ -69,9 +69,9 @@ public class BuildingManager : MonoBehaviour
         int I, J;
         cell.GetIndices(out I, out J);
 
-        for (int i = I; i <= width; i++)
+        for (int i = I; i <= (I + width); i++)
         {
-            for (int j = J; j <= height; j++)
+            for (int j = J; j <= (J + height); j++)
             {
 
 
@@ -88,5 +88,7 @@ public class BuildingManager : MonoBehaviour
         }
         return true;
     }
+
+    
 
 }
