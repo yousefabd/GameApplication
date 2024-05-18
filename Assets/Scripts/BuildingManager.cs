@@ -42,9 +42,11 @@ public class BuildingManager : MonoBehaviour
     }
     private Vector3 GetMouseWorldPosition()
     {
-        Vector3 MouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        MouseWorldPosition.z = 0f;
-        return MouseWorldPosition;
+        Vector3 mouseScreenPosition = Input.mousePosition;
+        mouseScreenPosition.z = mainCamera.nearClipPlane; // Ensure the Z position is set correctly
+        Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mouseScreenPosition);
+        mouseWorldPosition.z = 0f; // Set Z to 0 to align with 2D plane
+        return mouseWorldPosition;
     }
 
     public void Build(Cell cell, int width, int height, Building building)

@@ -13,11 +13,15 @@ public class Building : Entity
         built = false;
         Indices indices = cell.GetIndices();
         Vector3 spawnPosition = GameManager.Instance.GridToWorldPosition(indices);
-        //spawnposition works
+        Vector3 fixedSpawnPosition = new Vector3(
+            spawnPosition.x + buildingSO.width,
+            spawnPosition.y + buildingSO.height,
+            0
+        );
         built = SpawnBuilding(cell);
         if(built)
         {
-            Instantiate(buildingSO.buildingPrefab, spawnPosition, Quaternion.identity);
+            Instantiate(buildingSO.buildingPrefab, fixedSpawnPosition, Quaternion.identity);
             Debug.Log("did build" + this);
             return this;
         }
