@@ -23,7 +23,7 @@ public class Grid<TGridObject>
     private int height;
     private float cellSize;
     Vector3 originPosition;
-    private static TGridObject[,] gridArray;
+    private TGridObject[,] gridArray;
     private TextMesh[,] worldTextRef;
     bool showDebug;
     public void Awake()
@@ -148,7 +148,7 @@ public class Grid<TGridObject>
     }
     
     
-    public static TGridObject[,] GetGridArray()
+    public TGridObject[,] GetGridArray()
     {
         return gridArray;
     }

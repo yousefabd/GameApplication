@@ -13,6 +13,7 @@ public class Building : Entity
         built = false;
         Indices indices = cell.GetIndices();
         Vector3 spawnPosition = GameManager.Instance.GridToWorldPosition(indices);
+        //spawnposition works
         built = SpawnBuilding(cell);
         if(built)
         {
@@ -31,7 +32,12 @@ public class Building : Entity
     public bool SpawnBuilding(Cell cell)
     {
         Vector3 pivotPosition = GameManager.Instance.GridToWorldPositionCentered(cell.GetIndices());
-        Cell anchorCell = GameManager.Instance.gridMap.GetValue((int)(pivotPosition.x - buildingSO.anchorPosition.x), (int)(pivotPosition.y - buildingSO.anchorPosition.y));
+        Vector3 anchorPosition = new Vector3((int)(pivotPosition.x - buildingSO.anchorPosition.x), (int)(pivotPosition.y - buildingSO.anchorPosition.y), 0);
+        //here we got the pivot position
+        //position in calling achor cell are right
+        //anchor cell is not getting called
+        Cell anchorCell = GameManager.Instance.gridMap.GetValue(anchorPosition);
+        Debug.Log("anchor cell,w,h" + anchorCell + buildingSO.width + buildingSO.height);
         bool canBuild = BuildingManager.Instance.isOccupied(anchorCell, buildingSO.width, buildingSO.height);
         if (canBuild)
         {

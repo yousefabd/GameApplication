@@ -7,8 +7,8 @@ public class BuildingManager : MonoBehaviour
     public static BuildingManager Instance { get; private set; }
     private Camera mainCamera;
     [SerializeField] private List<BuildingSO> buildingSOList;
-    Cell[,] gridArray = Grid<Cell>.GetGridArray();
     private Building building;
+    Cell[,] gridArray;
 
     private void Awake()
     {
@@ -16,6 +16,8 @@ public class BuildingManager : MonoBehaviour
     }
     private void Start()
     {
+        Cell[,] gridArray = GameManager.Instance.gridMap.GetGridArray();
+
         mainCamera = Camera.main;
     }
     private void Update()
@@ -31,6 +33,7 @@ public class BuildingManager : MonoBehaviour
             {
                 Debug.Log("mouse");
                 Cell cell = GameManager.Instance.gridMap.GetValue(GetMouseWorldPosition());
+                //Here we got
             bool built;
 
             building.Spawn(cell,out built);               
@@ -55,16 +58,14 @@ public class BuildingManager : MonoBehaviour
         {
             for (int j = J; j <= (J + height); j++)
             {
-                Debug.Log(" am in the loop");
-                if (gridArray[i, j] is Cell gridCell)
-                {
-                    gridCell.SetEntity(building);
-                }
+                Cell wantedCell = GameManager.Instance.gridMap.GetValue(i, j);
+                wantedCell.SetEntity(building);
             }
         }
+        GameManager.Instance.gridMap.UpdateValues();    
         return;
     }
-    public bool isOccupied(Cell cell, int width, int height)
+    public bool isOccupied(Cell cell, int width, int height)                       
     {
         int I, J;
         cell.GetIndices(out I, out J);
@@ -74,14 +75,10 @@ public class BuildingManager : MonoBehaviour
             for (int j = J; j <= (J + height); j++)
             {
 
-
-                if (gridArray[i, j] is Cell gridCell)
+                Cell wantedCell = GameManager.Instance.gridMap.GetValue(i, j);
+                if (wantedCell.isOccupied())
                 {
-                    Debug.Log(gridCell);
-                    if (gridCell.isOccupied())
-                    {
-                        return false;
-                    }
+                    return false;
                 }
 
             }
