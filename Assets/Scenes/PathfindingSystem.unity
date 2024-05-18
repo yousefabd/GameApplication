@@ -6245,8 +6245,8 @@ GameObject:
   - component: {fileID: 492678730}
   - component: {fileID: 492678732}
   - component: {fileID: 492678731}
-  m_Layer: 0
-  m_Name: 'TopTile '
+  m_Layer: 7
+  m_Name: TopMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6305,8 +6305,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2135412131
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -7925,7 +7925,7 @@ GameObject:
   - component: {fileID: 922876313}
   - component: {fileID: 922876315}
   - component: {fileID: 922876314}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BotMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8788,15 +8788,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d62cd4122c47b4f448057324f2045b8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iniChance: 31
+  iniChance: 42
   birthLimit: 3
   deathLimit: 2
-  numR: 4
+  numR: 6
   tmpSize: {x: 80, y: 80, z: 0}
   topMap: {fileID: 492678732}
   botMap: {fileID: 922876315}
   topTile: {fileID: 11400000, guid: d6875cc26db53a142b9cd6d1e56f2b95, type: 2}
   botTile: {fileID: 11400000, guid: fc0759abcdf184f498a20f2b08b4ff72, type: 2}
+  goldPrefab: {fileID: 9036052210158880579, guid: ddb338cac049f0245be356586a8bb285, type: 3}
+  goldChance: 0.005
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

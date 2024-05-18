@@ -11,9 +11,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - BotMap
+  - TopMap
+  - Resources
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: TopMap
+    uniqueID: 1492974021
+    locked: 0
+  - name: Resources
+    uniqueID: 2135412131
     locked: 0

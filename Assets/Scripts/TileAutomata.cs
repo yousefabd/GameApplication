@@ -7,6 +7,7 @@ using UnityEditor;
 public class TileAutomata : MonoBehaviour
 {
 
+    [Header("Map Settings")]
 
     [Range(0, 100)]
     public int iniChance;
@@ -28,6 +29,11 @@ public class TileAutomata : MonoBehaviour
     public Grid<Cell> grid;
     int width;
     int height;
+    [Header("Gold Settings")]
+    public GameObject goldPrefab; 
+    public float goldChance = 0.1f;
+    private List<GameObject> goldInstances = new List<GameObject>();
+
     public void doSim(int nu)
     {
         clearMap(false);
@@ -50,20 +56,20 @@ public class TileAutomata : MonoBehaviour
                 if (terrainMap[x, y] == 1)
                 {
                     topMap.SetTile(position, topTile);
-                    if (grid != null)
-                    {
-                        // It's safe to access members of grid here
-                        //grid.GetValue(x, y).SetEntity(Entity.SAFE);
-                    }
+                    //if (grid != null)
+                    //{
+                    //    // It's safe to access members of grid here
+                    //    //grid.GetValue(x, y).SetEntity(Entity.SAFE);
+                    //}
                 }
                 else
                 {
                     botMap.SetTile(position, botTile);
-                    if (grid != null)
-                    {
-                        // It's safe to access members of grid here
-                        //grid.GetValue(x, y).SetEntity(Entity.OBSTACLE);
-                    }
+                    //if (grid != null)
+                    //{
+                    //    // It's safe to access members of grid here
+                    //    //grid.GetValue(x, y).SetEntity(Entity.OBSTACLE);
+                    //}
                 }
             }
         }
@@ -141,6 +147,13 @@ public class TileAutomata : MonoBehaviour
         return newMap;
     }
 
+    private void Start()
+      {
+
+        doSim(numR);
+        distributeGold();
+
+    }
 
     void Update()
     {
@@ -148,6 +161,8 @@ public class TileAutomata : MonoBehaviour
         if (Input.GetKey(KeyCode.F))
         {
             doSim(numR);
+            distributeGold();
+
         }
 
 
@@ -166,6 +181,15 @@ public class TileAutomata : MonoBehaviour
 
     }
 
+    public void clearGold()
+    {
+        foreach (GameObject goldInstance in goldInstances)
+        {
+            Destroy(goldInstance);
+        }
+
+        goldInstances.Clear();
+    }
 
     public void SaveAssetMap()
     {
@@ -174,7 +198,7 @@ public class TileAutomata : MonoBehaviour
 
         if (mf)
         {
-            var savePath = "Assets/" + saveName + ".prefab";
+            var savePath = "Assets/Prefabs/" + saveName + ".prefab";
             if (PrefabUtility.CreatePrefab(savePath, mf))
             {
                 EditorUtility.DisplayDialog("Tilemap saved", "Your Tilemap was saved under" + savePath, "Continue");
@@ -203,6 +227,71 @@ public class TileAutomata : MonoBehaviour
 
     }
 
+    public void distributeGold()
+    {
+        // Clear any existing gold instances before distributing new ones
+        clearGold();
+
+        int bufferZoneSize = 1; 
+
+        for (int x = bufferZoneSize; x < width - bufferZoneSize; x++)
+        {
+            for (int y = bufferZoneSize; y < height - bufferZoneSize; y++)
+            {
+                // Check if the current tile or any neighboring tiles are holes
+                bool isNearHole = false;
+                for (int dx = -bufferZoneSize; dx <= bufferZoneSize; dx++)
+                {
+                    for (int dy = -bufferZoneSize; dy <= bufferZoneSize; dy++)
+                    {
+                        if (terrainMap[x + dx, y + dy] == 0) 
+                        {
+                            isNearHole = true;
+                            break;
+                        }
+                    }
+
+                    if (isNearHole)
+                    {
+                        break;
+                    }
+                }
+
+                // Only place gold if the current tile is not near a hole
+                if (!isNearHole && terrainMap[x, y] == 1 && Random.value < goldChance)
+                {
+                    Vector3Int position = new Vector3Int(-x + width / 2, -y + height / 2, 0);
+                    Vector3 worldPos = topMap.CellToWorld(position);
+                    worldPos.x += 0.5f;
+                    worldPos.y += 0.5f;
+
+                    GameObject goldInstance = Instantiate(goldPrefab, worldPos, Quaternion.identity);
+
+                    // Randomly assign a size to the gold
+                    float size;
+                    float rand = Random.value;
+                    if (rand < 0.33f)
+                    {
+                        size = 0.5f; // Small
+                    }
+                    else if (rand < 0.66f)
+                    {
+                        size = 1.0f; // Medium
+                    }
+                    else
+                    {
+                        size = 1.5f; // Large
+                    }
+                    goldInstance.transform.localScale = new Vector3(size, size, size);
+
+                    goldInstances.Add(goldInstance);
+                }
+            }
+        }
+    }
+
+
 
 
 }
+
