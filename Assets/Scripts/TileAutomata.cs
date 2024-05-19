@@ -6,6 +6,7 @@ using UnityEditor;
 
 public class TileAutomata : MonoBehaviour
 {
+<<<<<<< HEAD
 
     [Header("Map Settings")]
 
@@ -56,6 +57,7 @@ public class TileAutomata : MonoBehaviour
                 if (terrainMap[x, y] == 1)
                 {
                     topMap.SetTile(position, topTile);
+<<<<<<< HEAD
                     //if (grid != null)
                     //{
                     //    // It's safe to access members of grid here
@@ -65,6 +67,7 @@ public class TileAutomata : MonoBehaviour
                 else
                 {
                     botMap.SetTile(position, botTile);
+<<<<<<< HEAD
                     //if (grid != null)
                     //{
                     //    // It's safe to access members of grid here
