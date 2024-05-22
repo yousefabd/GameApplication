@@ -11,17 +11,17 @@ public class PathFinder
     private const int symmetric_move = 10;
     public List<Vector3> FindPath(Indices start, Indices target)
     {
-        //cache the gridMap object
-        Grid<Cell> gridMap = GameManager.Instance.gridMap;
-
+        //cache width and height of gridMap
+        int width = GridManager.Instance.GetWidth();
+        int height = GridManager.Instance.GetHeight();
         //a set of all the possible branches of the path
         List<PathNode> openSet = new List<PathNode>();
         //a set of already visited nodes
         HashSet<PathNode> closedSet = new HashSet<PathNode>();
-        PathNode[,] pathGrid = new PathNode[gridMap.GetWidth(), gridMap.GetHeight()];
-        for(int i = 0; i < gridMap.GetWidth(); i++)
+        PathNode[,] pathGrid = new PathNode[width, height];
+        for(int i = 0; i < width; i++)
         {
-            for(int j = 0; j < gridMap.GetHeight(); j++)
+            for(int j = 0; j < height; j++)
             {
                 pathGrid[i, j] = new PathNode(-1, -1);
             }
@@ -67,18 +67,18 @@ public class PathFinder
                 currentNode.GetIndices(out int X, out int Y);
                 X += xMove[i];
                 Y += yMove[i];
-                bool safe = 
-                    X  >=0 && 
-                    Y  >=0 && 
-                    X  < gridMap.GetWidth() && 
-                    Y  < gridMap.GetHeight();
+                bool safe =
+                    X >= 0 &&
+                    Y >= 0 &&
+                    X < width &&
+                    Y < height;
                 if (!safe)
                 {
                     continue;
                 }
                 PathNode neighbor = pathGrid[X,Y];
                 neighbor.SetIndices(X, Y);
-                if (gridMap.GetValue(X, Y).GetEntity() != null || closedSet.Contains(neighbor))
+                if (GridManager.Instance.IsOccupied(X,Y) || closedSet.Contains(neighbor))
                 {
                     continue;
                 }
@@ -104,8 +104,8 @@ public class PathFinder
     }
     public List<Indices> FindMultipleTargets(Indices originalTarget,int characterCount)
     {
-        int gridWidth = GameManager.Instance.GetWidth();
-        int gridHeight = GameManager.Instance.GetHeight();
+        int gridWidth = GridManager.Instance.GetWidth();
+        int gridHeight = GridManager.Instance.GetHeight();
         List<Indices> targets = new List<Indices>();
         targets.Add(originalTarget);
         characterCount--;
@@ -127,7 +127,7 @@ public class PathFinder
                 int newY = current.J + yMove[i];
                 if(newX>=0 && newX<gridWidth && newY>=0 && newY < gridHeight)
                 {
-                    if (!visited[newX, newY] && GameManager.Instance.GetEntity(newX,newY) == null) 
+                    if (!visited[newX, newY] && GridManager.Instance.GetEntity(newX,newY) == null) 
                     {
                         visited[newX,newY]= true;
                         Indices newTarget = new Indices(newX,newY);
@@ -146,8 +146,9 @@ public class PathFinder
         List<Vector3> path=new List<Vector3>();
         PathNode currentNode = target;
         while (currentNode.parent != null) {
-            currentNode.GetIndices(out int X, out int Y);
-            path.Add(GameManager.Instance.gridMap.GetWorldPositionCentered(X,Y));
+            Indices current;
+            currentNode.GetIndices(out current.I,out current.J);
+            path.Add(GridManager.Instance.GridToWorldPositionFixed(current));
             currentNode = currentNode.parent;
         }
         path.Reverse();

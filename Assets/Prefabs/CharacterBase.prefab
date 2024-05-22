@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8258659579417985265}
   - component: {fileID: 325305640370824791}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1306559699683871834}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.029483598}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7172290462020704586}
   - component: {fileID: 1782986668533290663}
   - component: {fileID: 7236439907817114734}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CharacterBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
 --- !u!1 &3036405489921200653
 GameObject:
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 8883784243782003273}
   - component: {fileID: 4199700938298602784}
   - component: {fileID: 8669386532862870333}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Selected
   m_TagString: Untagged
   m_Icon: {fileID: 0}

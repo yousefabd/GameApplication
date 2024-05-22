@@ -36,8 +36,8 @@ public class BuildingManager : MonoBehaviour
                 //Here we got
             bool built;
 
-            building.Spawn(cell,out built);               
-            }
+            //building.Spawn(cell,out built);               
+        }
         
     }
     private Vector3 GetMouseWorldPosition()

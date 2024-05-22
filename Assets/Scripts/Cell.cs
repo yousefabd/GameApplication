@@ -11,7 +11,6 @@ public enum EntityEnum
 public class Cell 
 {
     private Entity entity = null;
-    private Character character;
     
     private readonly Indices indices;
 
@@ -29,37 +28,24 @@ public class Cell
     { 
         this.entity = entity;
     }
-    public bool TryGetCharacter(out Character character)
-    {
-        character = this.character;
-        return this.character != null;
-    }
+    //this method is temporarily here, it should exist in the building class
     public Character SpawnCharacter(CharacterSO characterSO,Vector3 position)
     {
-        if(character != null)
+        if(entity != null)
         {
             Debug.LogError("A character in the cell ("+indices.I+", "+indices.J+")" + " already exists!");
-            return character;
+            return entity as Character;
         }
         else
         {
-            character = Character.Spawn(characterSO, position);
-            SetEntity(character);
-            return character;
+            entity = Character.Spawn(characterSO, position);
+            SetEntity(entity);
+            return entity as Character;
         }
     }
-    public void ClearCharacter()
+    public void ClearEntity()
     {
         entity = null;
-        character = null;
-    }
-    public void SetCharacter(Character character)
-    {
-        if (character != null)
-        {
-            SetEntity(character);
-        }
-        this.character = character;
     }
     public void GetIndices(out int I,out int J)
     {
@@ -72,32 +58,14 @@ public class Cell
     {
         return indices; 
     }
-    public string EntityString()
-    {
-        if (entity != null)
-        {
-            return entity.ToString(); // Assuming Entity has a meaningful ToString() method
-        }
-        else
-        {
-            return "safe"; // Or any other string representing a safe cell
-        }
-    }
 
      public override String ToString()
     {
-        return GetEntity().ToSafeString();
+        return GetEntity()?.GetType().Name;
     }
 
-    public bool isOccupied()
+    public bool IsOccupied()
     {
-        if(this.GetEntity() == null)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return entity != null;
     }
 }
