@@ -6,12 +6,9 @@ using UnityEditor;
 
 public class TileAutomata : MonoBehaviour
 {
-<<<<<<< HEAD
 
     [Header("Map Settings")]
-=======
     Obstacle test;
->>>>>>> 7dd6d52b41ea372d8d6804240ee9eecb1775e3ec
 
     [Range(0, 100)]
     public int iniChance;
@@ -60,36 +57,30 @@ public class TileAutomata : MonoBehaviour
                 if (terrainMap[x, y] == 1)
                 {
                     topMap.SetTile(position, topTile);
-<<<<<<< HEAD
                     //if (grid != null)
                     //{
                     //    // It's safe to access members of grid here
                     //    //grid.GetValue(x, y).SetEntity(Entity.SAFE);
                     //}
-=======
                     if (grid != null)
                     {
                         // It's safe to access members of grid here
                         grid.GetValue(x, y).SetEntity(null);
                     }
->>>>>>> 7dd6d52b41ea372d8d6804240ee9eecb1775e3ec
                 }
                 else
                 {
                     botMap.SetTile(position, botTile);
-<<<<<<< HEAD
                     //if (grid != null)
                     //{
                     //    // It's safe to access members of grid here
                     //    //grid.GetValue(x, y).SetEntity(Entity.OBSTACLE);
                     //}
-=======
                     if (grid != null)
                     {
                         // It's safe to access members of grid here
-                        grid.GetValue(x, y).SetEntity(test);
+                        //d.GetValue(x, y).SetEntity(test);
                     }
->>>>>>> 7dd6d52b41ea372d8d6804240ee9eecb1775e3ec
                 }
             }
         }
