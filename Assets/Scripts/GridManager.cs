@@ -47,6 +47,15 @@ public class GridManager : MonoBehaviour
             gridMap.UpdateValues();
         }
     }
+
+    public Cell GetValue(Indices indices)
+    {
+        return gridMap.GetValue(indices.I,indices.J);
+    }
+    public Cell GetValue(Vector3 worldPosition)
+    {
+        return gridMap.GetValue(worldPosition);
+    }
     public void WorldToGridPosition(Vector3 worldPosition,out int i,out int j)
     {
         gridMap.GetIndices(worldPosition, out i, out j);
@@ -119,4 +128,5 @@ public class GridManager : MonoBehaviour
     {
         return gridMap.GetValue(I,J).IsOccupied();
     }
+
 }
