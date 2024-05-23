@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
@@ -89,19 +90,24 @@ public class BuildingManager : MonoBehaviour
 
     void RecursiveCheck(int I, int J, List<Indices> Visited)
     {
-        if (Visited.Contains(new Indices(I, J)))
+        if (I < 0 || J < 0 || I > GridManager.Instance.GetWidth() || J > GridManager.Instance.GetHeight())
         {
+            // Indices are out of bounds, return without doing anything
             return;
         }
-        else
-        {
-            Visited.Add(new Indices(I, J));
-            //function to check if cell is overlapping with building collider
-            RecursiveCheck(I + 1, J, Visited);
-            RecursiveCheck(I, J + 1, Visited);
-            RecursiveCheck(I + 1, J + 1, Visited);
-        }
-
+        if (Visited.Contains(new Indices(I, J)))
+            {
+                return;
+            }
+            else
+            {
+                Visited.Add(new Indices(I, J));
+                //function to check if cell is overlapping with building collider
+                RecursiveCheck(I + 1, J, Visited);
+                RecursiveCheck(I, J + 1, Visited);
+                RecursiveCheck(I + 1, J + 1, Visited);
+            }
+       
     }
 
 }
