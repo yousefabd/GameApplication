@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
@@ -16,7 +17,6 @@ public class BuildingManager : MonoBehaviour
     }
     private void Start()
     {
-        Cell[,] gridArray = GameManager.Instance.gridMap.GetGridArray();
 
         mainCamera = Camera.main;
     }
@@ -32,7 +32,7 @@ public class BuildingManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("mouse");
-                Cell cell = GameManager.Instance.gridMap.GetValue(GetMouseWorldPosition());
+                Cell cell = GridManager.Instance.GetValue(GetMouseWorldPosition());
                 //Here we got
             bool built;
 
@@ -60,11 +60,10 @@ public class BuildingManager : MonoBehaviour
         {
             for (int j = J; j <= (J + height); j++)
             {
-                Cell wantedCell = GameManager.Instance.gridMap.GetValue(i, j);
+                Cell wantedCell = GridManager.Instance.GetValue(i, j);
                 wantedCell.SetEntity(building);
             }
         }
-        GameManager.Instance.gridMap.UpdateValues();    
         return;
     }
     public bool isOccupied(Cell cell, int width, int height)                       
@@ -77,8 +76,8 @@ public class BuildingManager : MonoBehaviour
             for (int j = J; j <= (J + height); j++)
             {
 
-                Cell wantedCell = GameManager.Instance.gridMap.GetValue(i, j);
-                if (wantedCell.isOccupied())
+                Cell wantedCell = GridManager.Instance.GetValue(i, j);
+                if (wantedCell.IsOccupied())
                 {
                     return false;
                 }
@@ -88,6 +87,21 @@ public class BuildingManager : MonoBehaviour
         return true;
     }
 
-    
+    void RecursiveCheck(int I, int J, List<Indices> Visited)
+    {
+        if (Visited.Contains(new Indices(I, J)))
+        {
+            return;
+        }
+        else
+        {
+            Visited.Add(new Indices(I, J));
+            //function to check if cell is overlapping with building collider
+            RecursiveCheck(I + 1, J, Visited);
+            RecursiveCheck(I, J + 1, Visited);
+            RecursiveCheck(I + 1, J + 1, Visited);
+        }
+
+    }
 
 }

@@ -19,7 +19,7 @@ public class GridManager : MonoBehaviour
     {
         Instance = this;
         //giving a static list of initial characters position temporarily in the future we should get that list from the Map
-        initialCharacterPositions = new List<Vector3> { new Vector3(0.5f, 0.5f, 0) , new Vector3(-5.5f,2.5f,0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
+        initialCharacterPositions = new List<Vector3> { new Vector3(0.5f, 0.5f, 0), new Vector3(-5.5f, 2.5f, 0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
     }
     private void Start()
     {
@@ -42,15 +42,19 @@ public class GridManager : MonoBehaviour
         {
             Cell characterCell = gridMap.GetValue(initialCharacterPositions[i]);
             Indices indices = characterCell.GetIndices();
-            Character character=characterCell.SpawnCharacter(characterSO, GridToWorldPositionCentered(indices));
+            Character character = characterCell.SpawnCharacter(characterSO, GridToWorldPositionCentered(indices));
             characterCell.SetEntity(character);
             gridMap.UpdateValues();
         }
     }
 
-    public Cell GetValue(Indices indices)
+    public void UpdateValues()
     {
-        return gridMap.GetValue(indices.I,indices.J);
+        gridMap.UpdateValues();
+    }
+    public Cell GetValue(int I,int J)
+    {
+        return gridMap.GetValue(I,J);
     }
     public Cell GetValue(Vector3 worldPosition)
     {

@@ -27,6 +27,7 @@ public class Cell
     public void SetEntity(Entity entity) 
     { 
         this.entity = entity;
+        GridManager.Instance.UpdateValues();
     }
     //this method is temporarily here, it should exist in the building class
     public Character SpawnCharacter(CharacterSO characterSO,Vector3 position)
@@ -68,28 +69,5 @@ public class Cell
     {
         return entity != null;
     }
-    public List<Indices> CheckDirections()
-    {
-        List<Indices> availableCells = new List<Indices>();  
-        int[] Xmoves = { 0,1,0,-1};
-        int[] Ymoves = { 1,0,-1,0};
-        for(int i = 0; i < Xmoves.Length; i++)
-        {
-            if(indices.I + Xmoves[i] < 0 || indices.I + Xmoves[i] > GridManager.Instance.GetWidth() )
-            {
-                continue;
-            }
-            else if(indices.J + Ymoves[i] < 0 || indices.J + Ymoves[i] > GridManager.Instance.GetHeight())
-            {
-                continue;
-            }
-            Indices availableIndices = new Indices(
-                indices.I + Xmoves[i],
-                indices.J + Ymoves[i]
-             ) ;
-            availableCells.Add(availableIndices);
-        }
-        return availableCells;
-
-    }
+    
 }
