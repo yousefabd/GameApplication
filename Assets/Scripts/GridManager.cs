@@ -82,6 +82,12 @@ public class GridManager : MonoBehaviour
         WorldToGridPosition(worldPosition, out indices.I, out indices.J);
         return GridToWorldPositionCentered(indices);
     }
+    public Vector3 GetWorldPosition(Vector3 worldPosition)
+    {
+        Indices indices;
+        WorldToGridPosition(worldPosition, out indices.I, out indices.J);
+        return GridToWorldPosition(indices);
+    }
     public int GetWidth()
     {
         return gridWidth;
@@ -132,5 +138,16 @@ public class GridManager : MonoBehaviour
     {
         return gridMap.GetValue(I,J).IsOccupied();
     }
-
+    public Collider2D Overlap(Vector3 cellWorldPosition)
+    {
+        Vector3 startPosition = GetWorldPosition(cellWorldPosition);
+        Vector3 endPosition = new Vector3(startPosition.x + GetCellSize(), startPosition.y + GetCellSize(), 0);
+        return Physics2D.OverlapArea(startPosition, endPosition);
+    }
+    public Collider2D Overlap(Indices cellIndices)
+    {
+        Vector3 startPosition = GridToWorldPosition(cellIndices);
+        Vector3 endPosition = new Vector3(startPosition.x + GetCellSize(), startPosition.y + GetCellSize(), 0);
+        return Physics2D.OverlapArea(startPosition, endPosition);
+    }
 }

@@ -88,26 +88,34 @@ public class BuildingManager : MonoBehaviour
         return true;
     }
 
-    void RecursiveCheck(int I, int J, List<Indices> Visited)
+    void RecursiveCheck(int I, int J, bool[,] Visited,Building instantiatedBuilding)
     {
         if (I < 0 || J < 0 || I > GridManager.Instance.GetWidth() || J > GridManager.Instance.GetHeight())
         {
             // Indices are out of bounds, return without doing anything
             return;
         }
-        if (Visited.Contains(new Indices(I, J)))
-            {
-                return;
-            }
-            else
-            {
-                Visited.Add(new Indices(I, J));
-                //function to check if cell is overlapping with building collider
-                RecursiveCheck(I + 1, J, Visited);
-                RecursiveCheck(I, J + 1, Visited);
-                RecursiveCheck(I + 1, J + 1, Visited);
-            }
-       
+        if (Visited[I,J])
+        {
+            return;
+        }
+        //else
+        Visited[I, J] = true;
+        //function to check if cell is overlapping with building collider
+        Collider2D collider = GridManager.Instance.Overlap(new Indices(I, J));
+        collider.TryGetComponent<Entity>(out Entity building);
+        if (building == instantiatedBuilding)
+        {
+            RecursiveCheck(I + 1, J, Visited, instantiatedBuilding);
+            RecursiveCheck(I, J + 1, Visited, instantiatedBuilding);
+            RecursiveCheck(I - 1, J, Visited, instantiatedBuilding);
+            RecursiveCheck(I, J - 1, Visited, instantiatedBuilding);
+        }
+        else if(building == null)
+        {
+            //this is a neighbor cell that should be added to the building object
+        }
+        return;
     }
 
 }
