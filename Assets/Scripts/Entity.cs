@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    public virtual Entity Spawn(Cell cell,out bool Initiated) {
-        Initiated = false;
+    public virtual Entity Spawn(Vector3 position) {
         Entity entity = null;
         return  entity;
 

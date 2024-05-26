@@ -9,5 +9,13 @@ public class BuildingSO : ScriptableObject
     public int width,height;
     public Vector2 anchorPosition;
     public Building building { get { return buildingPrefab.GetComponent<Building>(); } }
-    public ResourceGeneratorData resourceGeneratorData; 
+    public ResourceGeneratorData resourceGeneratorData;
+    private List<Cell> neighborCells;
+    public List<Cell> NeighborCells
+    {
+        get { return neighborCells; }
+        set { neighborCells = value; }
+
+    }
+
 }

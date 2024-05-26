@@ -11,6 +11,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private List<BuildingSO> buildingSOList;
     private Building building;
     Cell[,] gridArray;
+    private List<Cell> BuildingCells =  new List<Cell>();
 
     private void Awake()
     {
@@ -29,16 +30,9 @@ public class BuildingManager : MonoBehaviour
             BuildingSO buildingSO = buildingSOList[0];
             building = buildingSO.building;
             Debug.Log(buildingSO.name);
+            building.Spawn(GetMouseWorldPosition());
         }
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.Log("mouse");
-                Cell cell = GridManager.Instance.GetValue(GetMouseWorldPosition());
-                //Here we got
-            bool built;
-
-            //building.Spawn(cell,out built);               
-        }
+           
         
     }
     private Vector3 GetMouseWorldPosition()
@@ -88,8 +82,18 @@ public class BuildingManager : MonoBehaviour
         return true;
     }
 
-    void RecursiveCheck(int I, int J, bool[,] Visited,Building instantiatedBuilding)
+    void BuildAfterCheck(Building instantiatedBuilding)
     {
+        for(int i =0;i <BuildingCells.Count;i++)
+        {
+            BuildingCells[i].SetEntity(instantiatedBuilding);
+        }
+        BuildingCells.Clear();
+    }
+    public void RecursiveCheck(int I, int J, bool[,] Visited, Building instantiatedBuilding, out bool safe)
+    {
+        safe = true;
+
         if (I < 0 || J < 0 || I > GridManager.Instance.GetWidth() || J > GridManager.Instance.GetHeight())
         {
             // Indices are out of bounds, return without doing anything
@@ -104,16 +108,22 @@ public class BuildingManager : MonoBehaviour
         //function to check if cell is overlapping with building collider
         Collider2D collider = GridManager.Instance.Overlap(new Indices(I, J));
         collider.TryGetComponent<Entity>(out Entity building);
+        if(building != null && building!= instantiatedBuilding) {
+            safe=false;
+            return;
+        }    
         if (building == instantiatedBuilding)
         {
-            RecursiveCheck(I + 1, J, Visited, instantiatedBuilding);
-            RecursiveCheck(I, J + 1, Visited, instantiatedBuilding);
-            RecursiveCheck(I - 1, J, Visited, instantiatedBuilding);
-            RecursiveCheck(I, J - 1, Visited, instantiatedBuilding);
+            BuildingCells.Add(GridManager.Instance.GetValue(I, J));
+            RecursiveCheck(I + 1, J, Visited, instantiatedBuilding,out safe);
+            RecursiveCheck(I, J + 1, Visited, instantiatedBuilding, out safe);
+            RecursiveCheck(I - 1, J, Visited, instantiatedBuilding, out safe);
+            RecursiveCheck(I, J - 1, Visited, instantiatedBuilding, out safe);
         }
         else if(building == null)
         {
             //this is a neighbor cell that should be added to the building object
+            instantiatedBuilding.buildingSO.NeighborCells.Add(GridManager.Instance.GetValue(I, J));
         }
         return;
     }
