@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -27,7 +28,12 @@ public class Cell
     public void SetEntity(Entity entity) 
     { 
         this.entity = entity;
+    }
+    public void UpdateEnity(Entity entity)
+    {
+        this.entity=entity;
         GridManager.Instance.UpdateValues();
+
     }
     //this method is temporarily here, it should exist in the building class
     public Character SpawnCharacter(CharacterSO characterSO,Vector3 position)

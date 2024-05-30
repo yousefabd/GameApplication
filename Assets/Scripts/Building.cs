@@ -15,7 +15,7 @@ public class Building : Entity
         GridManager.Instance.GetValue(position).GetIndices(out int I, out int J);
         bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
         BuildingManager.Instance.RecursiveCheck(I, J, Visited, this, out bool safe);
-
+        Debug.Log(safe);
         // Instantiate the building prefab and get the instantiated GameObject
         GameObject instantiatedObject = Instantiate(buildingSO.buildingPrefab, position, Quaternion.identity).gameObject;
 
