@@ -10,7 +10,7 @@ public class BuildingSO : ScriptableObject
     public Vector2 anchorPosition;
     public Building building { get { return buildingPrefab.GetComponent<Building>(); } }
     public ResourceGeneratorData resourceGeneratorData;
-    private List<Cell> neighborCells;
+    private List<Cell> neighborCells = new List<Cell>();
     public List<Cell> NeighborCells
     {
         get { return neighborCells; }
