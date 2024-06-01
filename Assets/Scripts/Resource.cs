@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class Resource : MonoBehaviour
 {
     [SerializeField] private TextMeshPro currencyText; // Changed TextMeshPro to TextMeshProUGUI
+ 
 
     // Singleton pattern is used because only one instance of the wallet is made in a save file
     public static Resource Instance; // Changed Resources to Instance for clarity
@@ -44,7 +46,7 @@ public class Resource : MonoBehaviour
     {
         resources[resourceType] += amount;
         UpdateResourceText();
-    }
+     }
 
     // Update the text displaying the resources
     private void UpdateResourceText()
