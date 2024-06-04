@@ -41,6 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BotMap
+    uniqueID: 2496407391
+    locked: 0
   - name: TopMap
     uniqueID: 1492974021
     locked: 0
