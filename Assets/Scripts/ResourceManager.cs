@@ -4,7 +4,8 @@ using UnityEngine;
 using System;
 public class ResourceManager : MonoBehaviour
 {
-    public static ResourceManager Instance { get; private set; }
+    
+    public static ResourceManager instance { get; private set; }
 
     public event EventHandler OnResourceAmountChanged;
 
@@ -13,7 +14,7 @@ public class ResourceManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        instance = this;
 
         resourceAmountDictionary = new Dictionary<ResourceTypeSO, int>();
 
@@ -25,7 +26,15 @@ public class ResourceManager : MonoBehaviour
 
         }
 
+
     }
+    private void Update()
+    {
+        foreach (ResourceTypeSO resourceType in resourceAmountDictionary.Keys) { 
+        Debug.Log(resourceAmountDictionary[resourceType]);
+        }
+    }
+
     public void AddResource(ResourceTypeSO resourceType, int amount)
     {
         resourceAmountDictionary[resourceType] += amount;
