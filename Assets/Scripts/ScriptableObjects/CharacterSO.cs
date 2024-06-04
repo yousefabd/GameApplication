@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(menuName ="Scriptable Objects/CharacterSO")] 
+[CreateAssetMenu(menuName ="ScriptableObjects/Character")] 
 public class CharacterSO : ScriptableObject
 {
     public Transform prefab;
