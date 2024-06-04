@@ -38,7 +38,7 @@ public class ResourcesUI : MonoBehaviour
     }
     private void Start()
     {
-        ResourceManager.instance.OnResourceAmountChanged += ResourceManager_OnResourceAmountChanged;
+        ResourceManager.Instance.OnResourceAmountChanged += ResourceManager_OnResourceAmountChanged;
         UpdateResourceAmount();
     }
 
@@ -51,7 +51,7 @@ public class ResourcesUI : MonoBehaviour
         foreach (ResourceTypeSO resourceType in resourceTypeList.list) {
             Transform resourceTransform = resourceTypeTransfomDictionary[resourceType];
 
-            int resourceAmount = ResourceManager.instance.GetResourceAmount(resourceType);
+            int resourceAmount = ResourceManager.Instance.GetResourceAmount(resourceType);
 
             resourceTransform.Find("text").GetComponent<TextMeshProUGUI>().SetText(resourceAmount.ToString());
         }   

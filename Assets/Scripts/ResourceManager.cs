@@ -5,7 +5,7 @@ using System;
 public class ResourceManager : MonoBehaviour
 {
     
-    public static ResourceManager instance { get; private set; }
+    public static ResourceManager Instance { get; private set; }
 
     public event EventHandler OnResourceAmountChanged;
 
@@ -14,7 +14,7 @@ public class ResourceManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
 
         resourceAmountDictionary = new Dictionary<ResourceTypeSO, int>();
 
