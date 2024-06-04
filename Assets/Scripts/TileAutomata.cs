@@ -30,10 +30,23 @@ public class TileAutomata : MonoBehaviour
     public Grid<Cell> grid;
     int width;
     int height;
+    [Header("Decoration Settings")]
+    public Tilemap decorationMap;
+    public Tile lutosLeafTile;
+    public Tile flowerTile;
+    public float decorationChance = 0.0001f;
     [Header("Gold Settings")]
     public GameObject goldPrefab; 
     public float goldChance = 0.1f;
     private List<GameObject> goldInstances = new List<GameObject>();
+    [Header("Metal Settings")]
+    public GameObject metalPrefab;
+    public float metalChance = 0.1f;
+    private List<GameObject> metalInstances = new List<GameObject>();
+    [Header("Wood Settings")]
+    public GameObject woodPrefab;
+    public float woodChance = 0.1f;
+    private List<GameObject> woodInstances = new List<GameObject>();
 
     public void doSim(int nu)
     {
@@ -158,11 +171,33 @@ public class TileAutomata : MonoBehaviour
         return newMap;
     }
 
+    public void distributeDecorations()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Vector3Int position = new Vector3Int(-x + width / 2, -y + height / 2, 0);
+                if (terrainMap[x, y] == 0 && Random.value < decorationChance) 
+                {
+                    decorationMap.SetTile(position, lutosLeafTile);
+                }
+                else if (terrainMap[x, y] == 1 && Random.value < decorationChance) 
+                {
+                    decorationMap.SetTile(position, flowerTile); 
+                }
+            }
+        }
+    }
+
     private void Start()
       {
 
         doSim(numR);
         distributeGold();
+        distributeWood();
+        distributeMetal();
+        distributeDecorations();
 
     }
 
@@ -173,6 +208,10 @@ public class TileAutomata : MonoBehaviour
         {
             doSim(numR);
             distributeGold();
+            distributeWood();
+            distributeMetal();
+            distributeDecorations();
+
 
         }
 
@@ -180,6 +219,7 @@ public class TileAutomata : MonoBehaviour
         if (Input.GetKey(KeyCode.H))
         {
             clearMap(true);
+            decorationMap.ClearAllTiles();
         }
 
 
@@ -200,6 +240,24 @@ public class TileAutomata : MonoBehaviour
         }
 
         goldInstances.Clear();
+    }
+    public void clearWood()
+    {
+        foreach (GameObject woodInstance in woodInstances)
+        {
+            Destroy(woodInstance);
+        }
+
+        woodInstances.Clear();
+    }
+    public void clearMetal()
+    {
+        foreach (GameObject metalInstance in metalInstances)
+        {
+            Destroy(metalInstance);
+        }
+
+        metalInstances.Clear();
     }
 
     public void SaveAssetMap()
@@ -250,26 +308,26 @@ public class TileAutomata : MonoBehaviour
             for (int y = bufferZoneSize; y < height - bufferZoneSize; y++)
             {
                 // Check if the current tile or any neighboring tiles are holes
-                bool isNearHole = false;
+                bool isNearEdge = false;
                 for (int dx = -bufferZoneSize; dx <= bufferZoneSize; dx++)
                 {
                     for (int dy = -bufferZoneSize; dy <= bufferZoneSize; dy++)
                     {
                         if (terrainMap[x + dx, y + dy] == 0) 
                         {
-                            isNearHole = true;
+                            isNearEdge = true;
                             break;
                         }
                     }
 
-                    if (isNearHole)
-                    {
+                    if (isNearEdge)
+                    {   
                         break;
                     }
                 }
 
-                // Only place gold if the current tile is not near a hole
-                if (!isNearHole && terrainMap[x, y] == 1 && Random.value < goldChance)
+                // Only place gold if the current tile is not near the edge
+                if (!isNearEdge && terrainMap[x, y] == 1 && Random.value < goldChance)
                 {
                     Vector3Int position = new Vector3Int(-x + width / 2, -y + height / 2, 0);
                     Vector3 worldPos = topMap.CellToWorld(position);
@@ -300,8 +358,127 @@ public class TileAutomata : MonoBehaviour
             }
         }
     }
+    public void distributeWood()
+    {
+        clearWood();
+
+        int bufferZoneSize = 1;
+
+        for (int x = bufferZoneSize; x < width - bufferZoneSize; x++)
+        {
+            for (int y = bufferZoneSize; y < height - bufferZoneSize; y++)
+            {
+                bool isNearEdge = false;
+                for (int dx = -bufferZoneSize; dx <= bufferZoneSize; dx++)
+                {
+                    for (int dy = -bufferZoneSize; dy <= bufferZoneSize; dy++)
+                    {
+                        if (terrainMap[x + dx, y + dy] == 0)
+                        {
+                            isNearEdge = true;
+                            break;
+                        }
+                    }
+
+                    if (isNearEdge)
+                    {
+                        break;
+                    }
+                }
+
+                if (!isNearEdge && terrainMap[x, y] == 1 && Random.value < woodChance)
+                {
+                    Vector3Int position = new Vector3Int(-x + width / 2, -y + height / 2, 0);
+                    Vector3 worldPos = topMap.CellToWorld(position);
+                    worldPos.x += 0.5f;
+                    worldPos.y += 0.5f;
+
+                    GameObject woodInstance = Instantiate(woodPrefab, worldPos, Quaternion.identity);
+
+                    float size;
+                    float rand = Random.value;
+                    if (rand < 0.33f)
+                    {
+                        size = 0.5f; // Small
+                    }
+                    else if (rand < 0.66f)
+                    {
+                        size = 1.0f; // Medium
+                    }
+                    else
+                    {
+                        size = 1.5f; // Large
+                    }
+                    woodInstance.transform.localScale = new Vector3(size, size, size);
+
+                    woodInstances.Add(woodInstance);
+                }
+            }
+        }
+    }
 
 
+    public void distributeMetal()
+    {
+        clearMetal();
+
+        int bufferZoneSize = 1;
+
+        for (int x = bufferZoneSize; x < width - bufferZoneSize; x++)
+        {
+            for (int y = bufferZoneSize; y < height - bufferZoneSize; y++)
+            {
+                // Check if the current tile or any neighboring tiles are holes
+                bool isNearEdge = false;
+                for (int dx = -bufferZoneSize; dx <= bufferZoneSize; dx++)
+                {
+                    for (int dy = -bufferZoneSize; dy <= bufferZoneSize; dy++)
+                    {
+                        if (terrainMap[x + dx, y + dy] == 0)
+                        {
+                            isNearEdge = true;
+                            break;
+                        }
+                    }
+
+                    if (isNearEdge)
+                    {
+                        break;
+                    }
+                }
+
+                // Only place gold if the current tile is not near a hole
+                if (!isNearEdge && terrainMap[x, y] == 1 && Random.value < metalChance)
+                {
+                    Vector3Int position = new Vector3Int(-x + width / 2, -y + height / 2, 0);
+                    Vector3 worldPos = topMap.CellToWorld(position);
+                    worldPos.x += 0.5f;
+                    worldPos.y += 0.5f;
+
+                    GameObject metalInstance = Instantiate(metalPrefab, worldPos, Quaternion.identity);
+
+                    // Randomly assign a size to the gold
+                    float size;
+                    float rand = Random.value;
+                    if (rand < 0.33f)
+                    {
+                        size = 0.5f; // Small
+                    }
+                    else if (rand < 0.66f)
+                    {
+                        size = 1.0f; // Medium
+                    }
+                    else
+                    {
+                        size = 1.5f; // Large
+                    }
+                    metalInstance.transform.localScale = new Vector3(size, size, size);
+
+                    metalInstances.Add(metalInstance);
+                }
+            }
+        }
+    }
 
 
 }
