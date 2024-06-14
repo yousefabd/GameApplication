@@ -24,7 +24,7 @@ public class Character4DAnimator : MonoBehaviour
         random = new System.Random();
     }
 
-    private void Unit_OnDamaged()
+    private void Unit_OnDamaged(float value)
     {
         animationManager.Hit();
     }

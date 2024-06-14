@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-public class Unit : Entity, IDestructableObject
+public class Unit : Entity, IDestructibleObject
 {
     [SerializeField] private  float moveSpeed = 3f;
     [SerializeField] private UnitSO unitSO;
@@ -24,7 +24,7 @@ public class Unit : Entity, IDestructableObject
     public event Action<Vector3> OnMoveCell;
     public event Action OnSpawn;
     public event Action OnDie;
-    public event Action OnDamaged;
+    public event Action <float>OnDamaged;
     private void Awake()
     {
         pathFinder = new PathFinder();
@@ -125,7 +125,7 @@ public class Unit : Entity, IDestructableObject
     {
         if (position.I == currentGridPosition.I && position.J == currentGridPosition.J)
         {
-            OnDamaged?.Invoke();
+            OnDamaged?.Invoke(value);
             HealthPoints -= value;
             if (HealthPoints < 0)
             {
