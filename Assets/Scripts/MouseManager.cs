@@ -23,10 +23,6 @@ public class MouseManager : MonoBehaviour
     {
         //debug
         Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log(GridManager.Instance.GetEntity(mousePosition)?.ToString()); 
-        }
         if (Input.GetMouseButtonDown(0))
         {
             //left mouse button pressed

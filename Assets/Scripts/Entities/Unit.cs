@@ -2,29 +2,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-public class Unit : Entity
+public class Unit : Entity, IDestructableObject
 {
     [SerializeField] private  float moveSpeed = 3f;
+    [SerializeField] private UnitSO unitSO;
     private PathFinder pathFinder;
     //State related variables
     private enum UnitState
     {
-        IDLE,WALKING
+        IDLE,WALKING,DYING
     };
     private List<Vector3> currentPath;
     private int currentPathIndex = 0;
     private UnitState currentUnitState = UnitState.IDLE;
     private Indices currentGridPosition;
     private bool selected = false;
+    public float HealthPoints { get; set; }
+    private float dieTimer=1.5f;
     //events
     public event Action <bool> OnSelect;
     public event Action<Vector3> OnMoveCell;
     public event Action OnSpawn;
-    private void Start()
+    public event Action OnDie;
+    public event Action OnDamaged;
+    private void Awake()
     {
         pathFinder = new PathFinder();
+        HealthPoints = unitSO.maxHealth;
+    }
+    private void Start()
+    {
+        
         GridManager.Instance.WorldToGridPosition(transform.position, out currentGridPosition.I, out currentGridPosition.J);
         OnSpawn?.Invoke();
+        Player.Instance.OnAttack += Damage;
     }
     private void Update()
     {
@@ -35,6 +46,14 @@ public class Unit : Entity
             case UnitState.WALKING:
                 WalkPath();
                 break;
+            case UnitState.DYING:
+                dieTimer -= Time.deltaTime;
+                if(dieTimer <= 0)
+                {
+                    Destruct();
+                }
+                break;
+
         }
     }
     
@@ -101,5 +120,26 @@ public class Unit : Entity
         this.selected = selected;
         OnSelect?.Invoke(selected);
 
+    }
+    public void Damage(Indices position, float value)
+    {
+        if (position.I == currentGridPosition.I && position.J == currentGridPosition.J)
+        {
+            OnDamaged?.Invoke();
+            HealthPoints -= value;
+            if (HealthPoints < 0)
+            {
+                ToIdle();
+                currentUnitState = UnitState.DYING;
+                OnDie?.Invoke();
+            }
+        }
+    }
+    public void Destruct()
+    {
+        GridManager.Instance.SetEntity(null, currentGridPosition);
+        //unsubscribe from event
+        Player.Instance.OnAttack -= Damage;
+        Destroy(gameObject);
     }
 }

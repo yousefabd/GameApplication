@@ -17,18 +17,30 @@ public class Character4DAnimator : MonoBehaviour
     {
         character4D = GetComponent<Character4D>();
         animationManager = GetComponent<AnimationManager>();
-        unit.OnMoveCell += Character_OnMoveCell;
-        unit.OnSpawn += Character_OnSpawn;
+        unit.OnMoveCell += Unit_OnMoveCell;
+        unit.OnSpawn += Unit_OnSpawn;
+        unit.OnDie += Unit_OnDie;
+        unit.OnDamaged += Unit_OnDamaged;
         random = new System.Random();
     }
 
-    private void Character_OnSpawn()
+    private void Unit_OnDamaged()
+    {
+        animationManager.Hit();
+    }
+
+    private void Unit_OnDie()
+    {
+        animationManager.SetState(Assets.HeroEditor4D.Common.Scripts.Enums.CharacterState.Death);
+    }
+
+    private void Unit_OnSpawn()
     {
         lastDir = initialSpawnPosition[random.Next(initialSpawnPosition.Length)];
         character4D.SetDirection(lastDir);
     }
 
-    private void Character_OnMoveCell(Vector3 moveDir)
+    private void Unit_OnMoveCell(Vector3 moveDir)
     {
         moveDir = moveDir.normalized;
         Vector2 direction = Vector2.up;

@@ -6234,7 +6234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643bebc1edbd3414888f068645ae163a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterSO: {fileID: 11400000, guid: 1f91a3027bf2da548a9a0eddc300f440, type: 2}
+  untiSO: {fileID: 11400000, guid: f4456f7d8a2e1df4f8e1db0aa9a2f918, type: 2}
 --- !u!1 &492678729
 GameObject:
   m_ObjectHideFlags: 0
@@ -8922,12 +8922,12 @@ MonoBehaviour:
   lutosLeafTile: {fileID: 11400000, guid: 6e15979cdde88424cbb6c71d70a732fa, type: 2}
   flowerTile: {fileID: 11400000, guid: df37402183dcab047bab57d7a861af59, type: 2}
   decorationChance: 0.0001
-  goldPrefab: {fileID: 9036052210158880579, guid: ddb338cac049f0245be356586a8bb285, type: 3}
+  goldSprite: {fileID: 0}
   goldChance: 0.1
-  metalPrefab: {fileID: 9036052210158880579, guid: 6fb3798603991774eac6b2748808ce5c, type: 3}
-  metalChance: 0.1
-  woodPrefab: {fileID: 9036052210158880579, guid: 723d30a461eab66449fdd4552e7bedc1, type: 3}
+  woodSprite: {fileID: 0}
   woodChance: 0.1
+  rockSprite: {fileID: 0}
+  rockChance: 0.1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

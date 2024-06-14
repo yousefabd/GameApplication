@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
   icon: {fileID: 0}
-  characterName: 
+  unitName: CharacterBase
+  maxHealth: 0

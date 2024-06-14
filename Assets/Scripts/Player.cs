@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ public class Player : MonoBehaviour
     private List<Unit> selectedCharacters;
     private PathFinder pathFinder;
     private int movedCharacters = 0;
+    public event Action<Indices, float> OnAttack;
     public static Player Instance {  get; private set; }
 
     private void Awake()
@@ -20,7 +22,13 @@ public class Player : MonoBehaviour
     {
         MouseManager.Instance.OnWalk += Player_OnWalk;
     }
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnAttack?.Invoke(new Indices(5, 5), 23f);
+        }
+    }
     private void Player_OnWalk(Vector3 targetWorldPosition)
     {
         if (selectedCharacters.Any())
@@ -72,7 +80,14 @@ public class Player : MonoBehaviour
     {
         for(int i = 0; i < selectedCharacters.Count; i++)
         {
-            selectedCharacters[i].ToggleSelect(false);
+            if (selectedCharacters[i] != null)
+            {
+                selectedCharacters[i].ToggleSelect(false);
+            }
+            else
+            {
+                selectedCharacters.RemoveAt(i);
+            }
         }
         selectedCharacters.Clear();
     }

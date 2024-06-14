@@ -8,12 +8,12 @@ public class SelectedVisual : MonoBehaviour
 
     private void Start()
     {
-        Unit character = entity.GetComponent<Unit>();
-        character.OnSelect += Character_OnSelect;
+        Unit unit = entity.GetComponent<Unit>();
+        unit.OnSelect += Unit_OnSelect;
         gameObject.SetActive(false);
     }
 
-    private void Character_OnSelect(bool selected)
+    private void Unit_OnSelect(bool selected)
     {
         gameObject.SetActive(selected);
     }
