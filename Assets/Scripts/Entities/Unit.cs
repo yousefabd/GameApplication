@@ -2,36 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-public class Character : Entity
+public class Unit : Entity
 {
     [SerializeField] private  float moveSpeed = 3f;
     private PathFinder pathFinder;
     //State related variables
-    private enum CharacterState
+    private enum UnitState
     {
         IDLE,WALKING
     };
     private List<Vector3> currentPath;
     private int currentPathIndex = 0;
-    private CharacterState currentCharacterState = CharacterState.IDLE;
+    private UnitState currentUnitState = UnitState.IDLE;
     private Indices currentGridPosition;
     private bool selected = false;
     //events
     public event Action <bool> OnSelect;
-
+    public event Action<Vector3> OnMoveCell;
+    public event Action OnSpawn;
     private void Start()
     {
         pathFinder = new PathFinder();
         GridManager.Instance.WorldToGridPosition(transform.position, out currentGridPosition.I, out currentGridPosition.J);
-    
+        OnSpawn?.Invoke();
     }
     private void Update()
     {
-        switch (currentCharacterState)
+        switch (currentUnitState)
         {
-            case CharacterState.IDLE:
+            case UnitState.IDLE:
                 break;
-            case CharacterState.WALKING:
+            case UnitState.WALKING:
                 WalkPath();
                 break;
         }
@@ -56,21 +57,26 @@ public class Character : Entity
                 Player.Instance.OnFinishedPath();
                 ToIdle();
             }
+            else
+            {
+                OnMoveCell?.Invoke(currentPath[currentPathIndex] - transform.position);
+            }
         }
         
     }
     private void ToIdle()
     {
-        currentCharacterState=CharacterState.IDLE;
+        currentUnitState=UnitState.IDLE;
         currentPath?.Clear();
         currentPathIndex = 0;
+        OnMoveCell?.Invoke(Vector3.zero);
 
     }
-    public static Character Spawn(CharacterSO characterSO,Vector3 position)
+    public static Unit Spawn(UnitSO unitSO,Vector3 position)
     {
-        Transform characterTransform = Instantiate(characterSO.prefab,position,Quaternion.identity);
-        Character character = characterTransform.GetComponent<Character>();
-        return character;
+        Transform UnitTransform = Instantiate(unitSO.prefab,position,Quaternion.identity);
+        Unit unit = UnitTransform.GetComponent<Unit>();
+        return unit;
     }
     public void SetPath(List<Vector3> path)
     {
@@ -78,7 +84,8 @@ public class Character : Entity
         currentPath = path;
         if (currentPath.Any())
         {
-            currentCharacterState = CharacterState.WALKING;
+            OnMoveCell?.Invoke(currentPath[0]-transform.position);
+            currentUnitState = UnitState.WALKING;
         }
         else
         {

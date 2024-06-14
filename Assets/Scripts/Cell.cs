@@ -7,7 +7,7 @@ using UnityEngine;
 
 public enum EntityEnum
 {
-    SAFE,OBSTACLE,BUILDING,CHARACTER
+    SAFE,OBSTACLE,BUILDING,UNIT
 }
 public class Cell 
 {
@@ -36,18 +36,18 @@ public class Cell
 
     }
     //this method is temporarily here, it should exist in the building class
-    public Character SpawnCharacter(CharacterSO characterSO,Vector3 position)
+    public Unit SpawnUnit(UnitSO characterSO,Vector3 position)
     {
         if(entity != null)
         {
-            Debug.LogError("A character in the cell ("+indices.I+", "+indices.J+")" + " already exists!");
-            return entity as Character;
+            Debug.LogError("A unit in the cell ("+indices.I+", "+indices.J+")" + " already exists!");
+            return entity as Unit;
         }
         else
         {
-            entity = Character.Spawn(characterSO, position);
+            entity = Unit.Spawn(characterSO, position);
             SetEntity(entity);
-            return entity as Character;
+            return entity as Unit;
         }
     }
     public void ClearEntity()

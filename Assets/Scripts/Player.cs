@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private List<Character> selectedCharacters;
+    private List<Unit> selectedCharacters;
     private PathFinder pathFinder;
     private int movedCharacters = 0;
     public static Player Instance {  get; private set; }
@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        selectedCharacters = new List<Character>();
+        selectedCharacters = new List<Unit>();
         pathFinder = new PathFinder();
     }
     private void Start()
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void AddSelectedCharacter(Character character)
+    public void AddSelectedCharacter(Unit character)
     {
         if (character!=null)
         {

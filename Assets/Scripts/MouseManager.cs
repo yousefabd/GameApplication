@@ -57,7 +57,7 @@ public class MouseManager : MonoBehaviour
             Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(startPosition,UtilsClass.GetMouseWorldPosition());
             foreach (Collider2D collider2D in collider2DArray)
             {
-                Character character = collider2D.GetComponent<Character>();
+                Unit character = collider2D.GetComponent<Unit>();
                 Player.Instance.AddSelectedCharacter(character);
             }
         }
