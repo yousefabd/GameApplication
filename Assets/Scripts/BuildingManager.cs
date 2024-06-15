@@ -13,7 +13,8 @@ public class BuildingManager : MonoBehaviour
     private Building building;
     Cell[,] gridArray;
     private List<Cell> BuildingCells =  new List<Cell>();
-
+    private Transform visualTransform;
+    bool tryfun;
     private void Awake()
     {
         Instance = this;
@@ -25,17 +26,20 @@ public class BuildingManager : MonoBehaviour
     }
     private void Update()
     {
-
+        
         if (Input.GetKeyDown(KeyCode.E))
         {
             BuildingSO buildingSO = buildingSOList[0];
             building = buildingSO.building;
-            Debug.Log(buildingSO.name);
-            Debug.Log(building.ToString());
-            building.Spawn(GetMouseWorldPosition());
+            visualTransform = building.SpawnForCheck(GetMouseWorldPosition());
+            tryfun = true; // Set tryfun to true here
+            Debug.Log(visualTransform);
         }
-           
-        
+        if (tryfun && visualTransform != null)
+        {
+            visualTransform.position = GetMouseWorldPosition();
+            building.CheckAndSpawn(visualTransform);
+        }
     }
     private Vector3 GetMouseWorldPosition()
     {
@@ -84,7 +88,7 @@ public class BuildingManager : MonoBehaviour
         return true;
     }*/
 
-    void BuildAfterCheck(Building instantiatedBuilding)
+    public void BuildAfterCheck(Building instantiatedBuilding)
     {
         for(int i =0;i <BuildingCells.Count;i++)
         {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.VFX;
 using static UnityEngine.ParticleSystem;
@@ -10,25 +11,40 @@ public class Building : Entity
 {
     public BuildingSO buildingSO;
 
-    public override Entity Spawn(Vector3 position)
+    public Transform SpawnForCheck(Vector3 position)
     {
-        GridManager.Instance.GetValue(position).GetIndices(out int I, out int J);
-        bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
-        BuildingManager.Instance.RecursiveCheck(I, J, Visited, this, out bool safe);
-        Debug.Log(safe);
-        // Instantiate the building prefab and get the instantiated GameObject
-        GameObject instantiatedObject = Instantiate(buildingSO.buildingPrefab, position, Quaternion.identity).gameObject;
+        Transform visualTransform = Instantiate(buildingSO.buildingPrefab, position, Quaternion.identity);
+        return visualTransform;
+    }
+    public void CheckAndSpawn(Transform visualTransform){
 
-        // Modify material properties based on safety check
+        GridManager.Instance.GetValue(visualTransform.position).GetIndices(out int I, out int J);
+        bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
+        GameObject instantiatedObject = visualTransform.gameObject;
+        BuildingManager.Instance.RecursiveCheck(I, J, Visited, this, out bool safe);
+        Debug.Log("area is" + safe);
         Material material = instantiatedObject.GetComponent<Renderer>().material; // Access existing material
 
-        material.SetFloat("_Color.a", safe ? 0.5f : 0.2f); // Adjust opacity values as needed
+        // Adjust opacity values as needed
 
-        // Optional red tint if unsafe
+        material.SetColor("_Color", Color.red * 0.7f);
         if (!safe)
         {
-            material.SetColor("_Color", Color.red * 0.7f); // Adjust red tint intensity (0.7f for 70% opacity)
+            material.SetFloat("_Color.a", safe ? 0.5f : 0.2f);
         }
+        if(!safe && Input.GetMouseButton (0))
+        {
+
+            Spawn(visualTransform.position);
+            return;
+        }
+
+
+    }
+    public override Entity Spawn(Vector3 position)
+    {
+        Instantiate(buildingSO.buildingPrefab, position, Quaternion.identity);
+        BuildingManager.Instance.BuildAfterCheck(this);
         return this;
     }
 

@@ -316,15 +316,15 @@ public class TileAutomata : MonoBehaviour
                     float rand = Random.value;
                     if (rand < 0.33f)
                     {
-                        size = 0.5f; // Small
+                        size = 0.005f; // Small
                     }
                     else if (rand < 0.66f)
                     {
-                        size = 1.0f; // Medium
+                        size = 0.01f; // Medium
                     }
                     else
                     {
-                        size = 1.5f; // Large
+                        size = 0.1f; // Large
                     }
                     float resourceRand = Random.value;
                     if (resourceRand < rockChance)
