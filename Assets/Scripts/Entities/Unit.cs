@@ -99,16 +99,19 @@ public class Unit : Entity, IDestructibleObject
     }
     public void SetPath(List<Vector3> path)
     {
-        ToIdle();
-        currentPath = path;
-        if (currentPath.Any())
+        if (currentUnitState != UnitState.DYING)
         {
-            OnMoveCell?.Invoke(currentPath[0]-transform.position);
-            currentUnitState = UnitState.WALKING;
-        }
-        else
-        {
-            Player.Instance.OnFinishedPath();
+            ToIdle();
+            currentPath = path;
+            if (currentPath.Any())
+            {
+                OnMoveCell?.Invoke(currentPath[0] - transform.position);
+                currentUnitState = UnitState.WALKING;
+            }
+            else
+            {
+                Player.Instance.OnFinishedPath();
+            }
         }
     }
     public Indices GetCurrentPosition()
@@ -117,8 +120,11 @@ public class Unit : Entity, IDestructibleObject
     }
     public void ToggleSelect(bool selected)
     {
-        this.selected = selected;
-        OnSelect?.Invoke(selected);
+        if (currentUnitState != UnitState.DYING)
+        {
+            this.selected = selected;
+            OnSelect?.Invoke(selected);
+        }
 
     }
     public void Damage(Indices position, float value)
@@ -130,6 +136,9 @@ public class Unit : Entity, IDestructibleObject
             if (HealthPoints < 0)
             {
                 ToIdle();
+                ToggleSelect(false);
+                //unsubscribe from event
+                Player.Instance.OnAttack -= Damage;
                 currentUnitState = UnitState.DYING;
                 OnDie?.Invoke();
             }
@@ -138,8 +147,7 @@ public class Unit : Entity, IDestructibleObject
     public void Destruct()
     {
         GridManager.Instance.SetEntity(null, currentGridPosition);
-        //unsubscribe from event
-        Player.Instance.OnAttack -= Damage;
+        
         Destroy(gameObject);
     }
 }

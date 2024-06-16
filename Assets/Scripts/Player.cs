@@ -1,3 +1,4 @@
+using CodeMonkey.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,8 +21,21 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-        MouseManager.Instance.OnWalk += Player_OnWalk;
+        ScreenInteractionManager.Instance.OnRightMouseButtonClicked += Player_OnWalk;
+        ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
     }
+
+    private void ScreenInteractionManager_OnAreaSelected(Vector3 start, Vector3 end)
+    {
+        ClearSelectedUnits();
+        Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(start, end);
+        foreach (Collider2D collider2D in collider2DArray)
+        {
+            Unit unit = collider2D.GetComponent<Unit>();
+            AddSelectedUnit(unit);
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -51,12 +65,12 @@ public class Player : MonoBehaviour
             for (int i = 1; i < targets.Count; i++)
             {
                 List<Vector3> path = pathFinder.FindPath(selectedCharacters[i].GetCurrentPosition(), targets[i]);
-                selectedCharacters[i].SetPath(path);
+                selectedCharacters[i]?.SetPath(path);
             }
         }
     }
 
-    public void AddSelectedCharacter(Unit character)
+    public void AddSelectedUnit(Unit character)
     {
         if (character!=null)
         {
@@ -76,7 +90,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-    public void ClearSelectedCharacters()
+    public void ClearSelectedUnits()
     {
         for(int i = 0; i < selectedCharacters.Count; i++)
         {

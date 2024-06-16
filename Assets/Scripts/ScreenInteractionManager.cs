@@ -4,25 +4,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseManager : MonoBehaviour
+public class ScreenInteractionManager : MonoBehaviour
 {
     private Vector3 startPosition;
     [SerializeField] private Transform selectionAreaTransform;
-    public static MouseManager Instance { get; private set; }
-    public event Action<Vector3> OnWalk;
-
+    public static ScreenInteractionManager Instance { get; private set; }
+    public event Action<Vector3> OnRightMouseButtonClicked;
+    public event Action<Vector3, Vector3> OnAreaSelected;
+    public event Action<Entity> OnEntityHovered;
     private void Awake()
     {
         Instance = this;
         selectionAreaTransform.gameObject.SetActive(false);
     }
-    private void Start()
-    {
-    }
     private void Update()
     {
         //debug
         Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
+        OnEntityHovered?.Invoke(GridManager.Instance.GetEntity(mousePosition));
         if (Input.GetMouseButtonDown(0))
         {
             //left mouse button pressed
@@ -49,17 +48,11 @@ public class MouseManager : MonoBehaviour
         {
             //left mouse button released
             selectionAreaTransform.gameObject.SetActive(false);
-            Player.Instance.ClearSelectedCharacters();
-            Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(startPosition,UtilsClass.GetMouseWorldPosition());
-            foreach (Collider2D collider2D in collider2DArray)
-            {
-                Unit character = collider2D.GetComponent<Unit>();
-                Player.Instance.AddSelectedCharacter(character);
-            }
+            OnAreaSelected?.Invoke(startPosition, mousePosition);
         }
         if (Input.GetMouseButtonDown(1))
         {
-            OnWalk?.Invoke(mousePosition);
+            OnRightMouseButtonClicked?.Invoke(mousePosition);
         }
     }
 }

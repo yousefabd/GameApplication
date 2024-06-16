@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
+  unitSO: {fileID: 11400000, guid: 1f91a3027bf2da548a9a0eddc300f440, type: 2}
 --- !u!1 &3036405489921200653
 GameObject:
   m_ObjectHideFlags: 0
