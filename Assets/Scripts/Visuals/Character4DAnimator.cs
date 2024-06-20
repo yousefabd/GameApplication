@@ -11,6 +11,7 @@ public class Character4DAnimator : MonoBehaviour
     private AnimationManager animationManager;
     private Vector2[] initialSpawnPosition = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
     [SerializeField] private Unit unit;
+    [SerializeField] Transform damagePopupTransform;
     private Vector2 lastDir;
     private System.Random random;
     private void Awake()
@@ -27,6 +28,7 @@ public class Character4DAnimator : MonoBehaviour
     private void Unit_OnDamaged(float value)
     {
         animationManager.Hit();
+        DamagePopup.Create(transform.parent.position+new Vector3(0f,1f), damagePopupTransform, (int)value);
     }
 
     private void Unit_OnDie()

@@ -102,7 +102,7 @@ public class GridManager : MonoBehaviour
     }
     public Entity GetEntity(Vector3 worldPosition)
     {
-        return gridMap.GetValue(worldPosition).GetEntity();
+        return gridMap.GetValue(worldPosition)?.GetEntity();
     }
     public Entity GetEntity(int i,int j)
     {
