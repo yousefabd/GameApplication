@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
     private const int gridHeight = 18;
     private const float cellSize = 1f;
     private List<Vector3> initialUnitPosition;
-    [SerializeField] private UnitSO untiSO;
+    [SerializeField] private List<UnitSO> testUnitSOList;
 
     private Grid<Cell> gridMap;
 
@@ -42,7 +42,10 @@ public class GridManager : MonoBehaviour
         {
             Cell unitCell = gridMap.GetValue(initialUnitPosition[i]);
             Indices indices = unitCell.GetIndices();
-            Unit unit = unitCell.SpawnUnit(untiSO, GridToWorldPositionCentered(indices));
+            Unit unit;
+            if (i < 1)
+                unit = unitCell.SpawnUnit(testUnitSOList[0], GridToWorldPositionCentered(indices));
+            else unit = unitCell.SpawnUnit(testUnitSOList[1], GridToWorldPositionCentered(indices));
             unitCell.SetEntity(unit);
             gridMap.UpdateValues();
         }

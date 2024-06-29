@@ -23,8 +23,16 @@ public class Character4DAnimator : MonoBehaviour
         unit.OnDie += Unit_OnDie;
         unit.OnDamaged += Unit_OnDamaged;
         random = new System.Random();
+        if (unit is Soldier)
+        {
+            (unit as Soldier).OnSoldierAttack += Soldier_OnSoldierAttack;
+        }
     }
+    private void Soldier_OnSoldierAttack(Vector3 direction)
+    {
 
+        animationManager.Slash(false);
+    }
     private void Unit_OnDamaged(float value)
     {
         animationManager.Hit();

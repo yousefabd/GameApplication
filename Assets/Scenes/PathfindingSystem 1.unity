@@ -6234,7 +6234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643bebc1edbd3414888f068645ae163a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  untiSO: {fileID: 11400000, guid: f4456f7d8a2e1df4f8e1db0aa9a2f918, type: 2}
+  testUnitSOList:
+  - {fileID: 11400000, guid: f4456f7d8a2e1df4f8e1db0aa9a2f918, type: 2}
+  - {fileID: 11400000, guid: aac63c2b62365f4438c9a0939d30d88c, type: 2}
 --- !u!1 &492678729
 GameObject:
   m_ObjectHideFlags: 0

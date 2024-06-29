@@ -78,7 +78,9 @@ public class PathFinder
                 }
                 PathNode neighbor = pathGrid[X,Y];
                 neighbor.SetIndices(X, Y);
-                if (GridManager.Instance.IsOccupied(X,Y) || closedSet.Contains(neighbor))
+                if (GridManager.Instance.IsOccupied(X,Y) ||
+                    closedSet.Contains(neighbor) ||
+                    GridManager.Instance.Overlap(new Indices(X,Y))!=null)
                 {
                     continue;
                 }
@@ -127,7 +129,10 @@ public class PathFinder
                 int newY = current.J + yMove[i];
                 if(newX>=0 && newX<gridWidth && newY>=0 && newY < gridHeight)
                 {
-                    if (!visited[newX, newY] && GridManager.Instance.GetEntity(newX,newY) == null) 
+                    if (!visited[newX, newY] &&
+                        !GridManager.Instance.IsOccupied(newX,newY) &&
+                        GridManager.Instance.Overlap(new Indices(newX,newY))==null)
+                        
                     {
                         visited[newX,newY]= true;
                         Indices newTarget = new Indices(newX,newY);

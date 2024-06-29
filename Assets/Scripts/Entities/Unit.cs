@@ -5,7 +5,7 @@ using UnityEngine;
 public class Unit : Entity, IDestructibleObject
 {
     [SerializeField] private  float moveSpeed = 3f;
-    [SerializeField] private UnitSO unitSO;
+    [SerializeField] protected UnitSO unitSO;
     private PathFinder pathFinder;
     //State related variables
     private enum UnitState
@@ -25,9 +25,11 @@ public class Unit : Entity, IDestructibleObject
     public event Action OnSpawn;
     public event Action OnDie;
     public event Action <float>OnDamaged;
+    public event Action OnTakeAction;
+    public static event Action<Unit>OnFinishedPath;
     private void Awake()
     {
-        pathFinder = new PathFinder();
+        team = unitSO.team;
         HealthPoints = unitSO.maxHealth;
     }
     private void Start()
@@ -35,7 +37,7 @@ public class Unit : Entity, IDestructibleObject
         
         GridManager.Instance.WorldToGridPosition(transform.position, out currentGridPosition.I, out currentGridPosition.J);
         OnSpawn?.Invoke();
-        Player.Instance.OnAttack += Damage;
+        Player.Instance.OnAttacked += Damage;
     }
     private void Update()
     {
@@ -73,17 +75,19 @@ public class Unit : Entity, IDestructibleObject
             GridManager.Instance.MoveEntity(previousPosition, currentGridPosition, this);
             if (currentPathIndex == currentPath.Count)
             {
-                Player.Instance.OnFinishedPath();
+                OnFinishedPath?.Invoke(this);
+                OnTakeAction?.Invoke();
                 ToIdle();
             }
             else
             {
                 OnMoveCell?.Invoke(currentPath[currentPathIndex] - transform.position);
+                OnTakeAction?.Invoke();
             }
         }
         
     }
-    private void ToIdle()
+    protected void ToIdle()
     {
         currentUnitState=UnitState.IDLE;
         currentPath?.Clear();
@@ -110,8 +114,9 @@ public class Unit : Entity, IDestructibleObject
             }
             else
             {
-                Player.Instance.OnFinishedPath();
+                OnFinishedPath?.Invoke(this);
             }
+            OnTakeAction?.Invoke();
         }
     }
     public Indices GetCurrentPosition()
@@ -127,9 +132,9 @@ public class Unit : Entity, IDestructibleObject
         }
 
     }
-    public void Damage(Indices position, float value)
+    public void Damage(Vector3 position, float value)
     {
-        if (position.I == currentGridPosition.I && position.J == currentGridPosition.J)
+        if (position==transform.position)
         {
             OnDamaged?.Invoke(value);
             HealthPoints -= value;
@@ -138,7 +143,7 @@ public class Unit : Entity, IDestructibleObject
                 ToIdle();
                 ToggleSelect(false);
                 //unsubscribe from event
-                Player.Instance.OnAttack -= Damage;
+                Player.Instance.OnAttacked -= Damage;
                 currentUnitState = UnitState.DYING;
                 OnDie?.Invoke();
             }
