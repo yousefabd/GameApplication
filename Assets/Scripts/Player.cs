@@ -95,6 +95,7 @@ public class Player : MonoBehaviour
         else
         {
             StartAttack(targetPosition, target);
+            Debug.Log("Starting attack");
         }
     }
     private void Walk(Vector3 targetWorldPosition)
@@ -132,6 +133,7 @@ public class Player : MonoBehaviour
                 List<Vector3> soldierPath = new List<Vector3>();
                 for (int j = 0; j < soldierPaths[i].Count; j++)
                 {
+
                     soldierPath.Add(soldierPaths[i][j]);
                     if ((soldiers[i] as Soldier).CanAttack(soldierPaths[i][j]))
                     {
@@ -140,11 +142,11 @@ public class Player : MonoBehaviour
                         if (!visited[pathCell.I, pathCell.J])
                         {
                             visited[pathCell.I, pathCell.J] = true;
-                            soldiers[i].SetPath(soldierPath);
                             break;
                         }
                     }
                 }
+                soldiers[i].SetPath(soldierPath);
             }
         }
     }

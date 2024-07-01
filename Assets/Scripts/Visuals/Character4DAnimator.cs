@@ -30,8 +30,17 @@ public class Character4DAnimator : MonoBehaviour
     }
     private void Soldier_OnSoldierAttack(Vector3 direction)
     {
-
-        animationManager.Slash(false);
+        int attackAnimation = random.Next(2);
+        switch (attackAnimation)
+        {
+            case 0:
+                animationManager.Slash(false);
+                break;
+            case 1:
+                animationManager.Jab();
+                break;
+        }
+        
     }
     private void Unit_OnDamaged(float value)
     {

@@ -19,6 +19,7 @@ public class Unit : Entity, IDestructibleObject
     private bool selected = false;
     public float HealthPoints { get; set; }
     private float dieTimer=1.5f;
+    private bool movementPaused = false;
     //events
     public event Action <bool> OnSelect;
     public event Action<Vector3> OnMoveCell;
@@ -27,12 +28,12 @@ public class Unit : Entity, IDestructibleObject
     public event Action <float>OnDamaged;
     public event Action OnTakeAction;
     public static event Action<Unit>OnFinishedPath;
-    private void Awake()
+    protected virtual void Awake()
     {
         team = unitSO.team;
         HealthPoints = unitSO.maxHealth;
     }
-    private void Start()
+    protected virtual void Start()
     {
         
         GridManager.Instance.WorldToGridPosition(transform.position, out currentGridPosition.I, out currentGridPosition.J);
@@ -62,7 +63,8 @@ public class Unit : Entity, IDestructibleObject
     private void WalkPath()
     {
         Vector3 nextTarget = currentPath[currentPathIndex];
-        transform.position = Vector3.MoveTowards(transform.position, nextTarget, moveSpeed * Time.deltaTime);
+        if(!movementPaused)
+            transform.position = Vector3.MoveTowards(transform.position, nextTarget, moveSpeed * Time.deltaTime);
         if (Vector3.Distance(transform.position, nextTarget) < 0.05)
         {
             currentPathIndex++;
@@ -154,5 +156,31 @@ public class Unit : Entity, IDestructibleObject
         GridManager.Instance.SetEntity(null, currentGridPosition);
         
         Destroy(gameObject);
+    }
+
+    public bool CheckNextPathCell()
+    {
+        if (currentPath.Any())
+        {
+            if (currentPathIndex < currentPath.Count - 1)
+            {
+                return (GridManager.Instance.Overlap(currentPath[currentPathIndex + 1])==null);
+            }
+        }
+        return false;
+    }
+    public bool IsWalking()
+    {
+        return currentUnitState == UnitState.WALKING;
+    }
+
+    public void TogglePauseMovement(bool value)
+    {
+        movementPaused = value;
+    }
+
+    public bool IsSelected()
+    {
+        return selected;
     }
 }

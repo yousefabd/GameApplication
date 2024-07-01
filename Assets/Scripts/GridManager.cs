@@ -19,7 +19,7 @@ public class GridManager : MonoBehaviour
     {
         Instance = this;
         //giving a static list of initial characters position temporarily in the future we should get that list from the Map
-        initialUnitPosition = new List<Vector3> { new Vector3(0.5f, 0.5f, 0), new Vector3(-5.5f, 2.5f, 0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
+        initialUnitPosition = new List<Vector3> { new Vector3(0.5f, 0.5f, 0), new Vector3(1.5f, 0.5f, 0), new Vector3(-5.5f, 2.5f, 0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
     }
     private void Start()
     {
