@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.VFX;
 using static UnityEngine.ParticleSystem;
+using UnityEngine.UI;
+using System;
 
 public class Building : Entity
 {
     public BuildingSO buildingSO;
+    private System.Random _random = new System.Random();
 
     public Transform SpawnForCheck(Vector3 position)
     {
@@ -47,6 +51,28 @@ public class Building : Entity
         BuildingManager.Instance.BuildAfterCheck(this);
         return this;
     }
+
+public void Spawner(UnitSO unitSO)
+    {
+        if (unitSO != null && buildingSO.NeighborCells.Count > 0)
+        {
+            int randomIndex = _random.Next(0, buildingSO.NeighborCells.Count);
+            Cell cell = buildingSO.NeighborCells[randomIndex];
+            unitSO.unit.Spawn(GridManager.Instance.GridToWorldPositionCentered(cell.GetIndices()));
+        }
+    }
+
+    public void SpawnerUI()
+    {
+        for (int i = 0; i < buildingSO.units.Count; i++)
+        {
+            GameObject unitButton = Instantiate(buildingSO.units.ToArray()[i].prefab.gameObject, buildingSO.buildingPrefab.position, Quaternion.identity);
+            unitButton.GetComponent<Button>().onClick.AddListener(() => Spawner(buildingSO.units.ToArray()[i]));
+        }
+    }
+
+
+
 
 
 

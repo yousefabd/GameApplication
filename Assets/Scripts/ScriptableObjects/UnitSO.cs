@@ -8,4 +8,6 @@ public class UnitSO : ScriptableObject
     public Sprite icon;
     public string unitName;
     public float maxHealth;
+
+    public Unit unit { get { return prefab.GetComponent<Unit>(); } }
 }

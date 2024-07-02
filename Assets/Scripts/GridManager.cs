@@ -42,7 +42,7 @@ public class GridManager : MonoBehaviour
         {
             Cell unitCell = gridMap.GetValue(initialUnitPosition[i]);
             Indices indices = unitCell.GetIndices();
-            Unit unit = unitCell.SpawnUnit(untiSO, GridToWorldPositionCentered(indices));
+            Unit unit = unitCell.SpawnUnit(unitSO, GridToWorldPositionCentered(indices));
             unitCell.SetEntity(unit);
             gridMap.UpdateValues();
         }
