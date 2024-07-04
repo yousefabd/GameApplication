@@ -9,6 +9,6 @@ public interface IDestructibleObject
     public float HealthPoints { set; get; }
 
     public event Action <float>OnDamaged;
-    public void Damage(Indices position,float value);
+    public void Damage(Vector3 position,float value);
     public void Destruct();
 }

@@ -1,42 +1,64 @@
+using CodeMonkey.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+[Serializable]
+public enum Team
+{
+    HUMANS, GOBLINS
+}
 public class Player : MonoBehaviour
 {
-    private List<Unit> selectedCharacters;
+    private List<Unit> selectedUnits;
     private PathFinder pathFinder;
-    private int movedCharacters = 0;
-    public event Action<Indices, float> OnAttack;
+    private Team pickedTeam { get; set; }
+    public event Action<Vector3, float> OnAttacked;
+    public event Action<Entity> OnSetTarget;
+    public event Action OnClearTarget;
     public static Player Instance {  get; private set; }
 
     private void Awake()
     {
         Instance = this;
-        selectedCharacters = new List<Unit>();
+        selectedUnits = new List<Unit>();
         pathFinder = new PathFinder();
+        pickedTeam = Team.GOBLINS;
     }
     private void Start()
     {
-        MouseManager.Instance.OnWalk += Player_OnWalk;
+        ScreenInteractionManager.Instance.OnRightMouseButtonClicked += Player_HandleInteraction;
+        ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
+        Unit.OnFinishedPath += Unit_OnFinishedPath;
     }
+
+    private void ScreenInteractionManager_OnAreaSelected(Vector3 start, Vector3 end)
+    {
+        ClearSelectedUnits();
+        Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(start, end);
+        foreach (Collider2D collider2D in collider2DArray)
+        {
+            Unit unit = collider2D.GetComponent<Unit>();
+            if(unit.GetTeam() == pickedTeam)
+                AddSelectedUnit(unit);
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            OnAttack?.Invoke(new Indices(5, 5), 23f);
         }
     }
-    private void Player_OnWalk(Vector3 targetWorldPosition)
+    private List<List<Vector3>> FindMultiplePaths(List<Unit> units, Vector3 targetWorldPosition)
     {
-        if (selectedCharacters.Any())
+        List<List<Vector3>>paths = new List<List<Vector3>>();
+        if (units.Any())
         {
-            movedCharacters = 0;
             Indices targetPosition;
             GridManager.Instance.WorldToGridPosition(targetWorldPosition, out targetPosition.I, out targetPosition.J);
-            List<Vector3> originalPath = pathFinder.FindPath(selectedCharacters[0].GetCurrentPosition(), targetPosition);
+            List<Vector3> originalPath = pathFinder.FindPath(units[0].GetCurrentPosition(), targetPosition);
             Indices newTarget;
             if (originalPath.Any())
             {
@@ -46,49 +68,118 @@ public class Player : MonoBehaviour
             {
                 newTarget = targetPosition;
             }
-            selectedCharacters[0].SetPath(originalPath);
-            List<Indices> targets = pathFinder.FindMultipleTargets(newTarget, selectedCharacters.Count);
+            paths.Add(originalPath);
+            List<Indices> targets = pathFinder.FindMultipleTargets(newTarget, units.Count);
             for (int i = 1; i < targets.Count; i++)
             {
-                List<Vector3> path = pathFinder.FindPath(selectedCharacters[i].GetCurrentPosition(), targets[i]);
-                selectedCharacters[i].SetPath(path);
+                List<Vector3> path = pathFinder.FindPath(units[i].GetCurrentPosition(), targets[i]);
+                paths.Add(path);
+            }
+        }
+        return paths;
+    }
+
+    private void Player_HandleInteraction(Vector3 targetPosition)
+    {
+        Entity target = GridManager.Instance.GetEntity(targetPosition);
+        if (target == null)
+        {
+            OnClearTarget?.Invoke();
+            Walk(targetPosition); 
+        }
+        else if (target.GetTeam().Equals(pickedTeam))
+        {
+            OnClearTarget?.Invoke();
+            Walk(targetPosition);   
+        }
+        else
+        {
+            StartAttack(targetPosition, target);
+            Debug.Log("Starting attack");
+        }
+    }
+    private void Walk(Vector3 targetWorldPosition)
+    {
+        List<List<Vector3>> paths=FindMultiplePaths(selectedUnits, targetWorldPosition);
+        for (int i = 0; i < selectedUnits.Count; i++)
+        {
+            selectedUnits[i].SetPath(paths[i]);
+        }
+    }
+    private void StartAttack(Vector3 targetWorldPosition, Entity enemy)
+    {
+        Indices targetPosition;
+        GridManager.Instance.WorldToGridPosition(targetWorldPosition, out targetPosition.I, out targetPosition.J);
+        OnSetTarget?.Invoke(enemy);
+        List<Unit> soldiers = new List<Unit>();
+        List<Unit> other = new List<Unit>();
+
+        if (selectedUnits.Any())
+        {
+            for (int i = 0; i < selectedUnits.Count; i++)
+            {
+                if (selectedUnits[i] is Soldier)
+                {
+                    soldiers.Add(selectedUnits[i]);
+                }
+            }
+        }
+        if (soldiers.Any())
+        {
+            bool[,] visited = new bool[GridManager.Instance.GetWidth(),GridManager.Instance.GetHeight()];
+            List<List<Vector3>>soldierPaths=FindMultiplePaths(soldiers, targetWorldPosition);
+            for(int i = 0; i < soldierPaths.Count; i++)
+            {
+                List<Vector3> soldierPath = new List<Vector3>();
+                for (int j = 0; j < soldierPaths[i].Count; j++)
+                {
+
+                    soldierPath.Add(soldierPaths[i][j]);
+                    if ((soldiers[i] as Soldier).CanAttack(soldierPaths[i][j]))
+                    {
+                        Indices pathCell;
+                        GridManager.Instance.WorldToGridPosition(soldierPaths[i][j], out pathCell.I, out pathCell.J);
+                        if (!visited[pathCell.I, pathCell.J])
+                        {
+                            visited[pathCell.I, pathCell.J] = true;
+                            break;
+                        }
+                    }
+                }
+                soldiers[i].SetPath(soldierPath);
             }
         }
     }
-
-    public void AddSelectedCharacter(Unit character)
+    public void OnAttackCallback(Vector3 attackedPosition, float damage)
     {
-        if (character!=null)
+        OnAttacked?.Invoke(attackedPosition, damage);
+    }
+    public void AddSelectedUnit(Unit unit)
+    {
+        if (unit != null)
         {
-            selectedCharacters.Add(character);
-            character.ToggleSelect(true);
+            selectedUnits.Add(unit);
+            unit.ToggleSelect(true);
         }
     }
 
-    public void OnFinishedPath()
+    public void Unit_OnFinishedPath(Unit unit)
     {
-        movedCharacters++;
-        if (movedCharacters == selectedCharacters.Count)
-        {
-            for (int i = 0; i < selectedCharacters.Count; i++)
-            {
-                GridManager.Instance.SetEntity(selectedCharacters[i], selectedCharacters[i].GetCurrentPosition());
-            }
-        }
+        GridManager.Instance.SetEntity(unit, unit.GetCurrentPosition());
     }
-    public void ClearSelectedCharacters()
+    public void ClearSelectedUnits()
     {
-        for(int i = 0; i < selectedCharacters.Count; i++)
+        for (int i = 0; i < selectedUnits.Count; i++)
         {
-            if (selectedCharacters[i] != null)
+            if (selectedUnits[i] != null)
             {
-                selectedCharacters[i].ToggleSelect(false);
+                selectedUnits[i].ToggleSelect(false);
             }
             else
             {
-                selectedCharacters.RemoveAt(i);
+                selectedUnits.RemoveAt(i);
             }
         }
-        selectedCharacters.Clear();
+        selectedUnits.Clear();
     }
 }

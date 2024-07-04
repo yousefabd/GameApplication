@@ -5,7 +5,7 @@ using UnityEngine;
 public class Unit : Entity, IDestructibleObject
 {
     [SerializeField] private  float moveSpeed = 3f;
-    [SerializeField] private UnitSO unitSO;
+    [SerializeField] protected UnitSO unitSO;
     private PathFinder pathFinder;
     //State related variables
     private enum UnitState
@@ -19,23 +19,26 @@ public class Unit : Entity, IDestructibleObject
     private bool selected = false;
     public float HealthPoints { get; set; }
     private float dieTimer=1.5f;
+    private bool movementPaused = false;
     //events
     public event Action <bool> OnSelect;
     public event Action<Vector3> OnMoveCell;
     public event Action OnSpawn;
     public event Action OnDie;
     public event Action <float>OnDamaged;
-    private void Awake()
+    public event Action OnTakeAction;
+    public static event Action<Unit>OnFinishedPath;
+    protected virtual void Awake()
     {
-        pathFinder = new PathFinder();
+        team = unitSO.team;
         HealthPoints = unitSO.maxHealth;
     }
-    private void Start()
+    protected virtual void Start()
     {
         
         GridManager.Instance.WorldToGridPosition(transform.position, out currentGridPosition.I, out currentGridPosition.J);
         OnSpawn?.Invoke();
-        Player.Instance.OnAttack += Damage;
+        Player.Instance.OnAttacked += Damage;
     }
     private void Update()
     {
@@ -60,7 +63,8 @@ public class Unit : Entity, IDestructibleObject
     private void WalkPath()
     {
         Vector3 nextTarget = currentPath[currentPathIndex];
-        transform.position = Vector3.MoveTowards(transform.position, nextTarget, moveSpeed * Time.deltaTime);
+        if(!movementPaused)
+            transform.position = Vector3.MoveTowards(transform.position, nextTarget, moveSpeed * Time.deltaTime);
         if (Vector3.Distance(transform.position, nextTarget) < 0.05)
         {
             currentPathIndex++;
@@ -73,17 +77,19 @@ public class Unit : Entity, IDestructibleObject
             GridManager.Instance.MoveEntity(previousPosition, currentGridPosition, this);
             if (currentPathIndex == currentPath.Count)
             {
-                Player.Instance.OnFinishedPath();
+                OnFinishedPath?.Invoke(this);
+                OnTakeAction?.Invoke();
                 ToIdle();
             }
             else
             {
                 OnMoveCell?.Invoke(currentPath[currentPathIndex] - transform.position);
+                OnTakeAction?.Invoke();
             }
         }
         
     }
-    private void ToIdle()
+    protected void ToIdle()
     {
         currentUnitState=UnitState.IDLE;
         currentPath?.Clear();
@@ -99,16 +105,20 @@ public class Unit : Entity, IDestructibleObject
     }
     public void SetPath(List<Vector3> path)
     {
-        ToIdle();
-        currentPath = path;
-        if (currentPath.Any())
+        if (currentUnitState != UnitState.DYING)
         {
-            OnMoveCell?.Invoke(currentPath[0]-transform.position);
-            currentUnitState = UnitState.WALKING;
-        }
-        else
-        {
-            Player.Instance.OnFinishedPath();
+            ToIdle();
+            currentPath = path;
+            if (currentPath.Any())
+            {
+                OnMoveCell?.Invoke(currentPath[0] - transform.position);
+                currentUnitState = UnitState.WALKING;
+            }
+            else
+            {
+                OnFinishedPath?.Invoke(this);
+            }
+            OnTakeAction?.Invoke();
         }
     }
     public Indices GetCurrentPosition()
@@ -117,19 +127,25 @@ public class Unit : Entity, IDestructibleObject
     }
     public void ToggleSelect(bool selected)
     {
-        this.selected = selected;
-        OnSelect?.Invoke(selected);
+        if (currentUnitState != UnitState.DYING)
+        {
+            this.selected = selected;
+            OnSelect?.Invoke(selected);
+        }
 
     }
-    public void Damage(Indices position, float value)
+    public void Damage(Vector3 position, float value)
     {
-        if (position.I == currentGridPosition.I && position.J == currentGridPosition.J)
+        if (position==transform.position)
         {
             OnDamaged?.Invoke(value);
             HealthPoints -= value;
             if (HealthPoints < 0)
             {
                 ToIdle();
+                ToggleSelect(false);
+                //unsubscribe from event
+                Player.Instance.OnAttacked -= Damage;
                 currentUnitState = UnitState.DYING;
                 OnDie?.Invoke();
             }
@@ -138,8 +154,33 @@ public class Unit : Entity, IDestructibleObject
     public void Destruct()
     {
         GridManager.Instance.SetEntity(null, currentGridPosition);
-        //unsubscribe from event
-        Player.Instance.OnAttack -= Damage;
+        
         Destroy(gameObject);
+    }
+
+    public bool CheckNextPathCell()
+    {
+        if (currentPath.Any())
+        {
+            if (currentPathIndex < currentPath.Count - 1)
+            {
+                return (GridManager.Instance.Overlap(currentPath[currentPathIndex + 1])==null);
+            }
+        }
+        return false;
+    }
+    public bool IsWalking()
+    {
+        return currentUnitState == UnitState.WALKING;
+    }
+
+    public void TogglePauseMovement(bool value)
+    {
+        movementPaused = value;
+    }
+
+    public bool IsSelected()
+    {
+        return selected;
     }
 }

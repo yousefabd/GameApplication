@@ -10,7 +10,7 @@ public class GridManager : MonoBehaviour
     private const int gridHeight = 18;
     private const float cellSize = 1f;
     private List<Vector3> initialUnitPosition;
-    [SerializeField] private UnitSO untiSO;
+    [SerializeField] private List<UnitSO> testUnitSOList;
 
     private Grid<Cell> gridMap;
 
@@ -19,7 +19,7 @@ public class GridManager : MonoBehaviour
     {
         Instance = this;
         //giving a static list of initial characters position temporarily in the future we should get that list from the Map
-        initialUnitPosition = new List<Vector3> { new Vector3(0.5f, 0.5f, 0), new Vector3(-5.5f, 2.5f, 0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
+        initialUnitPosition = new List<Vector3> { new Vector3(0.5f, 0.5f, 0), new Vector3(1.5f, 0.5f, 0), new Vector3(-5.5f, 2.5f, 0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
     }
     private void Start()
     {
@@ -42,7 +42,10 @@ public class GridManager : MonoBehaviour
         {
             Cell unitCell = gridMap.GetValue(initialUnitPosition[i]);
             Indices indices = unitCell.GetIndices();
-            Unit unit = unitCell.SpawnUnit(unitSO, GridToWorldPositionCentered(indices));
+            Unit unit;
+            if (i < 1)
+                unit = unitCell.SpawnUnit(testUnitSOList[0], GridToWorldPositionCentered(indices));
+            else unit = unitCell.SpawnUnit(testUnitSOList[1], GridToWorldPositionCentered(indices));
             unitCell.SetEntity(unit);
             gridMap.UpdateValues();
         }
@@ -102,7 +105,7 @@ public class GridManager : MonoBehaviour
     }
     public Entity GetEntity(Vector3 worldPosition)
     {
-        return gridMap.GetValue(worldPosition).GetEntity();
+        return gridMap.GetValue(worldPosition)?.GetEntity();
     }
     public Entity GetEntity(int i,int j)
     {

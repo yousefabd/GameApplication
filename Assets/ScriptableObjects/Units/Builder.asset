@@ -16,3 +16,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 9bdae4fc5be7494499a16ef1cc8367b1, type: 3}
   unitName: Builder
   maxHealth: 100
+  team: 0
+  interactionRadius: 1
+  attackPower: 0

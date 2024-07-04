@@ -11,6 +11,7 @@ public class Character4DAnimator : MonoBehaviour
     private AnimationManager animationManager;
     private Vector2[] initialSpawnPosition = { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
     [SerializeField] private Unit unit;
+    [SerializeField] Transform damagePopupTransform;
     private Vector2 lastDir;
     private System.Random random;
     private void Awake()
@@ -22,11 +23,29 @@ public class Character4DAnimator : MonoBehaviour
         unit.OnDie += Unit_OnDie;
         unit.OnDamaged += Unit_OnDamaged;
         random = new System.Random();
+        if (unit is Soldier)
+        {
+            (unit as Soldier).OnSoldierAttack += Soldier_OnSoldierAttack;
+        }
     }
-
+    private void Soldier_OnSoldierAttack(Vector3 direction)
+    {
+        int attackAnimation = random.Next(2);
+        switch (attackAnimation)
+        {
+            case 0:
+                animationManager.Slash(false);
+                break;
+            case 1:
+                animationManager.Jab();
+                break;
+        }
+        
+    }
     private void Unit_OnDamaged(float value)
     {
         animationManager.Hit();
+        DamagePopup.Create(transform.parent.position+new Vector3(0f,1f), damagePopupTransform, (int)value);
     }
 
     private void Unit_OnDie()
