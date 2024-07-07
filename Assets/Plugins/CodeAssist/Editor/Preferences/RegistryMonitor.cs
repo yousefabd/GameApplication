@@ -7,12 +7,12 @@
  * 11/08/2019
  */
 
+using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;
 using System.Runtime.InteropServices;
-using Microsoft.Win32;
+using System.Threading;
 
 //namespace BgTools.PlayerPrefsEditor
 namespace Meryel.UnityCodeAssist.Editor.Preferences

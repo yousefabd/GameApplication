@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +6,7 @@ public class HealthBarVisual : MonoBehaviour
     private IDestructibleObject destructibleObject;
     [SerializeField] private Entity entity;
     [SerializeField] Image health;
-    
+
     private float maxHealth;
     private float currentHealth;
     private void Start()

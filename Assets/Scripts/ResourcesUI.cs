@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,18 +11,19 @@ public class ResourcesUI : MonoBehaviour
     private void Awake()
     {
         resourceTypeList = Resources.Load<ResourceTypeListSO>(typeof(ResourceTypeListSO).Name);
-       
+
         resourceTypeTransfomDictionary = new Dictionary<ResourceTypeSO, Transform>();
 
         Transform resourceTemplate = transform.Find("resourceTemplate");
         resourceTemplate.gameObject.SetActive(false);
 
-        
-         int index = 0;
 
-        foreach (ResourceTypeSO resourceType in resourceTypeList.list) {
+        int index = 0;
 
-            Transform resourceTransform = Instantiate(resourceTemplate,transform);
+        foreach (ResourceTypeSO resourceType in resourceTypeList.list)
+        {
+
+            Transform resourceTransform = Instantiate(resourceTemplate, transform);
             resourceTransform.gameObject.SetActive(true);
 
             float offsetAmount = -160f;
@@ -44,17 +43,19 @@ public class ResourcesUI : MonoBehaviour
 
     private void ResourceManager_OnResourceAmountChanged(object sender, System.EventArgs e)
     {
-     UpdateResourceAmount();
+        UpdateResourceAmount();
     }
-    
-    private void UpdateResourceAmount() {
-        foreach (ResourceTypeSO resourceType in resourceTypeList.list) {
+
+    private void UpdateResourceAmount()
+    {
+        foreach (ResourceTypeSO resourceType in resourceTypeList.list)
+        {
             Transform resourceTransform = resourceTypeTransfomDictionary[resourceType];
 
             int resourceAmount = ResourceManager.Instance.GetResourceAmount(resourceType);
 
             resourceTransform.Find("text").GetComponent<TextMeshProUGUI>().SetText(resourceAmount.ToString());
-        }   
+        }
     }
 }
 

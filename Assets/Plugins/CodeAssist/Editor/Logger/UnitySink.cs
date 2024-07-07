@@ -1,9 +1,6 @@
-using System;
-using System.Linq;
-using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-using Serilog.Configuration;
+using System;
 
 
 #nullable enable

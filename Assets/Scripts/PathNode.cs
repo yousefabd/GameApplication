@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class PathNode
 {
     private Indices indices;
@@ -19,7 +15,7 @@ public class PathNode
     {
         get { return gCost + hCost; }
     }
-    public void SetIndices(int i,int j)
+    public void SetIndices(int i, int j)
     {
         indices.I = i;
         indices.J = j;
@@ -28,5 +24,5 @@ public class PathNode
     {
         i = indices.I;
         j = indices.J;
-    } 
+    }
 }

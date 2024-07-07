@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MinimapCamera : MonoBehaviour
@@ -11,7 +9,7 @@ public class MinimapCamera : MonoBehaviour
         Vector3 newPositions = followingTarget.position;
         newPositions.z = -20;
         transform.position = newPositions;
-        transform.rotation = Quaternion.Euler(0,90f,0);
+        transform.rotation = Quaternion.Euler(0, 90f, 0);
     }
 
 

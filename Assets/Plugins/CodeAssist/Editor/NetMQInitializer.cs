@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using UnityEditor;
 
 
@@ -12,7 +11,7 @@ namespace Meryel.UnityCodeAssist.Editor
     public static class NetMQInitializer
     {
         public static NetMQPublisher? Publisher;
-        
+
         static NetMQInitializer()
         {
             EditorApplication.quitting += EditorApplication_quitting;
@@ -33,7 +32,7 @@ namespace Meryel.UnityCodeAssist.Editor
 
             Serilog.Log.Debug("NetMQ constructing");
             Publisher = new NetMQPublisher();
-            
+
             RunOnShutdown(OnShutDown);
             Serilog.Log.Debug("NetMQ initialized");
         }

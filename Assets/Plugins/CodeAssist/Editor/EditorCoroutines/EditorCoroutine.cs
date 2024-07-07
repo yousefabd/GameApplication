@@ -44,16 +44,16 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
                 var dataType = DataType.None;
                 double targetTime = -1;
 
-                if(type == typeof(EditorWaitForSeconds))
+                if (type == typeof(EditorWaitForSeconds))
                 {
                     targetTime = EditorApplication.timeSinceStartup + (yield as EditorWaitForSeconds).WaitTime;
                     dataType = DataType.WaitForSeconds;
                 }
-                else if(type == typeof(EditorCoroutine))
+                else if (type == typeof(EditorCoroutine))
                 {
                     dataType = DataType.EditorCoroutine;
                 }
-                else if(type == typeof(AsyncOperation) || type.IsSubclassOf(typeof(AsyncOperation)))
+                else if (type == typeof(AsyncOperation) || type.IsSubclassOf(typeof(AsyncOperation)))
                 {
                     dataType = DataType.AsyncOP;
                 }
@@ -119,7 +119,7 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
         private bool ProcessIEnumeratorRecursive(IEnumerator enumerator)
         {
             var root = enumerator;
-            while(enumerator.Current as IEnumerator != null)
+            while (enumerator.Current as IEnumerator != null)
             {
                 kIEnumeratorProcessingStack.Push(enumerator);
                 enumerator = enumerator.Current as IEnumerator;

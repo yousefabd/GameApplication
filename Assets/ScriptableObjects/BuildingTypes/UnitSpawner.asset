@@ -10,9 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1dea029ef3dd4f4bb8f332d9bf6cdd6, type: 3}
-  m_Name: ResourceGenerator
+  m_Name: UnitSpawner
   m_EditorClassIdentifier: 
   stringName: 
   buildingPrefab: {fileID: 0}
   width: 0
   height: 0
+  anchorPosition: {x: 0, y: 0}
+  resourceGenerator: 0
+  resourceGeneratorData:
+    TimerMax: 0
+    ResourceType: 0
+  unitSpawner: 0
+  units: []

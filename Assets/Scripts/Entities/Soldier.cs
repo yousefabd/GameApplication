@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Soldier : Unit
@@ -12,7 +10,7 @@ public class Soldier : Unit
     private SoldierAI soldierAI;
     public event Action<Vector3> OnSoldierAttack;
     public event Action OnStartAttacking;
-    public float attackCoolDown=1f;
+    public float attackCoolDown = 1f;
     protected override void Awake()
     {
         base.Awake();
@@ -68,8 +66,8 @@ public class Soldier : Unit
     {
         ToIdle();
         OnSoldierAttack?.Invoke(Vector2.up);
-        float luckyPoints = (float) (random.NextDouble()*(attackDamage/4f));
-        Player.Instance.OnAttackCallback(currentTargetEnemy.transform.position, attackDamage+luckyPoints);
+        float luckyPoints = (float)(random.NextDouble() * (attackDamage / 4f));
+        Player.Instance.OnAttackCallback(currentTargetEnemy.transform.position, attackDamage + luckyPoints);
     }
 
     public bool CanAttack(Vector3 standingPosition)

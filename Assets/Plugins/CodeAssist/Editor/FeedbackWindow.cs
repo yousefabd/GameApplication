@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 
 #nullable enable
@@ -49,7 +47,7 @@ namespace Meryel.UnityCodeAssist.Editor
                 wordWrap = true,
                 alignment = TextAnchor.MiddleCenter,
             };
-            
+
             if (errorCount > 0)
                 EditorGUILayout.LabelField($"{errorCount} error(s) found in logs. Please submit a feedback (via e-mail, Discord or GitHub) with the logs if possible.", styleLabel, GUILayout.ExpandWidth(true));
             else if (warningCount > 0)

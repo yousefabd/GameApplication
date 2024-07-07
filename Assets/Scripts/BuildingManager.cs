@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -12,7 +8,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private List<BuildingSO> buildingSOList;
     private Building building;
     Cell[,] gridArray;
-    private List<Cell> BuildingCells =  new List<Cell>();
+    private List<Cell> BuildingCells = new List<Cell>();
     private Transform visualTransform;
     bool tryfun;
     private void Awake()
@@ -26,7 +22,7 @@ public class BuildingManager : MonoBehaviour
     }
     private void Update()
     {
-        
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             BuildingSO buildingSO = buildingSOList[0];
@@ -90,7 +86,7 @@ public class BuildingManager : MonoBehaviour
 
     public void BuildAfterCheck(Building instantiatedBuilding)
     {
-        for(int i =0;i <BuildingCells.Count;i++)
+        for (int i = 0; i < BuildingCells.Count; i++)
         {
             BuildingCells[i].SetEntity(instantiatedBuilding);
         }
@@ -110,7 +106,7 @@ public class BuildingManager : MonoBehaviour
         Debug.Log("inside recursion 2");
         // Function to check if cell is overlapping with building collider
         Collider2D collider = GridManager.Instance.Overlap(new Indices(I, J));
-        Debug.Log("collider is " + collider);   
+        Debug.Log("collider is " + collider);
         if (collider != null)
         {
             collider.TryGetComponent<Entity>(out Entity entity);
@@ -130,8 +126,8 @@ public class BuildingManager : MonoBehaviour
                 RecursiveCheck(I, J - 1, Visited, instantiatedBuilding, out safe);
             }
         }
-        
-       
+
+
         if (collider == null)
         {
             Cell neighborCell = GridManager.Instance.GetValue(I, J);

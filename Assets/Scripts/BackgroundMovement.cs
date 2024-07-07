@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundMovement : MonoBehaviour
 {
 
-    public float speed = 1.0f; 
-    public float height = 0.5f; 
+    public float speed = 1.0f;
+    public float height = 0.5f;
 
     private Vector3 startPos;
 

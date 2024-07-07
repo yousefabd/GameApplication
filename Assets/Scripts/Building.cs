@@ -1,26 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.Rendering;
-using UnityEngine;
-using UnityEngine.VFX;
-using static UnityEngine.ParticleSystem;
-using UnityEngine.UI;
 using System;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class Building : Entity
+public class Building : Entity, IDestructibleObject
 {
     public BuildingSO buildingSO;
     private System.Random _random = new System.Random();
+
+    public event Action<float> OnDamaged;
+
+    public event Action<Building> raiseCapacity;
+
+    public float HealthPoints { get; set; }
+
+    private void Awake()
+    {
+        HealthPoints = buildingSO.health;
+    }
+
+    private void Start()
+    {
+        raiseCapacity += Building_raiseCapacity;
+    }
+
+    private void Building_raiseCapacity(Building building)
+    {
+        Player.goldStorage += building.buildingSO.goldStorage;
+    }
 
     public Transform SpawnForCheck(Vector3 position)
     {
         Transform visualTransform = Instantiate(buildingSO.buildingPrefab, position, Quaternion.identity);
         return visualTransform;
     }
-    public void CheckAndSpawn(Transform visualTransform){
+    public void CheckAndSpawn(Transform visualTransform)
+    {
 
         GridManager.Instance.GetValue(visualTransform.position).GetIndices(out int I, out int J);
         bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
@@ -36,10 +50,11 @@ public class Building : Entity
         {
             material.SetFloat("_Color.a", safe ? 0.5f : 0.2f);
         }
-        if(!safe && Input.GetMouseButton (0))
+        if (safe && Input.GetMouseButton(0))
         {
 
             Spawn(visualTransform.position);
+            raiseCapacity?.Invoke(this);
             return;
         }
 
@@ -52,7 +67,7 @@ public class Building : Entity
         return this;
     }
 
-public void Spawner(UnitSO unitSO)
+    public void Spawner(UnitSO unitSO)
     {
         if (unitSO != null && buildingSO.NeighborCells.Count > 0)
         {
@@ -64,15 +79,25 @@ public void Spawner(UnitSO unitSO)
 
     public void SpawnerUI()
     {
-        for (int i = 0; i < buildingSO.units.Count; i++)
+        for (int i = 0; i < buildingSO.unitGenerationData.Count; i++)
         {
-            GameObject unitButton = Instantiate(buildingSO.units.ToArray()[i].prefab.gameObject, buildingSO.buildingPrefab.position, Quaternion.identity);
-            unitButton.GetComponent<Button>().onClick.AddListener(() => Spawner(buildingSO.units.ToArray()[i]));
+            GameObject unitButton = Instantiate(buildingSO.unitGenerationData.ToArray()[i].prefab.gameObject, buildingSO.buildingPrefab.position, Quaternion.identity);
+            unitButton.GetComponent<Button>().onClick.AddListener(() => Spawner(buildingSO.unitGenerationData.ToArray()[i]));
         }
     }
 
+    public void Damage(Vector3 position, float value)
+    {
+        if (GridManager.Instance.GetValue(position).GetEntity() == this)
+        {
+            HealthPoints -= value;
+        }
+    }
 
-
+    public void Destruct()
+    {
+        Destroy(buildingSO.buildingPrefab.gameObject);
+    }
 
 
 

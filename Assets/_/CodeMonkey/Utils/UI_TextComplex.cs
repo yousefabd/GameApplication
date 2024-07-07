@@ -13,33 +13,41 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CodeMonkey.Utils {
-    
+namespace CodeMonkey.Utils
+{
+
     /*
      * Displays text with icons in between the text
      * */
-    public class UI_TextComplex {
-        
-        private static Transform GetCanvasTransform() {
+    public class UI_TextComplex
+    {
+
+        private static Transform GetCanvasTransform()
+        {
             return UtilsClass.GetCanvasTransform();
         }
 
-        public struct Icon {
+        public struct Icon
+        {
             public Sprite sprite;
             public Vector2 size;
             public Color color;
-            public Icon(Sprite sprite, Vector2 size, Color? color = null) {
+            public Icon(Sprite sprite, Vector2 size, Color? color = null)
+            {
                 this.sprite = sprite;
                 this.size = size;
-                if (color == null) {
+                if (color == null)
+                {
                     this.color = Color.white;
-                } else {
-                    this.color = (Color) color;
+                }
+                else
+                {
+                    this.color = (Color)color;
                 }
             }
         }
 
-        public  GameObject gameObject;
+        public GameObject gameObject;
         private Transform transform;
         private RectTransform rectTransform;
 
@@ -47,23 +55,29 @@ namespace CodeMonkey.Utils {
         // Example using iconChar '#': 
         //      test #0 asdf
         // Displays "test [iconArr[0]] asdf"
-        public UI_TextComplex(Transform parent, Vector2 anchoredPosition, int fontSize, char iconChar, string text, Icon[] iconArr, Font font) {
+        public UI_TextComplex(Transform parent, Vector2 anchoredPosition, int fontSize, char iconChar, string text, Icon[] iconArr, Font font)
+        {
             SetupParent(parent, anchoredPosition);
             string tmp = text;
             float textPosition = 0f;
-            while (tmp.IndexOf(iconChar) != -1) {
+            while (tmp.IndexOf(iconChar) != -1)
+            {
                 string untilTmp = tmp.Substring(0, tmp.IndexOf(iconChar));
-                string iconNumber = tmp.Substring(tmp.IndexOf(iconChar)+1);
+                string iconNumber = tmp.Substring(tmp.IndexOf(iconChar) + 1);
                 int indexOfSpaceAfterIconNumber = iconNumber.IndexOf(" ");
-                if (indexOfSpaceAfterIconNumber != -1) {
+                if (indexOfSpaceAfterIconNumber != -1)
+                {
                     // Still has more space after iconNumber
                     iconNumber = iconNumber.Substring(0, indexOfSpaceAfterIconNumber);
-                } else {
+                }
+                else
+                {
                     // No more space after iconNumber
                 }
-                tmp = tmp.Substring(tmp.IndexOf(iconChar+iconNumber) + (iconChar+iconNumber).Length);
-                if (untilTmp.Trim() != "") {
-                    Text uiText = UtilsClass.DrawTextUI(untilTmp, transform, new Vector2(textPosition,0), fontSize, font);
+                tmp = tmp.Substring(tmp.IndexOf(iconChar + iconNumber) + (iconChar + iconNumber).Length);
+                if (untilTmp.Trim() != "")
+                {
+                    Text uiText = UtilsClass.DrawTextUI(untilTmp, transform, new Vector2(textPosition, 0), fontSize, font);
                     textPosition += uiText.preferredWidth;
                 }
                 // Draw Icon
@@ -72,11 +86,13 @@ namespace CodeMonkey.Utils {
                 UtilsClass.DrawSprite(icon.sprite, transform, new Vector2(textPosition + icon.size.x / 2f, 0), icon.size);
                 textPosition += icon.size.x;
             }
-            if (tmp.Trim() != "") {
-                UtilsClass.DrawTextUI(tmp, transform, new Vector2(textPosition,0), fontSize, font);
+            if (tmp.Trim() != "")
+            {
+                UtilsClass.DrawTextUI(tmp, transform, new Vector2(textPosition, 0), fontSize, font);
             }
         }
-        private void SetupParent(Transform parent, Vector2 anchoredPosition) {
+        private void SetupParent(Transform parent, Vector2 anchoredPosition)
+        {
             gameObject = new GameObject("UI_TextComplex", typeof(RectTransform));
             transform = gameObject.transform;
             rectTransform = gameObject.GetComponent<RectTransform>();
@@ -87,54 +103,70 @@ namespace CodeMonkey.Utils {
             rectTransform.pivot = new Vector2(0, .5f);
             rectTransform.anchoredPosition = anchoredPosition;
         }
-        public void SetTextColor(Color color) {
-            foreach (Transform trans in transform) {
+        public void SetTextColor(Color color)
+        {
+            foreach (Transform trans in transform)
+            {
                 Text text = trans.GetComponent<Text>();
-                if (text != null) {
+                if (text != null)
+                {
                     text.color = color;
                 }
             }
         }
-        public float GetTotalWidth() {
+        public float GetTotalWidth()
+        {
             float textPosition = 0f;
-            foreach (Transform trans in transform) {
+            foreach (Transform trans in transform)
+            {
                 Text text = trans.GetComponent<Text>();
-                if (text != null) {
+                if (text != null)
+                {
                     textPosition += text.preferredWidth;
                 }
                 Image image = trans.GetComponent<Image>();
-                if (image != null) {
+                if (image != null)
+                {
                     textPosition += image.GetComponent<RectTransform>().sizeDelta.x;
                 }
             }
             return textPosition;
         }
-        public float GetTotalHeight() {
-            foreach (Transform trans in transform) {
+        public float GetTotalHeight()
+        {
+            foreach (Transform trans in transform)
+            {
                 Text text = trans.GetComponent<Text>();
-                if (text != null) {
+                if (text != null)
+                {
                     return text.preferredHeight;
                 }
             }
             return 0f;
         }
-        public void AddTextOutline(Color color, float size) {
-            foreach (Transform textComplexTrans in transform) {
-                if (textComplexTrans.GetComponent<Text>() != null) {
+        public void AddTextOutline(Color color, float size)
+        {
+            foreach (Transform textComplexTrans in transform)
+            {
+                if (textComplexTrans.GetComponent<Text>() != null)
+                {
                     Outline outline = textComplexTrans.gameObject.AddComponent<Outline>();
                     outline.effectColor = color;
                     outline.effectDistance = new Vector2(size, size);
                 }
             }
         }
-        public void SetAnchorMiddle() {
+        public void SetAnchorMiddle()
+        {
             rectTransform.anchorMin = new Vector2(.5f, .5f);
             rectTransform.anchorMax = new Vector2(.5f, .5f);
         }
-        public void CenterOnPosition(Vector2 position) {
+        public void CenterOnPosition(Vector2 position)
+        {
             rectTransform.anchoredPosition = position + new Vector2(-GetTotalWidth() / 2f, 0);
         }
-        public void DestroySelf() {
+        public void DestroySelf()
+        {
             Object.Destroy(gameObject);
         }
     }

@@ -1,12 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using CodeMonkey.Utils;
-using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
-using static UnityEngine.Rendering.DebugUI;
 using System;
-using Unity.VisualScripting;
+using UnityEngine;
 public struct Indices
 {
     public int I;
@@ -146,8 +140,8 @@ public class Grid<TGridObject>
         }
 
     }
-    
-    
+
+
     public TGridObject[,] GetGridArray()
     {
         return gridArray;

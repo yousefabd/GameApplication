@@ -1,6 +1,4 @@
-using CodeMonkey.Utils;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,13 +9,16 @@ public enum Team
 }
 public class Player : MonoBehaviour
 {
+    public static int goldStorage;
+
     private List<Unit> selectedUnits;
     private PathFinder pathFinder;
     private Team pickedTeam { get; set; }
     public event Action<Vector3, float> OnAttacked;
     public event Action<Entity> OnSetTarget;
     public event Action OnClearTarget;
-    public static Player Instance {  get; private set; }
+    public static Player Instance { get; private set; }
+
 
     private void Awake()
     {
@@ -31,6 +32,8 @@ public class Player : MonoBehaviour
         ScreenInteractionManager.Instance.OnRightMouseButtonClicked += Player_HandleInteraction;
         ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
         Unit.OnFinishedPath += Unit_OnFinishedPath;
+
+
     }
 
     private void ScreenInteractionManager_OnAreaSelected(Vector3 start, Vector3 end)
@@ -40,7 +43,7 @@ public class Player : MonoBehaviour
         foreach (Collider2D collider2D in collider2DArray)
         {
             Unit unit = collider2D.GetComponent<Unit>();
-            if(unit.GetTeam() == pickedTeam)
+            if (unit.GetTeam() == pickedTeam)
                 AddSelectedUnit(unit);
         }
     }
@@ -53,7 +56,7 @@ public class Player : MonoBehaviour
     }
     private List<List<Vector3>> FindMultiplePaths(List<Unit> units, Vector3 targetWorldPosition)
     {
-        List<List<Vector3>>paths = new List<List<Vector3>>();
+        List<List<Vector3>> paths = new List<List<Vector3>>();
         if (units.Any())
         {
             Indices targetPosition;
@@ -85,12 +88,12 @@ public class Player : MonoBehaviour
         if (target == null)
         {
             OnClearTarget?.Invoke();
-            Walk(targetPosition); 
+            Walk(targetPosition);
         }
         else if (target.GetTeam().Equals(pickedTeam))
         {
             OnClearTarget?.Invoke();
-            Walk(targetPosition);   
+            Walk(targetPosition);
         }
         else
         {
@@ -100,7 +103,7 @@ public class Player : MonoBehaviour
     }
     private void Walk(Vector3 targetWorldPosition)
     {
-        List<List<Vector3>> paths=FindMultiplePaths(selectedUnits, targetWorldPosition);
+        List<List<Vector3>> paths = FindMultiplePaths(selectedUnits, targetWorldPosition);
         for (int i = 0; i < selectedUnits.Count; i++)
         {
             selectedUnits[i].SetPath(paths[i]);
@@ -126,9 +129,9 @@ public class Player : MonoBehaviour
         }
         if (soldiers.Any())
         {
-            bool[,] visited = new bool[GridManager.Instance.GetWidth(),GridManager.Instance.GetHeight()];
-            List<List<Vector3>>soldierPaths=FindMultiplePaths(soldiers, targetWorldPosition);
-            for(int i = 0; i < soldierPaths.Count; i++)
+            bool[,] visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
+            List<List<Vector3>> soldierPaths = FindMultiplePaths(soldiers, targetWorldPosition);
+            for (int i = 0; i < soldierPaths.Count; i++)
             {
                 List<Vector3> soldierPath = new List<Vector3>();
                 for (int j = 0; j < soldierPaths[i].Count; j++)

@@ -1,10 +1,9 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 public class ResourceManager : MonoBehaviour
 {
-    
+
     public static ResourceManager Instance { get; private set; }
 
     public event EventHandler OnResourceAmountChanged;
@@ -30,8 +29,9 @@ public class ResourceManager : MonoBehaviour
     }
     private void Update()
     {
-        foreach (ResourceTypeSO resourceType in resourceAmountDictionary.Keys) { 
-        Debug.Log(resourceAmountDictionary[resourceType]);
+        foreach (ResourceTypeSO resourceType in resourceAmountDictionary.Keys)
+        {
+            Debug.Log(resourceAmountDictionary[resourceType]);
         }
     }
 

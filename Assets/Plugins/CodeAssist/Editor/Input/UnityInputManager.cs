@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -11,7 +10,7 @@ using System.Security.Cryptography;
 
 namespace Meryel.UnityCodeAssist.Editor.Input
 {
-    
+
 
     internal class UnityInputManager
     {
@@ -75,7 +74,7 @@ namespace Meryel.UnityCodeAssist.Editor.Input
                         }
                     }
                     break;
-                
+
             }
         }
 
@@ -164,7 +163,7 @@ namespace Meryel.UnityCodeAssist.Editor.Input
         }
 
 
-        bool CreateBindingsMap([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string[]? inputKeys, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)]  out string[]? inputAxis)
+        bool CreateBindingsMap([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string[]? inputKeys, [System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string[]? inputAxis)
         {
             if (inputManager == null)
             {
@@ -222,7 +221,7 @@ namespace Meryel.UnityCodeAssist.Editor.Input
             else
             {
                 Serilog.Log.Debug("Converted file already exists at {Target}", convertedPath);
-            }    
+            }
 
             return convertedPath;
         }

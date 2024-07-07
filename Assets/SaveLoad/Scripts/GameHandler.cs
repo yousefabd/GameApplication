@@ -10,32 +10,35 @@
     --------------------------------------------------
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using CodeMonkey;
-using CodeMonkey.Utils;
+using UnityEngine;
 
-public class GameHandler : MonoBehaviour {
+public class GameHandler : MonoBehaviour
+{
 
     [SerializeField] private GameObject unitGameObject;
     private IUnit unit;
 
-    private void Awake() {
+    private void Awake()
+    {
         unit = unitGameObject.GetComponent<IUnit>();
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.S)) {
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
             Save();
         }
 
-        if (Input.GetKeyDown(KeyCode.L)) {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
             Load();
         }
     }
 
-    private void Save() {
+    private void Save()
+    {
         // Save
         Vector3 playerPosition = unit.GetPosition();
         int goldAmount = unit.GetGoldAmount();
@@ -50,9 +53,11 @@ public class GameHandler : MonoBehaviour {
         CMDebug.TextPopupMouse("Saved!");
     }
 
-    private void Load() {
+    private void Load()
+    {
         // Load
-        if (PlayerPrefs.HasKey("playerPositionX")) {
+        if (PlayerPrefs.HasKey("playerPositionX"))
+        {
             float playerPositionX = PlayerPrefs.GetFloat("playerPositionX");
             float playerPositionY = PlayerPrefs.GetFloat("playerPositionY");
             Vector3 playerPosition = new Vector3(playerPositionX, playerPositionY);
@@ -61,7 +66,9 @@ public class GameHandler : MonoBehaviour {
 
             unit.SetPosition(playerPosition);
             unit.SetGoldAmount(goldAmount);
-        } else {
+        }
+        else
+        {
             // No save is available
             CMDebug.TextPopupMouse("No save");
         }

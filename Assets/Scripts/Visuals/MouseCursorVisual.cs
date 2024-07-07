@@ -1,7 +1,5 @@
 using CodeMonkey.Utils;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MouseCursorVisual : MonoBehaviour
@@ -13,9 +11,9 @@ public class MouseCursorVisual : MonoBehaviour
     void Start()
     {
         Cursor.visible = false;
-        mouseCursorsDictionary= new Dictionary<string, Sprite>();
+        mouseCursorsDictionary = new Dictionary<string, Sprite>();
         ScreenInteractionManager.Instance.OnEntityHovered += ScreenInteractionManager_OnEntityHovered;
-        foreach (MouseCursorSO mouseCursorSO in mouseCursors) 
+        foreach (MouseCursorSO mouseCursorSO in mouseCursors)
         {
             mouseCursorsDictionary[mouseCursorSO.entityName] = mouseCursorSO.cursorSprite;
         }
@@ -35,7 +33,7 @@ public class MouseCursorVisual : MonoBehaviour
     private Sprite GetMouseSprite(string entityName)
     {
         if (mouseCursorsDictionary.ContainsKey(entityName))
-        { 
+        {
             return mouseCursorsDictionary[entityName];
         }
         return mouseCursorsDictionary["Null"];

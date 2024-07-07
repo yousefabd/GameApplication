@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,15 +53,15 @@ public class GridManager : MonoBehaviour
     {
         gridMap.UpdateValues();
     }
-    public Cell GetValue(int I,int J)
+    public Cell GetValue(int I, int J)
     {
-        return gridMap.GetValue(I,J);
+        return gridMap.GetValue(I, J);
     }
     public Cell GetValue(Vector3 worldPosition)
     {
         return gridMap.GetValue(worldPosition);
     }
-    public void WorldToGridPosition(Vector3 worldPosition,out int i,out int j)
+    public void WorldToGridPosition(Vector3 worldPosition, out int i, out int j)
     {
         gridMap.GetIndices(worldPosition, out i, out j);
     }
@@ -107,27 +105,27 @@ public class GridManager : MonoBehaviour
     {
         return gridMap.GetValue(worldPosition)?.GetEntity();
     }
-    public Entity GetEntity(int i,int j)
+    public Entity GetEntity(int i, int j)
     {
-        return gridMap.GetValue(i,j).GetEntity();
+        return gridMap.GetValue(i, j).GetEntity();
     }
-    public void SetEntity(Entity entity,Vector3 worldPosition)
+    public void SetEntity(Entity entity, Vector3 worldPosition)
     {
         gridMap.GetValue(worldPosition).SetEntity(entity);
         gridMap.UpdateValues();
     }
-    public void SetEntity(Entity entity,Indices indices)
+    public void SetEntity(Entity entity, Indices indices)
     {
-        gridMap.GetValue(indices.I,indices.J).SetEntity(entity);
+        gridMap.GetValue(indices.I, indices.J).SetEntity(entity);
         gridMap.UpdateValues();
     }
-    public void MoveEntity(Indices oldPosition,Indices newPosition,Entity entity)
+    public void MoveEntity(Indices oldPosition, Indices newPosition, Entity entity)
     {
         gridMap.GetValue(oldPosition.I, oldPosition.J).ClearEntity();
         gridMap.GetValue(newPosition.I, newPosition.J).SetEntity(entity);
         gridMap.UpdateValues();
     }
-    public void MoveEntity(Vector3 oldPosition,Vector3 newPosition,Entity entity)
+    public void MoveEntity(Vector3 oldPosition, Vector3 newPosition, Entity entity)
     {
         gridMap.GetValue(oldPosition).ClearEntity();
         gridMap.GetValue(newPosition).SetEntity(entity);
@@ -137,9 +135,9 @@ public class GridManager : MonoBehaviour
     {
         return gridMap.GetValue(worldPosition).IsOccupied();
     }
-    public bool IsOccupied(int I,int J)
+    public bool IsOccupied(int I, int J)
     {
-        return gridMap.GetValue(I,J).IsOccupied();
+        return gridMap.GetValue(I, J).IsOccupied();
     }
     public Collider2D Overlap(Vector3 cellWorldPosition)
     {

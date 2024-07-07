@@ -1,8 +1,4 @@
 using Assets.HeroEditor4D.Common.Scripts.CharacterScripts;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Character4DAnimator : MonoBehaviour
@@ -40,12 +36,12 @@ public class Character4DAnimator : MonoBehaviour
                 animationManager.Jab();
                 break;
         }
-        
+
     }
     private void Unit_OnDamaged(float value)
     {
         animationManager.Hit();
-        DamagePopup.Create(transform.parent.position+new Vector3(0f,1f), damagePopupTransform, (int)value);
+        DamagePopup.Create(transform.parent.position + new Vector3(0f, 1f), damagePopupTransform, (int)value);
     }
 
     private void Unit_OnDie()
@@ -63,7 +59,7 @@ public class Character4DAnimator : MonoBehaviour
     {
         moveDir = moveDir.normalized;
         Vector2 direction = Vector2.up;
-        if(moveDir.x>=0.65f)
+        if (moveDir.x >= 0.65f)
         {
             direction.x = 1.0f;
             direction.y = 0.0f;
@@ -73,7 +69,7 @@ public class Character4DAnimator : MonoBehaviour
             direction.x = -1.0f;
             direction.y = 0.0f;
         }
-        else if(moveDir.y>=0.65f)
+        else if (moveDir.y >= 0.65f)
         {
             direction.x = 0.0f;
             direction.y = 1.0f;

@@ -1,46 +1,42 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum EntityEnum
 {
-    SAFE,OBSTACLE,BUILDING,UNIT
+    SAFE, OBSTACLE, BUILDING, UNIT
 }
-public class Cell 
+public class Cell
 {
     private Entity entity = null;
-    
+
     private readonly Indices indices;
 
-    public Cell(int I,int J)
+    public Cell(int I, int J)
     {
-        indices.I= I;
-        indices.J= J;
+        indices.I = I;
+        indices.J = J;
     }
 
     public Entity GetEntity()
     {
         return entity;
     }
-    public void SetEntity(Entity entity) 
-    { 
+    public void SetEntity(Entity entity)
+    {
         this.entity = entity;
     }
     public void UpdateEnity(Entity entity)
     {
-        this.entity=entity;
+        this.entity = entity;
         GridManager.Instance.UpdateValues();
 
     }
     //this method is temporarily here, it should exist in the building class
-    public Unit SpawnUnit(UnitSO characterSO,Vector3 position)
+    public Unit SpawnUnit(UnitSO characterSO, Vector3 position)
     {
-        if(entity != null)
+        if (entity != null)
         {
-            Debug.LogError("A unit in the cell ("+indices.I+", "+indices.J+")" + " already exists!");
+            Debug.LogError("A unit in the cell (" + indices.I + ", " + indices.J + ")" + " already exists!");
             return entity as Unit;
         }
         else
@@ -54,19 +50,19 @@ public class Cell
     {
         entity = null;
     }
-    public void GetIndices(out int I,out int J)
+    public void GetIndices(out int I, out int J)
     {
-        I=indices.I;
-        J=indices.J;
+        I = indices.I;
+        J = indices.J;
         return;
     }
 
     public Indices GetIndices()
     {
-        return indices; 
+        return indices;
     }
 
-     public override String ToString()
+    public override String ToString()
     {
         return GetEntity()?.GetType().Name;
     }
@@ -75,5 +71,5 @@ public class Cell
     {
         return entity != null;
     }
-    
+
 }

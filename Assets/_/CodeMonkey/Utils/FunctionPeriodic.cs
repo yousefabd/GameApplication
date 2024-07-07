@@ -14,21 +14,25 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CodeMonkey.Utils {
+namespace CodeMonkey.Utils
+{
 
     /*
      * Executes a Function periodically
      * */
-    public class FunctionPeriodic {
+    public class FunctionPeriodic
+    {
 
         /*
          * Class to hook Actions into MonoBehaviour
          * */
-        private class MonoBehaviourHook : MonoBehaviour {
+        private class MonoBehaviourHook : MonoBehaviour
+        {
 
             public Action OnUpdate;
 
-            private void Update() {
+            private void Update()
+            {
                 if (OnUpdate != null) OnUpdate();
             }
 
@@ -38,8 +42,10 @@ namespace CodeMonkey.Utils {
         private static List<FunctionPeriodic> funcList; // Holds a reference to all active timers
         private static GameObject initGameObject; // Global game object used for initializing class, is destroyed on scene change
 
-        private static void InitIfNeeded() {
-            if (initGameObject == null) {
+        private static void InitIfNeeded()
+        {
+            if (initGameObject == null)
+            {
                 initGameObject = new GameObject("FunctionPeriodic_Global");
                 funcList = new List<FunctionPeriodic>();
             }
@@ -48,7 +54,8 @@ namespace CodeMonkey.Utils {
 
 
         // Persist through scene loads
-        public static FunctionPeriodic Create_Global(Action action, Func<bool> testDestroy, float timer) {
+        public static FunctionPeriodic Create_Global(Action action, Func<bool> testDestroy, float timer)
+        {
             FunctionPeriodic functionPeriodic = Create(action, testDestroy, timer, "", false, false, false);
             MonoBehaviour.DontDestroyOnLoad(functionPeriodic.gameObject);
             return functionPeriodic;
@@ -56,26 +63,32 @@ namespace CodeMonkey.Utils {
 
 
         // Trigger [action] every [timer], execute [testDestroy] after triggering action, destroy if returns true
-        public static FunctionPeriodic Create(Action action, Func<bool> testDestroy, float timer) {
+        public static FunctionPeriodic Create(Action action, Func<bool> testDestroy, float timer)
+        {
             return Create(action, testDestroy, timer, "", false);
         }
 
-        public static FunctionPeriodic Create(Action action, float timer) {
+        public static FunctionPeriodic Create(Action action, float timer)
+        {
             return Create(action, null, timer, "", false, false, false);
         }
 
-        public static FunctionPeriodic Create(Action action, float timer, string functionName) {
+        public static FunctionPeriodic Create(Action action, float timer, string functionName)
+        {
             return Create(action, null, timer, functionName, false, false, false);
         }
 
-        public static FunctionPeriodic Create(Action callback, Func<bool> testDestroy, float timer, string functionName, bool stopAllWithSameName) {
+        public static FunctionPeriodic Create(Action callback, Func<bool> testDestroy, float timer, string functionName, bool stopAllWithSameName)
+        {
             return Create(callback, testDestroy, timer, functionName, false, false, stopAllWithSameName);
         }
 
-        public static FunctionPeriodic Create(Action action, Func<bool> testDestroy, float timer, string functionName, bool useUnscaledDeltaTime, bool triggerImmediately, bool stopAllWithSameName) {
+        public static FunctionPeriodic Create(Action action, Func<bool> testDestroy, float timer, string functionName, bool useUnscaledDeltaTime, bool triggerImmediately, bool stopAllWithSameName)
+        {
             InitIfNeeded();
 
-            if (stopAllWithSameName) {
+            if (stopAllWithSameName)
+            {
                 StopAllFunc(functionName);
             }
 
@@ -93,32 +106,42 @@ namespace CodeMonkey.Utils {
 
 
 
-        public static void RemoveTimer(FunctionPeriodic funcTimer) {
+        public static void RemoveTimer(FunctionPeriodic funcTimer)
+        {
             InitIfNeeded();
             funcList.Remove(funcTimer);
         }
-        public static void StopTimer(string _name) {
+        public static void StopTimer(string _name)
+        {
             InitIfNeeded();
-            for (int i = 0; i < funcList.Count; i++) {
-                if (funcList[i].functionName == _name) {
+            for (int i = 0; i < funcList.Count; i++)
+            {
+                if (funcList[i].functionName == _name)
+                {
                     funcList[i].DestroySelf();
                     return;
                 }
             }
         }
-        public static void StopAllFunc(string _name) {
+        public static void StopAllFunc(string _name)
+        {
             InitIfNeeded();
-            for (int i = 0; i < funcList.Count; i++) {
-                if (funcList[i].functionName == _name) {
+            for (int i = 0; i < funcList.Count; i++)
+            {
+                if (funcList[i].functionName == _name)
+                {
                     funcList[i].DestroySelf();
                     i--;
                 }
             }
         }
-        public static bool IsFuncActive(string name) {
+        public static bool IsFuncActive(string name)
+        {
             InitIfNeeded();
-            for (int i = 0; i < funcList.Count; i++) {
-                if (funcList[i].functionName == name) {
+            for (int i = 0; i < funcList.Count; i++)
+            {
+                if (funcList[i].functionName == name)
+                {
                     return true;
                 }
             }
@@ -137,7 +160,8 @@ namespace CodeMonkey.Utils {
         public Func<bool> testDestroy;
 
 
-        private FunctionPeriodic(GameObject gameObject, Action action, float timer, Func<bool> testDestroy, string functionName, bool useUnscaledDeltaTime) {
+        private FunctionPeriodic(GameObject gameObject, Action action, float timer, Func<bool> testDestroy, string functionName, bool useUnscaledDeltaTime)
+        {
             this.gameObject = gameObject;
             this.action = action;
             this.timer = timer;
@@ -146,30 +170,41 @@ namespace CodeMonkey.Utils {
             this.useUnscaledDeltaTime = useUnscaledDeltaTime;
             baseTimer = timer;
         }
-        public void SkipTimerTo(float timer) {
+        public void SkipTimerTo(float timer)
+        {
             this.timer = timer;
         }
 
-        void Update() {
-            if (useUnscaledDeltaTime) {
+        void Update()
+        {
+            if (useUnscaledDeltaTime)
+            {
                 timer -= Time.unscaledDeltaTime;
-            } else {
+            }
+            else
+            {
                 timer -= Time.deltaTime;
             }
-            if (timer <= 0) {
+            if (timer <= 0)
+            {
                 action();
-                if (testDestroy != null && testDestroy()) {
+                if (testDestroy != null && testDestroy())
+                {
                     //Destroy
                     DestroySelf();
-                } else {
+                }
+                else
+                {
                     //Repeat
                     timer += baseTimer;
                 }
             }
         }
-        public void DestroySelf() {
+        public void DestroySelf()
+        {
             RemoveTimer(this);
-            if (gameObject != null) {
+            if (gameObject != null)
+            {
                 UnityEngine.Object.Destroy(gameObject);
             }
         }

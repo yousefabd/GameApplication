@@ -9,25 +9,28 @@
                unitycodemonkey.com
     --------------------------------------------------
  */
- 
+
 //#define SOUND_MANAGER // Has Sound_Manager in project
 //#define CURSOR_MANAGER // Has Cursor_Manager in project
 
 using System;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CodeMonkey.Utils {
+namespace CodeMonkey.Utils
+{
 
     /*
      * Button Actions on a World BoxCollider
      * */
-    public class Button_Sprite : MonoBehaviour {
+    public class Button_Sprite : MonoBehaviour
+    {
 
         private static Func<Camera> GetWorldCamera;
 
-        public static void SetGetWorldCamera(Func<Camera> GetWorldCamera) {
+        public static void SetGetWorldCamera(Func<Camera> GetWorldCamera)
+        {
             Button_Sprite.GetWorldCamera = GetWorldCamera;
         }
 
@@ -52,7 +55,8 @@ namespace CodeMonkey.Utils {
         public Action<Vector3, Vector3> MouseRightDragUpdateFunc = null;
         public bool triggerMouseRightDragOnEnter = false;
 
-        public enum HoverBehaviour {
+        public enum HoverBehaviour
+        {
             Custom,
             Change_Color,
             Change_Image,
@@ -82,7 +86,8 @@ namespace CodeMonkey.Utils {
 
 
 
-        public void SetHoverBehaviourChangeColor(Color colorOver, Color colorOut) {
+        public void SetHoverBehaviourChangeColor(Color colorOver, Color colorOut)
+        {
             hoverBehaviourType = HoverBehaviour.Change_Color;
             hoverBehaviour_Color_Enter = colorOver;
             hoverBehaviour_Color_Exit = colorOut;
@@ -90,29 +95,34 @@ namespace CodeMonkey.Utils {
             hoverBehaviour_Image.color = hoverBehaviour_Color_Exit;
             SetupHoverBehaviour();
         }
-        void OnMouseDown() {
+        void OnMouseDown()
+        {
             if (!clickThroughUI && IsPointerOverUI()) return; // Over UI!
 
             if (internalOnMouseDownFunc != null) internalOnMouseDownFunc();
             if (ClickFunc != null) ClickFunc();
             if (triggerMouseOutFuncOnClick) OnMouseExit();
         }
-        public void Manual_OnMouseExit() {
+        public void Manual_OnMouseExit()
+        {
             OnMouseExit();
         }
-        void OnMouseUp() {
+        void OnMouseUp()
+        {
             if (MouseUpOnceFunc != null) MouseUpOnceFunc();
         }
-        void OnMouseEnter() {
+        void OnMouseEnter()
+        {
             if (!clickThroughUI && IsPointerOverUI()) return; // Over UI!
-            
+
             if (internalOnMouseEnterFunc != null) internalOnMouseEnterFunc();
             if (hoverBehaviour_Move) transform.localPosition = posEnter;
             if (hoverBehaviourFunc_Enter != null) hoverBehaviourFunc_Enter();
             if (MouseOverOnceFunc != null) MouseOverOnceFunc();
             if (MouseOverOnceTooltipFunc != null) MouseOverOnceTooltipFunc();
         }
-        void OnMouseExit() {
+        void OnMouseExit()
+        {
             if (internalOnMouseExitFunc != null) internalOnMouseExitFunc();
             if (hoverBehaviour_Move) transform.localPosition = posExit;
             if (hoverBehaviourFunc_Exit != null) hoverBehaviourFunc_Exit();
@@ -120,28 +130,36 @@ namespace CodeMonkey.Utils {
             if (MouseOutOnceTooltipFunc != null) MouseOutOnceTooltipFunc();
         }
 
-        void OnMouseOver() {
+        void OnMouseOver()
+        {
             if (!clickThroughUI && IsPointerOverUI()) return; // Over UI!
 
-            if (Input.GetMouseButton(1)) {
+            if (Input.GetMouseButton(1))
+            {
                 if (MouseRightDownFunc != null) MouseRightDownFunc();
-                if (!draggingMouseRight && triggerMouseRightDragOnEnter) {
+                if (!draggingMouseRight && triggerMouseRightDragOnEnter)
+                {
                     draggingMouseRight = true;
                     mouseRightDragStart = GetWorldPositionFromUI();
                 }
             }
-            if (Input.GetMouseButtonDown(1)) {
+            if (Input.GetMouseButtonDown(1))
+            {
                 draggingMouseRight = true;
                 mouseRightDragStart = GetWorldPositionFromUI();
                 if (MouseRightDownOnceFunc != null) MouseRightDownOnceFunc();
             }
         }
-        void Update() {
-            if (draggingMouseRight) {
+        void Update()
+        {
+            if (draggingMouseRight)
+            {
                 if (MouseRightDragUpdateFunc != null) MouseRightDragUpdateFunc(mouseRightDragStart, GetWorldPositionFromUI());
             }
-            if (Input.GetMouseButtonUp(1)) {
-                if (draggingMouseRight) {
+            if (Input.GetMouseButtonUp(1))
+            {
+                if (draggingMouseRight)
+                {
                     draggingMouseRight = false;
                     if (MouseRightDragFunc != null) MouseRightDragFunc(mouseRightDragStart, GetWorldPositionFromUI());
                 }
@@ -150,7 +168,8 @@ namespace CodeMonkey.Utils {
         }
 
 
-        void Awake() {
+        void Awake()
+        {
             if (GetWorldCamera == null) SetGetWorldCamera(() => Camera.main); // Set default World Camera
             posExit = transform.localPosition;
             posEnter = transform.localPosition + (Vector3)hoverBehaviour_Move_Amount;
@@ -168,20 +187,22 @@ namespace CodeMonkey.Utils {
             internalOnMouseEnterFunc += () => { if (cursorMouseOver != CursorManager.CursorType.None) CursorManager.SetCursor(cursorMouseOver); };
 #endif
         }
-        private void SetupHoverBehaviour() {
-            switch (hoverBehaviourType) {
-            case HoverBehaviour.Change_Color:
-                hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.color = hoverBehaviour_Color_Enter; };
-                hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.color = hoverBehaviour_Color_Exit; };
-                break;
-            case HoverBehaviour.Change_Image:
-                hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.sprite = hoverBehaviour_Sprite_Enter; };
-                hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.sprite = hoverBehaviour_Sprite_Exit; };
-                break;
-            case HoverBehaviour.Change_SetActive:
-                hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.gameObject.SetActive(true); };
-                hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.gameObject.SetActive(false); };
-                break;
+        private void SetupHoverBehaviour()
+        {
+            switch (hoverBehaviourType)
+            {
+                case HoverBehaviour.Change_Color:
+                    hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.color = hoverBehaviour_Color_Enter; };
+                    hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.color = hoverBehaviour_Color_Exit; };
+                    break;
+                case HoverBehaviour.Change_Image:
+                    hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.sprite = hoverBehaviour_Sprite_Enter; };
+                    hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.sprite = hoverBehaviour_Sprite_Exit; };
+                    break;
+                case HoverBehaviour.Change_SetActive:
+                    hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.gameObject.SetActive(true); };
+                    hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.gameObject.SetActive(false); };
+                    break;
             }
         }
 
@@ -191,14 +212,19 @@ namespace CodeMonkey.Utils {
 
 
 
-        private static Vector3 GetWorldPositionFromUI() {
+        private static Vector3 GetWorldPositionFromUI()
+        {
             Vector3 worldPosition = GetWorldCamera().ScreenToWorldPoint(Input.mousePosition);
             return worldPosition;
         }
-        private static bool IsPointerOverUI() {
-            if (EventSystem.current.IsPointerOverGameObject()) {
+        private static bool IsPointerOverUI()
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
                 return true;
-            } else {
+            }
+            else
+            {
                 PointerEventData pe = new PointerEventData(EventSystem.current);
                 pe.position = Input.mousePosition;
                 List<RaycastResult> hits = new List<RaycastResult>();

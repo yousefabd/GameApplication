@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 #if !NET_UNITY_4_8
 namespace System.Diagnostics.CodeAnalysis
 {

@@ -1,7 +1,5 @@
 using CodeMonkey.Utils;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ScreenInteractionManager : MonoBehaviour
@@ -26,7 +24,7 @@ public class ScreenInteractionManager : MonoBehaviour
         {
             //left mouse button pressed
             //gridMap.GetValue(mousePosition).SetEntity(Entity.OBSTACLE);
-            startPosition=UtilsClass.GetMouseWorldPosition();
+            startPosition = UtilsClass.GetMouseWorldPosition();
             selectionAreaTransform.gameObject.SetActive(true);
         }
         if (Input.GetMouseButton(0))
@@ -34,12 +32,12 @@ public class ScreenInteractionManager : MonoBehaviour
             //while left mouse button pressed
             Vector3 currentMousePosition = UtilsClass.GetMouseWorldPosition();
             Vector3 lowerLeft = new Vector3(
-                Mathf.Min(startPosition.x,currentMousePosition.x),
-                Mathf.Min(startPosition.y,currentMousePosition.y)
+                Mathf.Min(startPosition.x, currentMousePosition.x),
+                Mathf.Min(startPosition.y, currentMousePosition.y)
             );
             Vector3 upperRight = new Vector3(
-                Mathf.Max(startPosition.x,currentMousePosition.x),
-                Mathf.Max(startPosition.y,currentMousePosition.y)
+                Mathf.Max(startPosition.x, currentMousePosition.x),
+                Mathf.Max(startPosition.y, currentMousePosition.y)
             );
             selectionAreaTransform.position = lowerLeft;
             selectionAreaTransform.localScale = upperRight - lowerLeft;

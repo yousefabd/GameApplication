@@ -1,5 +1,3 @@
-    using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourceGenerator : MonoBehaviour
@@ -20,7 +18,7 @@ public class ResourceGenerator : MonoBehaviour
         if (timer <= 0)
         {
             timer += timerMax;
-            resourceManager.UpdateResource(1,buildingSO.resourceGeneratorData.ResourceType);
+            resourceManager.UpdateResource(1, buildingSO.resourceGeneratorData.ResourceType);
         }
     }
 }

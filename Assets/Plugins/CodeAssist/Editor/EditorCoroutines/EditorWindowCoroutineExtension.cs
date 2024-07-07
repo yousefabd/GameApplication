@@ -80,13 +80,13 @@ namespace Meryel.UnityCodeAssist.Editor.EditorCoroutines
         /// <param name="coroutine"></param>
         public static void StopCoroutine(this EditorWindow window, EditorCoroutine coroutine)
         {
-            if(coroutine == null)
+            if (coroutine == null)
             {
                 Debug.LogAssertion("Provided EditorCoroutine handle is null.");
                 return;
             }
 
-            if(coroutine.m_Owner == null)
+            if (coroutine.m_Owner == null)
             {
                 Debug.LogError("The EditorCoroutine is ownerless. Please use EditorCoroutineEditor.StopCoroutine to terminate such coroutines.");
                 return;

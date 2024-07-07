@@ -4,13 +4,13 @@ using System.Linq;
 using UnityEngine;
 public class Unit : Entity, IDestructibleObject
 {
-    [SerializeField] private  float moveSpeed = 3f;
+    [SerializeField] private float moveSpeed = 3f;
     [SerializeField] protected UnitSO unitSO;
     private PathFinder pathFinder;
     //State related variables
     private enum UnitState
     {
-        IDLE,WALKING,DYING
+        IDLE, WALKING, DYING
     };
     private List<Vector3> currentPath;
     private int currentPathIndex = 0;
@@ -18,16 +18,16 @@ public class Unit : Entity, IDestructibleObject
     private Indices currentGridPosition;
     private bool selected = false;
     public float HealthPoints { get; set; }
-    private float dieTimer=1.5f;
+    private float dieTimer = 1.5f;
     private bool movementPaused = false;
     //events
-    public event Action <bool> OnSelect;
+    public event Action<bool> OnSelect;
     public event Action<Vector3> OnMoveCell;
     public event Action OnSpawn;
     public event Action OnDie;
-    public event Action <float>OnDamaged;
+    public event Action<float> OnDamaged;
     public event Action OnTakeAction;
-    public static event Action<Unit>OnFinishedPath;
+    public static event Action<Unit> OnFinishedPath;
     protected virtual void Awake()
     {
         team = unitSO.team;
@@ -35,7 +35,7 @@ public class Unit : Entity, IDestructibleObject
     }
     protected virtual void Start()
     {
-        
+
         GridManager.Instance.WorldToGridPosition(transform.position, out currentGridPosition.I, out currentGridPosition.J);
         OnSpawn?.Invoke();
         Player.Instance.OnAttacked += Damage;
@@ -51,7 +51,7 @@ public class Unit : Entity, IDestructibleObject
                 break;
             case UnitState.DYING:
                 dieTimer -= Time.deltaTime;
-                if(dieTimer <= 0)
+                if (dieTimer <= 0)
                 {
                     Destruct();
                 }
@@ -59,11 +59,11 @@ public class Unit : Entity, IDestructibleObject
 
         }
     }
-    
+
     private void WalkPath()
     {
         Vector3 nextTarget = currentPath[currentPathIndex];
-        if(!movementPaused)
+        if (!movementPaused)
             transform.position = Vector3.MoveTowards(transform.position, nextTarget, moveSpeed * Time.deltaTime);
         if (Vector3.Distance(transform.position, nextTarget) < 0.05)
         {
@@ -87,19 +87,19 @@ public class Unit : Entity, IDestructibleObject
                 OnTakeAction?.Invoke();
             }
         }
-        
+
     }
     protected void ToIdle()
     {
-        currentUnitState=UnitState.IDLE;
+        currentUnitState = UnitState.IDLE;
         currentPath?.Clear();
         currentPathIndex = 0;
         OnMoveCell?.Invoke(Vector3.zero);
 
     }
-    public static Unit Spawn(UnitSO unitSO,Vector3 position)
+    public static Unit Spawn(UnitSO unitSO, Vector3 position)
     {
-        Transform UnitTransform = Instantiate(unitSO.prefab,position,Quaternion.identity);
+        Transform UnitTransform = Instantiate(unitSO.prefab, position, Quaternion.identity);
         Unit unit = UnitTransform.GetComponent<Unit>();
         return unit;
     }
@@ -136,7 +136,7 @@ public class Unit : Entity, IDestructibleObject
     }
     public void Damage(Vector3 position, float value)
     {
-        if (position==transform.position)
+        if (position == transform.position)
         {
             OnDamaged?.Invoke(value);
             HealthPoints -= value;
@@ -154,7 +154,7 @@ public class Unit : Entity, IDestructibleObject
     public void Destruct()
     {
         GridManager.Instance.SetEntity(null, currentGridPosition);
-        
+
         Destroy(gameObject);
     }
 
@@ -164,7 +164,7 @@ public class Unit : Entity, IDestructibleObject
         {
             if (currentPathIndex < currentPath.Count - 1)
             {
-                return (GridManager.Instance.Overlap(currentPath[currentPathIndex + 1])==null);
+                return (GridManager.Instance.Overlap(currentPath[currentPathIndex + 1]) == null);
             }
         }
         return false;
