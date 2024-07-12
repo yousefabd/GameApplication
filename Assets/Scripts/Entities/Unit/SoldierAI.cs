@@ -48,7 +48,7 @@ public class SoldierAI : MonoBehaviour
                 if (currentAttackCooldown <= 0f)
                 {
                     OnAttack?.Invoke();
-                    currentAttackCooldown = soldierController.attackCoolDown;
+                    currentAttackCooldown = soldierController.GetAttackCoolDown();
                 }
             }
             else if (!soldierController.IsWalking())
@@ -60,6 +60,14 @@ public class SoldierAI : MonoBehaviour
                 GridManager.Instance.WorldToGridPosition(soldierController.GetTargetWorldPosition(), out target.I, out target.J);
                 List<Vector3> newPath = autoPathFinder.FindPath(start, target);
                 soldierController.SetPath(newPath);
+            }
+
+        }
+        else
+        {
+            if (!soldierController.LookForTargets())
+            {
+                currentSoldierState = SoldierAIState.IDLE;
             }
         }
     }

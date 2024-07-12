@@ -24,8 +24,8 @@ public class Unit : Entity, IDestructibleObject
     public event Action<bool> OnSelect;
     public event Action<Vector3> OnMoveCell;
     public event Action OnSpawn;
-    public event Action OnDie;
-    public event Action<float> OnDamaged;
+    public event Action OnDestroyed;
+    public event Action <float>OnDamaged;
     public event Action OnTakeAction;
     public static event Action<Unit> OnFinishedPath;
     protected virtual void Awake()
@@ -147,7 +147,7 @@ public class Unit : Entity, IDestructibleObject
                 //unsubscribe from event
                 Player.Instance.OnAttacked -= Damage;
                 currentUnitState = UnitState.DYING;
-                OnDie?.Invoke();
+                OnDestroyed?.Invoke();
             }
         }
     }

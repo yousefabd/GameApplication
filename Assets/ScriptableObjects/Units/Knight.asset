@@ -19,3 +19,4 @@ MonoBehaviour:
   team: 1
   interactionRadius: 1.5
   attackPower: 13
+  attackCooldown: 1

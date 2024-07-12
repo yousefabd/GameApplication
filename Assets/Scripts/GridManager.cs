@@ -13,6 +13,7 @@ public class GridManager : MonoBehaviour
     private Grid<Cell> gridMap;
 
     public static GridManager Instance { get; private set; }
+
     private void Awake()
     {
         Instance = this;

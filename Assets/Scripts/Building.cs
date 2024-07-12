@@ -11,6 +11,7 @@ public class Building : Entity, IDestructibleObject
 
     public event Action<Building> raiseCapacity;
 
+    public event Action OnDestroyed;
     public float HealthPoints { get; set; }
 
     private void Awake()

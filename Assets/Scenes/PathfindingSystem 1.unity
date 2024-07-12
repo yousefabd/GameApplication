@@ -6235,8 +6235,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testUnitSOList:
+  - {fileID: 11400000, guid: 6e3d28e20fdacc7468f903a5a9af3969, type: 2}
   - {fileID: 11400000, guid: f4456f7d8a2e1df4f8e1db0aa9a2f918, type: 2}
-  - {fileID: 11400000, guid: aac63c2b62365f4438c9a0939d30d88c, type: 2}
 --- !u!1 &492678729
 GameObject:
   m_ObjectHideFlags: 0
@@ -8333,7 +8333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde6c7bc02b1f074bb7cd0efb2efc778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingSO: {fileID: 0}
+  buildingSO: {fileID: 11400000, guid: 86b7c32625744ba4ea512d42cf73c73d, type: 2}
 --- !u!1 &1503427444
 GameObject:
   m_ObjectHideFlags: 0

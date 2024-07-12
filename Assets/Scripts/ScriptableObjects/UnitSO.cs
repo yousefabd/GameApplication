@@ -1,5 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
-[CreateAssetMenu(menuName = "ScriptableObjects/Unit")]
+[CreateAssetMenu(menuName ="ScriptableObjects/Unit")] 
+
 public class UnitSO : ScriptableObject
 {
     public Transform prefab;
@@ -9,6 +14,7 @@ public class UnitSO : ScriptableObject
     public Team team;
     public float interactionRadius;
     public float attackPower;
-
     public Unit unit { get { return prefab.GetComponent<Unit>(); } }
+    public float attackCooldown;
+    public SoldierType soldierType;
 }
