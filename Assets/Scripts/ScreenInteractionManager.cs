@@ -13,7 +13,8 @@ public class ScreenInteractionManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        selectionAreaTransform.gameObject.SetActive(false);
+        if(selectionAreaTransform != null )
+            selectionAreaTransform.gameObject.SetActive(false);
     }
     private void Update()
     {
@@ -25,7 +26,8 @@ public class ScreenInteractionManager : MonoBehaviour
             //left mouse button pressed
             //gridMap.GetValue(mousePosition).SetEntity(Entity.OBSTACLE);
             startPosition = UtilsClass.GetMouseWorldPosition();
-            selectionAreaTransform.gameObject.SetActive(true);
+            if(selectionAreaTransform!=null)
+                selectionAreaTransform.gameObject.SetActive(true);
         }
         if (Input.GetMouseButton(0))
         {
@@ -39,13 +41,17 @@ public class ScreenInteractionManager : MonoBehaviour
                 Mathf.Max(startPosition.x, currentMousePosition.x),
                 Mathf.Max(startPosition.y, currentMousePosition.y)
             );
-            selectionAreaTransform.position = lowerLeft;
-            selectionAreaTransform.localScale = upperRight - lowerLeft;
+            if (selectionAreaTransform != null)
+            {
+                selectionAreaTransform.position = lowerLeft;
+                selectionAreaTransform.localScale = upperRight - lowerLeft;
+            }
         }
         if (Input.GetMouseButtonUp(0))
         {
             //left mouse button released
-            selectionAreaTransform.gameObject.SetActive(false);
+            if(selectionAreaTransform != null)
+                selectionAreaTransform.gameObject.SetActive(false);
             OnAreaSelected?.Invoke(startPosition, mousePosition);
         }
         if (Input.GetMouseButtonDown(1))

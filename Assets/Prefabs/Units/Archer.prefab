@@ -101,7 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce386d40dd18e44789c3e99f025dac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
   unitSO: {fileID: 11400000, guid: 6e3d28e20fdacc7468f903a5a9af3969, type: 2}
   projectileSO: {fileID: 11400000, guid: e2f5af4566800084c9ad3c888f4ad7ed, type: 2}
 --- !u!4 &7725303985697905183 stripped

@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 public class Unit : Entity, IDestructibleObject
 {
-    [SerializeField] private float moveSpeed = 3f;
+    private float moveSpeed = 3f;
     [SerializeField] protected UnitSO unitSO;
     private PathFinder pathFinder;
     //State related variables
@@ -32,13 +32,17 @@ public class Unit : Entity, IDestructibleObject
     {
         team = unitSO.team;
         HealthPoints = unitSO.maxHealth;
+        moveSpeed = unitSO.moveSpeed;
     }
     protected virtual void Start()
     {
 
-        GridManager.Instance.WorldToGridPosition(transform.position, out currentGridPosition.I, out currentGridPosition.J);
+        GridManager.Instance?.WorldToGridPosition(transform.position, out currentGridPosition.I, out currentGridPosition.J);
         OnSpawn?.Invoke();
-        Player.Instance.OnAttacked += Damage;
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnAttacked += Damage;
+        }
     }
     private void Update()
     {
@@ -69,12 +73,15 @@ public class Unit : Entity, IDestructibleObject
         {
             currentPathIndex++;
             Indices previousPosition = currentGridPosition;
-            GridManager.Instance.WorldToGridPosition(
-                transform.position,
-                out currentGridPosition.I,
-                out currentGridPosition.J
-            );
-            GridManager.Instance.MoveEntity(previousPosition, currentGridPosition, this);
+            if (GridManager.Instance != null)
+            {
+                GridManager.Instance?.WorldToGridPosition(
+                    transform.position,
+                    out currentGridPosition.I,
+                    out currentGridPosition.J
+                );
+                GridManager.Instance?.MoveEntity(previousPosition, currentGridPosition, this);
+            }
             if (currentPathIndex == currentPath.Count)
             {
                 OnFinishedPath?.Invoke(this);
@@ -183,4 +190,12 @@ public class Unit : Entity, IDestructibleObject
     {
         return selected;
     }
+
+    public void SetSpeed(float newSpeed)
+    {
+        moveSpeed = newSpeed;
+    }
+
+    public float GetSpeed() 
+    {  return moveSpeed; }
 }

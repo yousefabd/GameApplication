@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 public enum SoldierType { SWORDSMAN,RANGER}
 public class Soldier : Unit
 {
@@ -17,6 +18,8 @@ public class Soldier : Unit
     public event Action<Vector3> OnNormalAttack;
     public event Action OnStartAttacking;
     public event Action OnRangedAttack;
+    public event Action<Vector3, float> OnAttack;
+    public event Action OnClearTarget;
     protected override void Awake()
     {
         base.Awake();
@@ -30,8 +33,11 @@ public class Soldier : Unit
     protected override void Start()
     {
         base.Start();
-        Player.Instance.OnSetTarget += Player_OnSetTarget;
-        Player.Instance.OnClearTarget += Player_OnClearTarget;
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnSetTarget += Player_OnSetTarget;
+            Player.Instance.OnClearTarget += Player_OnClearTarget;
+        }
         soldierAI = GetComponent<SoldierAI>(); 
         switch (soldierType)
         {
@@ -48,18 +54,18 @@ public class Soldier : Unit
     {
         if (IsSelected())
         {
+            OnClearTarget?.Invoke();
             currentTargetEnemy = null;
         }
     }
 
     private void Player_OnSetTarget(Entity target)
-    {
+    { 
         SetTarget(target);
     }
     public void SetTarget(Entity target)
     {
         currentTargetEnemy = target;
-        Debug.Log("target enemy has been set");
     }
     private void NormalAttack()
     {
@@ -68,24 +74,28 @@ public class Soldier : Unit
     }
     public void RangedAttack()
     {
+        ToIdle();
         WeaponProjectile weaponProjectile = WeaponProjectile.Throw(transform.position, projectileSO.prefab, GetTargetWorldPosition());
         OnRangedAttack?.Invoke();
     }
     private void Soldier_OnTakeAction()
     {
-        if(currentTargetEnemy!=null)
-            LookForTargets(currentTargetEnemy);
+        if (currentTargetEnemy != null)
+        {
+            if (LookForTargets(currentTargetEnemy))
+                OnStartAttacking?.Invoke();
+        }
     }
     public bool LookForTargets(Entity wantedTarget = null)
     {
         Collider2D[] collider2DArray = Physics2D.OverlapCircleAll(transform.position, attackRadius);
-        Debug.Log("looking for enemies");
+
         Entity closestEntity=null;
         float closestRange = float.MaxValue;
         foreach (Collider2D collider in collider2DArray)
         {
             Entity hitEntity = collider.GetComponent<Entity>();
-            if (hitEntity == this || (hitEntity is not Unit && hitEntity is not Building))
+            if (hitEntity == this || (hitEntity is not Unit && hitEntity is not Building && hitEntity is not TDCastle))
             {
                 continue;
             }
@@ -93,7 +103,6 @@ public class Soldier : Unit
             {
                 if ((wantedTarget.Equals(hitEntity)) && wantedTarget.GetTeam() != this.GetTeam())
                 {
-                    OnStartAttacking?.Invoke();
                     return true;
                 }
             }
@@ -120,12 +129,16 @@ public class Soldier : Unit
     {    
         OnNormalAttack?.Invoke(Vector2.up);
         float luckyPoints = (float) (random.NextDouble()*(attackDamage/4f));
-        Player.Instance.OnAttackCallback(currentTargetEnemy.transform.position, attackDamage+luckyPoints);
+        OnAttack?.Invoke(currentTargetEnemy.transform.position, attackDamage + luckyPoints);
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnAttackCallback(currentTargetEnemy.transform.position, attackDamage + luckyPoints);
+        }
     }
 
     public bool CanAttack(Vector3 standingPosition)
     {
-        return Vector3.Distance(currentTargetEnemy.transform.position, standingPosition) <= attackRadius;
+        return LookForTargets(currentTargetEnemy);
     }
 
     public bool HasTarget()

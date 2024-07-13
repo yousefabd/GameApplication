@@ -13,13 +13,13 @@ public class Character4DAnimator : MonoBehaviour
     private void Awake()
     {
         unit.OnSpawn += Unit_OnSpawn;
+        unit.OnMoveCell += Unit_OnMoveCell;
         animationManager = GetComponent<AnimationManager>();
         character4D = GetComponent<Character4D>();
         random = new System.Random();
     }
     private void Start()
     {
-        unit.OnMoveCell += Unit_OnMoveCell;
         unit.OnDestroyed += Unit_OnDie;
         unit.OnDamaged += Unit_OnDamaged;
         if (unit is Soldier)
@@ -29,7 +29,6 @@ public class Character4DAnimator : MonoBehaviour
             {
                 case SoldierType.SWORDSMAN:
                     (unit as Soldier).OnNormalAttack += Soldier_OnNormalAttack;
-                    Debug.Log("swordsman visual");
                     break;
                 case SoldierType.RANGER:
                     (unit as Soldier).OnRangedAttack += Soldier_OnRangedAttack;

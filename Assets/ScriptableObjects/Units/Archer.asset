@@ -16,6 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 62de5ca48be71564e8ce598303ded414, type: 3}
   unitName: Archer
   maxHealth: 90
+  moveSpeed: 2
   team: 1
   interactionRadius: 4
   attackPower: 0

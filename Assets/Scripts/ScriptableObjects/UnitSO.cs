@@ -11,6 +11,7 @@ public class UnitSO : ScriptableObject
     public Sprite icon;
     public string unitName;
     public float maxHealth;
+    public float moveSpeed;
     public Team team;
     public float interactionRadius;
     public float attackPower;
