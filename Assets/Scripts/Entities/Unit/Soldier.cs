@@ -158,4 +158,9 @@ public class Soldier : Unit
     {
         return soldierType;
     }
+
+    public void SetAttackDamage(float newAttackDamage)
+    {
+        attackDamage = newAttackDamage;
+    }
 }

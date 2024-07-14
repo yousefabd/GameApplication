@@ -27,6 +27,7 @@ public class Unit : Entity, IDestructibleObject
     public event Action OnDestroyed;
     public event Action <float>OnDamaged;
     public event Action OnTakeAction;
+    public event Action<float> OnMaxHealthChanged;
     public static event Action<Unit> OnFinishedPath;
     protected virtual void Awake()
     {
@@ -143,6 +144,8 @@ public class Unit : Entity, IDestructibleObject
     }
     public void Damage(Vector3 position, float value)
     {
+        if (currentUnitState == UnitState.DYING)
+            return;
         if (position == transform.position)
         {
             OnDamaged?.Invoke(value);
@@ -152,7 +155,8 @@ public class Unit : Entity, IDestructibleObject
                 ToIdle();
                 ToggleSelect(false);
                 //unsubscribe from event
-                Player.Instance.OnAttacked -= Damage;
+                if (Player.Instance != null) 
+                    Player.Instance.OnAttacked -= Damage;
                 currentUnitState = UnitState.DYING;
                 OnDestroyed?.Invoke();
             }
@@ -160,7 +164,8 @@ public class Unit : Entity, IDestructibleObject
     }
     public void Destruct()
     {
-        GridManager.Instance.SetEntity(null, currentGridPosition);
+        if(GridManager.Instance != null)
+            GridManager.Instance.SetEntity(null, currentGridPosition);
 
         Destroy(gameObject);
     }
@@ -198,4 +203,10 @@ public class Unit : Entity, IDestructibleObject
 
     public float GetSpeed() 
     {  return moveSpeed; }
+
+    public void SetMaxHealth(float newMaxHealth)
+    {
+        OnMaxHealthChanged?.Invoke(newMaxHealth);
+        HealthPoints = newMaxHealth;
+    }
 }

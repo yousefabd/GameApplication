@@ -9,13 +9,15 @@ public class TDCastle : Entity,IDestructibleObject
 
     public event Action<float> OnDamaged;
     public event Action OnDestroyed;
-
+    public event Action<int> OnGameOver;
+    public static TDCastle Instance { get; private set; }
     public float HealthPoints { get; set; }
 
     private void Awake()
     {
         HealthPoints = castleHealth;
         team = Team.HUMANS;
+        Instance = this;
     }
     private void Start()
     {
@@ -33,7 +35,13 @@ public class TDCastle : Entity,IDestructibleObject
     {
         if (position == transform.position)
         {
+            HealthPoints -= value;
             OnDamaged?.Invoke(value);
+            if(HealthPoints <= 0)
+            {
+                OnGameOver?.Invoke(12);
+                Debug.Log("game over");
+            }
         }
     }
 
