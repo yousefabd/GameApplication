@@ -6927,6 +6927,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slash: {fileID: 5150983674305852632, guid: b2427a01315dfa64790eb8e9bdc59255, type: 3}
+  towerSO: {fileID: 11400000, guid: 4ca985304e21b264286a79b01f398891, type: 2}
 --- !u!1 &1848137407
 GameObject:
   m_ObjectHideFlags: 0
