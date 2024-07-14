@@ -29,11 +29,23 @@ public class TDWaveManager : MonoBehaviour
     private WaveState waveState = WaveState.PLAYING;
     //events
     public event Action OnFinishedWave;
+    public event Action OnStartedWave;
     private void Awake()
     {
         Instance = this;
         currentWave = 1;
         OnSetGameDifficulty(GameDifficulty.EASY);
+    }
+    private void Start()
+    {
+        TDPlayer.Instance.OnNextWave += TDPlayer_OnNextWave;
+    }
+
+    private void TDPlayer_OnNextWave()
+    {
+        waveState = WaveState.PLAYING;
+        Time.timeScale = 1.0f;
+        OnStartedWave?.Invoke();
     }
 
     // Update is called once per frame
@@ -54,12 +66,13 @@ public class TDWaveManager : MonoBehaviour
     }
     public void NextWave()
     {
+        Debug.Log("finished Wave");
         OnFinishedWave?.Invoke();
         waveState = WaveState.FINISHED;
         currentWave++;
         currentWaveTimer += currentWaveTimer / (incrementFactor / 5f);
         currentUnitSpeed += currentUnitSpeed / (incrementFactor);
-        currentUnitSpawnCooldown -= (currentUnitSpawnCooldown / incrementFactor);
+        currentUnitSpawnCooldown -= (currentUnitSpawnCooldown / (incrementFactor/4f));
         currentUnitDamage += (currentUnitDamage / (incrementFactor / 5f));
         currentUnitHealthPoints += (currentUnitHealthPoints / (incrementFactor / 5f));
 
@@ -73,7 +86,7 @@ public class TDWaveManager : MonoBehaviour
             currentUnitSpeed = maxUnitSpeed;
         if (currentWaveTimer >= maxWaveTime)
             currentWaveTimer = maxWaveTime;
-
+        currentWaveTimerCount = 0f;
     }
     public void OnSetGameDifficulty(GameDifficulty difficulty)
     {
@@ -82,7 +95,7 @@ public class TDWaveManager : MonoBehaviour
             case GameDifficulty.EASY:
                 incrementFactor = 50f;
                 maxUnitHealthPoints = 1000f;
-                minUnitSpawnCooldown = 1f;
+                minUnitSpawnCooldown = 0.5f;
                 currentUnitSpawnCooldown = 5f;
                 maxUnitSpeed = 2.0f;
                 currentUnitSpeed = 1f;
@@ -92,7 +105,7 @@ public class TDWaveManager : MonoBehaviour
             case GameDifficulty.MEDIUM:
                 incrementFactor = 30f;
                 maxUnitHealthPoints = 2500f;
-                minUnitSpawnCooldown = 0.75f;
+                minUnitSpawnCooldown = 0.25f;
                 currentUnitSpawnCooldown = 3.5f;
                 maxUnitSpeed = 4.0f;
                 currentUnitSpeed = 2f;
@@ -102,7 +115,7 @@ public class TDWaveManager : MonoBehaviour
             case GameDifficulty.HARD:
                 incrementFactor = 10f;
                 maxUnitHealthPoints = 5000f;
-                minUnitSpawnCooldown = 0.25f;
+                minUnitSpawnCooldown = 0.05f;
                 currentUnitSpawnCooldown = 1.5f;
                 maxUnitSpeed = 6.0f;
                 currentUnitSpeed = 2.5f;

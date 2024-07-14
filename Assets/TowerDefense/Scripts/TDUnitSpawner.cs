@@ -31,6 +31,13 @@ public class TDUnitSpawner : MonoBehaviour
     {
         TDWaveManager.Instance.GetUnitVariables(out currentUnitSpeed, out currentUnitDamage, out maxSpawnCooldown, out currentUnitHealth);
         TDWaveManager.Instance.OnFinishedWave += WaveManager_OnFinishedWave;
+        TDWaveManager.Instance.OnStartedWave += WaveManager_OnStartedWave;
+    }
+
+    private void WaveManager_OnStartedWave()
+    {
+        currentSpawnState = UnitSpawnState.SPAWNING;
+        TDWaveManager.Instance.GetUnitVariables(out currentUnitSpeed, out currentUnitDamage, out maxSpawnCooldown, out currentUnitHealth);
     }
 
     private void WaveManager_OnFinishedWave()

@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffba350de75a0514ea72d9b9bae8b8c9, type: 3}
   m_Name: GoblinKnight
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  icon: {fileID: 0}
-  unitName: 
-  maxHealth: 0
-  moveSpeed: 0
-  team: 0
-  interactionRadius: 0
-  attackPower: 0
-  attackCooldown: 0
+  prefab: {fileID: 8241215476486690030, guid: 4746f820e349d30479de3f9db11eaf7f, type: 3}
+  icon: {fileID: 21300000, guid: 60a87bdc10825304981406cd405bc875, type: 3}
+  unitName: Goblin Knight
+  maxHealth: 200
+  moveSpeed: 2
+  team: 1
+  interactionRadius: 1.5
+  attackPower: 13
+  attackCooldown: 1
   soldierType: 0

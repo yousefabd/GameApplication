@@ -27,6 +27,9 @@ public class TDCurrencyManager : MonoBehaviour
     }
     private void UpdateVisual()
     {
+        if (currentCurrency > 999)
+            currencyText.fontSize = 36f;
+        else currencyText.fontSize = 50f;
         currencyText.text=currentCurrency.ToString();
     }
 }
