@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3358504622424668779}
   - component: {fileID: 8372652141631782887}
   m_Layer: 0
-  m_Name: FlagTower
+  m_Name: ArcherTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2135412131
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -70014004, guid: 65f8a1c741408b943bd1785dfd6f42d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

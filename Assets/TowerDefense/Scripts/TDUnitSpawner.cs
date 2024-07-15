@@ -16,6 +16,7 @@ public class TDUnitSpawner : MonoBehaviour
     private float currentUnitDamage;
     private float currentUnitHealth;
     private System.Random random;
+    private int currentUnitCount = 0;
     private enum UnitSpawnState { IDLE,SPAWNING}
     private UnitSpawnState currentSpawnState=UnitSpawnState.SPAWNING;
     public event Action<Unit> OnUnitSpawned;
@@ -53,7 +54,7 @@ public class TDUnitSpawner : MonoBehaviour
                 break;
             case UnitSpawnState.SPAWNING:
                 currentSpawnCooldown -= Time.deltaTime;
-                if (currentSpawnCooldown < 0)
+                if (currentSpawnCooldown < 0 &&!TDWaveManager.Instance.IsOver())
                 {
                     SpawnUnit();
                     currentSpawnCooldown = GetUnitSpawnCooldown();
@@ -63,9 +64,9 @@ public class TDUnitSpawner : MonoBehaviour
     }
     private void SpawnUnit()
     {
+        currentUnitCount++;
         Vector3 spawnPoint = WayPointPath.Instance.GetRandomPath(out List<Vector3> path);
         Transform unitTransform = Instantiate(unitSO.prefab, spawnPoint, Quaternion.identity);
-        unitTransform.localScale = new Vector3(0.6f,0.6f,1f);
         Unit unit = unitTransform.GetComponent<Unit>();
         unit.SetPath(path);
         unit.ToggleSelect(true);
@@ -81,6 +82,7 @@ public class TDUnitSpawner : MonoBehaviour
 
     private void Unit_OnDestroyed()
     {
+        currentUnitCount--;
         OnUnitDestroyed?.Invoke(currentUnitHealth);
     }
 
@@ -91,5 +93,9 @@ public class TDUnitSpawner : MonoBehaviour
     private float GetUnitSpawnCooldown()
     {
         return maxSpawnCooldown + ((((float)random.NextDouble()) * maxSpawnCooldown) - (maxSpawnCooldown / 2f));
+    }
+    public bool UnitsClear()
+    {
+        return currentUnitCount == 0;
     }
 }

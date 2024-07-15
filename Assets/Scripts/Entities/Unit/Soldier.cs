@@ -75,7 +75,7 @@ public class Soldier : Unit
     public void RangedAttack()
     {
         ToIdle();
-        WeaponProjectile weaponProjectile = WeaponProjectile.Throw(transform.position, projectileSO.prefab, GetTargetWorldPosition());
+        WeaponProjectile weaponProjectile = WeaponProjectile.Throw(transform.position, projectileSO.prefab, currentTargetEnemy,GetTeam());
         OnRangedAttack?.Invoke();
     }
     private void Soldier_OnTakeAction()

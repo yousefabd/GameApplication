@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ff819b6c227d754eba1def530e0efda, type: 3}
-  m_Name: FlagTower
+  m_Script: {fileID: 11500000, guid: 163697cd90c0e0347b539734f67090bd, type: 3}
+  m_Name: Flame
   m_EditorClassIdentifier: 
-  prefab: {fileID: 223545691422058628, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
-  towerName: Flag Tower
+  prefab: {fileID: 8089344304440559178, guid: 5733362f045edaa42baea9ff80334693, type: 3}
+  damage: 50
+  speed: 4
+  effectRadius: 1
+  projectileName: Flame
+  projectileType: 1

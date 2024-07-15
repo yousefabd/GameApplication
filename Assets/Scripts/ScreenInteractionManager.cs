@@ -5,6 +5,7 @@ using UnityEngine;
 public class ScreenInteractionManager : MonoBehaviour
 {
     private Vector3 startPosition;
+    private Vector3 mousePosition;
     [SerializeField] private Transform selectionAreaTransform;
     public static ScreenInteractionManager Instance { get; private set; }
     public event Action<Vector3> OnRightMouseButtonClicked;
@@ -19,7 +20,7 @@ public class ScreenInteractionManager : MonoBehaviour
     private void Update()
     {
         //debug
-        Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
+        mousePosition = UtilsClass.GetMouseWorldPosition();
         OnEntityHovered?.Invoke(GridManager.Instance.GetEntity(mousePosition));
         if (Input.GetMouseButtonDown(0))
         {
@@ -58,5 +59,9 @@ public class ScreenInteractionManager : MonoBehaviour
         {
             OnRightMouseButtonClicked?.Invoke(mousePosition);
         }
+    }
+    public Vector3 GetCurrentMousePosition()
+    {
+        return mousePosition;
     }
 }

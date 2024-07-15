@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 public class TDCurrencyManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI currencyText;
+    public static TDCurrencyManager Instance {  get; private set; }
     int currentCurrency = 0;
     private void Awake()
     {
+        Instance = this;
         UpdateVisual();
     }
     private void Start()
@@ -31,5 +34,9 @@ public class TDCurrencyManager : MonoBehaviour
             currencyText.fontSize = 36f;
         else currencyText.fontSize = 50f;
         currencyText.text=currentCurrency.ToString();
+    }
+    public bool CanBuy(int amount)
+    {
+        return amount <= currentCurrency;
     }
 }

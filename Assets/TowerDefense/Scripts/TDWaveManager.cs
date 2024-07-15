@@ -55,7 +55,7 @@ public class TDWaveManager : MonoBehaviour
         {
             case WaveState.PLAYING:
                 currentWaveTimerCount += Time.deltaTime;
-                if(currentWaveTimerCount > currentWaveTimer)
+                if(currentWaveTimerCount > currentWaveTimer && TDUnitSpawner.Instance.UnitsClear())
                 {
                     NextWave();
                 }
@@ -134,5 +134,9 @@ public class TDWaveManager : MonoBehaviour
     public int GetCurrentWave()
     {
         return currentWave;
+    }
+    public bool IsOver()
+    {
+        return currentWaveTimerCount > currentWaveTimer;
     }
 }

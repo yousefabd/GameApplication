@@ -11,12 +11,11 @@ public class TDTower : MonoBehaviour
     {
         Transform towerTransform=Instantiate(prefab,position,Quaternion.identity);
         TDTower tower = towerTransform.GetComponent<TDTower>();
-        tower.SpawnUnit();
         return tower;
     }
     public void SpawnUnit()
     {
         Transform unitTransform =Instantiate(unitSO.prefab,passenger.position,Quaternion.identity);
-        unitTransform.localScale = new Vector3(0.6f, 0.6f, 1f);
+        unitTransform.AddComponent<TDDefender>();
     }
 }
