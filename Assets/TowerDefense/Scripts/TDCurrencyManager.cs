@@ -39,4 +39,9 @@ public class TDCurrencyManager : MonoBehaviour
     {
         return amount <= currentCurrency;
     }
+    public void Buy(int amount)
+    {
+        currentCurrency -= amount;
+        UpdateVisual();
+    }
 }

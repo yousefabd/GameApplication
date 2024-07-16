@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ff819b6c227d754eba1def530e0efda, type: 3}
-  m_Name: WizardTower
+  m_Script: {fileID: 11500000, guid: 163697cd90c0e0347b539734f67090bd, type: 3}
+  m_Name: SniperArrow
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6370663784656929748, guid: 6b5d632a02d4877419a3893ce4761fcb, type: 3}
-  towerName: Wizard Tower
-  cost: 5500
+  prefab: {fileID: 1990714058276697434, guid: 37ac3c961429c0f43b829e8e2aa8e5fa, type: 3}
+  damage: 20
+  speed: 70
+  effectRadius: 0.1
+  projectileName: Sniper Arrow
+  projectileType: 2

@@ -12,6 +12,7 @@ public class TDPlayer : MonoBehaviour
     public event Action OnNextWave;
     public event Action<TowerSO> OnSelectTower;
     public event Action<TowerSO,Vector3> OnBuildTower;
+    public event Action OnDisplayShop;
     private float interactionRadius = 0.2f;
     private float damageValue = 20f;
     private TowerSO currentSelectedTower;
@@ -22,6 +23,14 @@ public class TDPlayer : MonoBehaviour
     private void Start()
     {
         ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
+        
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TDCurrencyManager.Instance.Buy(-5000);
+        }
     }
 
     private void ScreenInteractionManager_OnAreaSelected(Vector3 arg1, Vector3 mousePosition)
@@ -43,6 +52,7 @@ public class TDPlayer : MonoBehaviour
         if(collider.TryGetComponent(out TDTowerBase towerBase))
         {
             OnBuildTower?.Invoke(currentSelectedTower,towerBase.transform.position);
+            TDCurrencyManager.Instance.Buy(currentSelectedTower.cost);
             currentSelectedTower = null;
             return true;
         }
@@ -67,6 +77,7 @@ public class TDPlayer : MonoBehaviour
     public void DisplayShop()
     {
         Debug.Log("Display Shop");
+        OnDisplayShop?.Invoke();
     }
 
     public void NextWave()

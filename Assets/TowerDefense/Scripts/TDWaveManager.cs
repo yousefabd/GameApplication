@@ -34,7 +34,7 @@ public class TDWaveManager : MonoBehaviour
     {
         Instance = this;
         currentWave = 1;
-        OnSetGameDifficulty(GameDifficulty.EASY);
+        OnSetGameDifficulty(GameDifficulty.MEDIUM);
     }
     private void Start()
     {

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 223545691422058628, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
   towerName: Archer Tower
+  cost: 200

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,14 +9,16 @@ public class TowersUI : MonoBehaviour
 {
     [SerializeField] private Button archer;
     [SerializeField] private TowerSO archerSO;
+    [SerializeField] private TextMeshProUGUI archerCost;
     [SerializeField] private Button wizard;
     [SerializeField] private TowerSO wizardSO;
-    private int archerCost;
-    private int wizardCost;
+    [SerializeField] private TextMeshProUGUI wizardCost;
+    [SerializeField] private Button sniper;
+    [SerializeField] private TowerSO sniperSO;
+    [SerializeField] private TextMeshProUGUI sniperCost;
     private void Start()
     {
-        archer.interactable = TDCurrencyManager.Instance.CanBuy(archerCost);
-        wizard.interactable = TDCurrencyManager.Instance.CanBuy(wizardCost);
+        SetCostText();
         archer.onClick.AddListener(() =>
         {
             TDPlayer.Instance.SelectTower(archerSO);
@@ -24,12 +27,25 @@ public class TowersUI : MonoBehaviour
         {
             TDPlayer.Instance.SelectTower(wizardSO);
         });
-        archerCost = 100;
-        wizardCost = 5000;
+        sniper.onClick.AddListener(() =>
+        {
+            TDPlayer.Instance.SelectTower(sniperSO);
+        });
+    }
+    private void SetCostText()
+    {
+        archerCost.text = archerSO.cost.ToString();
+        wizardCost.text = wizardSO.cost.ToString();
+        sniperCost.text = sniperSO.cost.ToString();
     }
     private void Update()
     {
-        archer.interactable = TDCurrencyManager.Instance.CanBuy(archerCost);
-        wizard.interactable = TDCurrencyManager.Instance.CanBuy(wizardCost);
+        UpdateButton();
+    }
+    private void UpdateButton()
+    {
+        archer.interactable = TDCurrencyManager.Instance.CanBuy(archerSO.cost);
+        wizard.interactable = TDCurrencyManager.Instance.CanBuy(wizardSO.cost);
+        sniper.interactable = TDCurrencyManager.Instance.CanBuy(sniperSO.cost);
     }
 }

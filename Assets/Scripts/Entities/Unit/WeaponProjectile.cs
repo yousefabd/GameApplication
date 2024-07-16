@@ -3,16 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-public enum ProjectileType { SINGLE_TARGET, MULTI_TARGET}
+public enum ProjectileType { SINGLE_TARGET, MULTI_TARGET, INCREASE_BY_DISTANCE}
 public class WeaponProjectile : MonoBehaviour
 {
     [SerializeField] private ProjectileSO projectileSO;
     float moveSpeed;
     float attackDamage;
+    private float timePassed = 0f;
     static float yOffset = 0.5f;
-    public float effectRadius;
+    private float effectRadius;
     public ProjectileType projectileType;
-    public Team team;
+    private Team team;
     Vector3 targetPosition;
     Entity target;
     System.Random random;
@@ -27,6 +28,7 @@ public class WeaponProjectile : MonoBehaviour
     }
     private void Update()
     {
+        timePassed += Time.deltaTime;
         if (Vector3.Distance(transform.position,targetPosition)<=0.05f)
         {
             switch (projectileType)
@@ -36,6 +38,9 @@ public class WeaponProjectile : MonoBehaviour
                     break;
                 case ProjectileType.MULTI_TARGET:
                     MultiAttack();
+                    break;
+                case ProjectileType.INCREASE_BY_DISTANCE:
+                    IncreaseByDistanceAttack();
                     break;
             }
         }
@@ -96,6 +101,12 @@ public class WeaponProjectile : MonoBehaviour
         }
         if(reachedTarget || Vector3.Distance(transform.position, targetPosition) <= 0.05f)
             Destroy(gameObject);
+    }
+
+    private void IncreaseByDistanceAttack()
+    {
+        attackDamage *= timePassed*60f;
+        Attack();
     }
     public void RotateToTarget()
     {

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8089344304440559178, guid: 5733362f045edaa42baea9ff80334693, type: 3}
   damage: 50
-  speed: 4
+  speed: 7
   effectRadius: 1
   projectileName: Flame
   projectileType: 1

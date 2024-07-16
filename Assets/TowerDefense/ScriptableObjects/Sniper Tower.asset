@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ff819b6c227d754eba1def530e0efda, type: 3}
-  m_Name: WizardTower
+  m_Name: Sniper Tower
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6370663784656929748, guid: 6b5d632a02d4877419a3893ce4761fcb, type: 3}
-  towerName: Wizard Tower
-  cost: 5500
+  prefab: {fileID: 685828066349937225, guid: 0381933ae8fdd2846b48c58c5de69ed4, type: 3}
+  towerName: Sniper Tower
+  cost: 9500

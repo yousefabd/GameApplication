@@ -39,7 +39,7 @@ public class TDCastle : Entity,IDestructibleObject
             OnDamaged?.Invoke(value);
             if(HealthPoints <= 0)
             {
-                OnGameOver?.Invoke(12);
+                OnGameOver?.Invoke(TDWaveManager.Instance.GetCurrentWave());
                 Debug.Log("game over");
             }
         }
@@ -50,4 +50,19 @@ public class TDCastle : Entity,IDestructibleObject
         OnDestroyed?.Invoke();
         Destroy(gameObject);
     }
+
+    public bool Repair(int amount)
+    {
+        if (HealthPoints < castleHealth)
+        {
+            Damage(transform.position, -1.0f * amount);
+            if(HealthPoints > castleHealth)
+            {
+                HealthPoints = castleHealth;
+            }
+            return true;
+        }
+        return false;
+    }
+
 }
