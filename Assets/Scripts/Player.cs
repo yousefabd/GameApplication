@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
         Instance = this;
         selectedUnits = new List<Unit>();
         pathFinder = new PathFinder();
-        pickedTeam = Team.GOBLINS;
+        pickedTeam = Team.HUMANS;
     }
     private void Start()
     {

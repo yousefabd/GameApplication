@@ -6236,7 +6236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   testUnitSOList:
   - {fileID: 11400000, guid: f3687c1ea11ea3944924f82e4f4a903e, type: 2}
-  - {fileID: 11400000, guid: f4456f7d8a2e1df4f8e1db0aa9a2f918, type: 2}
+  - {fileID: 11400000, guid: f3687c1ea11ea3944924f82e4f4a903e, type: 2}
 --- !u!1 &492678729
 GameObject:
   m_ObjectHideFlags: 0
