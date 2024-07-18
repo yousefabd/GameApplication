@@ -50,9 +50,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-        }
     }
     private List<List<Vector3>> FindMultiplePaths(List<Unit> units, Vector3 targetWorldPosition)
     {

@@ -3,98 +3,73 @@ using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
 {
+    //singleton pattern
     public static BuildingManager Instance { get; private set; }
-    private Camera mainCamera;
+
     [SerializeField] private List<BuildingSO> buildingSOList;
+
+    private Camera mainCamera;
     private Building building;
-    Cell[,] gridArray;
     private List<Cell> BuildingCells = new List<Cell>();
     private Transform visualTransform;
-    bool tryfun;
+    private bool builder;
+
     private void Awake()
     {
         Instance = this;
     }
+
     private void Start()
     {
 
         mainCamera = Camera.main;
     }
+
     private void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.E))
+     if(builder)
         {
-            BuildingSO buildingSO = buildingSOList[0];
-            building = buildingSO.building;
-            visualTransform = building.SpawnForCheck(GetMouseWorldPosition());
-            tryfun = true; // Set tryfun to true here
-            Debug.Log(visualTransform);
+            UIHelper(building.buildingSO);
         }
-        if (tryfun && visualTransform != null)
+    }
+
+    // Functionality for UI
+    public void UIHelper(BuildingSO buildingSO)
+    {
+        builder = true;
+        building = buildingSO.building;
+        visualTransform = building.SpawnForCheck(GetMouseWorldPosition());
+        if (visualTransform != null)
         {
             visualTransform.position = GetMouseWorldPosition();
             building.CheckAndSpawn(visualTransform);
-        }
+            builder = false;
+            building = null;
+        }else
+        builder = false;
+        building = null;
+       
     }
+    
+    //Mouse position tracking
     private Vector3 GetMouseWorldPosition()
     {
         Vector3 mouseScreenPosition = Input.mousePosition;
-        mouseScreenPosition.z = mainCamera.nearClipPlane; // Ensure the Z position is set correctly
+        mouseScreenPosition.z = mainCamera.nearClipPlane; 
         Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(mouseScreenPosition);
-        mouseWorldPosition.z = 0f; // Set Z to 0 to align with 2D plane
+        mouseWorldPosition.z = 0f; 
         return mouseWorldPosition;
     }
-
-    /*public void Build(Cell cell, int width, int height, Building building)
+    public void Check(int I, int J, bool[,] Visited, Building instantiatedBuilding, out bool safe)
     {
-        Debug.Log(building);
-        Debug.Log(cell);
-        int I, J;
-        cell.GetIndices(out I, out J);
-        Debug.Log(I + J);
-        for (int i = I; i <= (I + width); i++)
-        {
-            for (int j = J; j <= (J + height); j++)
-            {
-                Cell wantedCell = GridManager.Instance.GetValue(i, j);
-                wantedCell.SetEntity(building);
-            }
-        }
-        return;
-    }*/
-    /*public bool isOccupied(Cell cell, int width, int height)                       
-    {
-        int I, J;
-        cell.GetIndices(out I, out J);
-
-        for (int i = I; i <= (I + width); i++)
-        {
-            for (int j = J; j <= (J + height); j++)
-            {
-
-                Cell wantedCell = GridManager.Instance.GetValue(i, j);
-                if (wantedCell.IsOccupied())
-                {
-                    return false;
-                }
-
-            }
-        }
-        return true;
-    }*/
-
-    public void BuildAfterCheck(Building instantiatedBuilding)
-    {
-        for (int i = 0; i < BuildingCells.Count; i++)
-        {
-            BuildingCells[i].SetEntity(instantiatedBuilding);
-        }
-        BuildingCells.Clear();
+        safe = true;
+        instantiatedBuilding.buildingSO.NeighborCells.Clear();
+        RecursiveCheck(I,J,Visited,instantiatedBuilding, out safe);
     }
+    //recursively checking that the current building we want to build is safe through overlapping collider with map and other game objects
+    // and adds all the surrounding cells into neighbor cells
     public void RecursiveCheck(int I, int J, bool[,] Visited, Building instantiatedBuilding, out bool safe)
     {
-        Debug.Log("inside recursion");
         safe = true;
         if (I < 0 || J < 0 || I >= GridManager.Instance.GetWidth() || J >= GridManager.Instance.GetHeight() || Visited[I, J])
         {
@@ -103,10 +78,8 @@ public class BuildingManager : MonoBehaviour
         }
 
         Visited[I, J] = true;
-        Debug.Log("inside recursion 2");
         // Function to check if cell is overlapping with building collider
         Collider2D collider = GridManager.Instance.Overlap(new Indices(I, J));
-        Debug.Log("collider is " + collider);
         if (collider != null)
         {
             collider.TryGetComponent<Entity>(out Entity entity);
@@ -136,6 +109,16 @@ public class BuildingManager : MonoBehaviour
             Debug.Log("fixed");
             return;
         }
+    }
+
+    //setting cells to house the entity
+    public void BuildAfterCheck(Building instantiatedBuilding)
+    {
+        for (int i = 0; i < BuildingCells.Count; i++)
+        {
+            BuildingCells[i].SetEntity(instantiatedBuilding);
+        }
+        BuildingCells.Clear();
     }
 
 }
