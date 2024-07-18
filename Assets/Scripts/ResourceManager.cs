@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Resource;
 public class ResourceManager : MonoBehaviour
 {
 
@@ -10,6 +11,8 @@ public class ResourceManager : MonoBehaviour
 
     private Dictionary<ResourceTypeSO, int> resourceAmountDictionary;
     private ResourceTypeListSO resourceTypeList;
+
+  
 
     private void Awake()
     {
@@ -46,6 +49,23 @@ public class ResourceManager : MonoBehaviour
         return resourceAmountDictionary[resourceType];
 
     }
+    public int GetGoldAmount()
+    {
+        return resourceAmountDictionary[resourceTypeList.list[0]];
+
+    }
+    public int GetWoodAmount()
+    {   
+        return resourceAmountDictionary[resourceTypeList.list[1]];
+
+    }
+
+    public int GetStoneAmount()
+    {
+        return resourceAmountDictionary[resourceTypeList.list[2]];
+
+    }
+
 }
 
 
