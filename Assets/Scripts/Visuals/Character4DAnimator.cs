@@ -12,19 +12,38 @@ public class Character4DAnimator : MonoBehaviour
     private System.Random random;
     private void Awake()
     {
-        character4D = GetComponent<Character4D>();
-        animationManager = GetComponent<AnimationManager>();
-        unit.OnMoveCell += Unit_OnMoveCell;
         unit.OnSpawn += Unit_OnSpawn;
-        unit.OnDie += Unit_OnDie;
-        unit.OnDamaged += Unit_OnDamaged;
+        unit.OnMoveCell += Unit_OnMoveCell;
+        animationManager = GetComponent<AnimationManager>();
+        character4D = GetComponent<Character4D>();
         random = new System.Random();
+    }
+    private void Start()
+    {
+        unit.OnDestroyed += Unit_OnDie;
+        unit.OnDamaged += Unit_OnDamaged;
         if (unit is Soldier)
         {
-            (unit as Soldier).OnSoldierAttack += Soldier_OnSoldierAttack;
+            SoldierType soldierType = (unit as Soldier).GetSoldierType();
+            switch (soldierType)
+            {
+                case SoldierType.SWORDSMAN:
+                    (unit as Soldier).OnNormalAttack += Soldier_OnNormalAttack;
+                    break;
+                case SoldierType.RANGER:
+                    (unit as Soldier).OnRangedAttack += Soldier_OnRangedAttack;
+                    break;
+
+            }
+
         }
     }
-    private void Soldier_OnSoldierAttack(Vector3 direction)
+    private void Soldier_OnRangedAttack()
+    {
+        animationManager.ShotBow();
+    }
+
+    private void Soldier_OnNormalAttack(Vector3 direction)
     {
         int attackAnimation = random.Next(2);
         switch (attackAnimation)

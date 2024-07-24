@@ -21,8 +21,5 @@ MonoBehaviour:
   resourceGeneratorData:
     TimerMax: 0
     ResourceType: 0
-  unitSpawner: 1
-  unitGenerationData: []
-  unitEvolver: 0
-  defenseTower: 0
-  baseBuilding: 0
+  unitSpawner: 0
+  units: []

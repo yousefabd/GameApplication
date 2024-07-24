@@ -3,8 +3,7 @@ using UnityEngine;
 public class SelectedVisual : MonoBehaviour
 {
     [SerializeField] private Transform entity;
-
-    private void Start()
+    private void Awake()
     {
         Unit unit = entity.GetComponent<Unit>();
         unit.OnSelect += Unit_OnSelect;

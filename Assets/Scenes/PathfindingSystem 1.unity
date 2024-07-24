@@ -6184,7 +6184,7 @@ Transform:
   m_GameObject: {fileID: 139941488}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.6291362, y: 0.93657637, z: -0.0075558187}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6235,8 +6235,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testUnitSOList:
-  - {fileID: 11400000, guid: f4456f7d8a2e1df4f8e1db0aa9a2f918, type: 2}
-  - {fileID: 11400000, guid: aac63c2b62365f4438c9a0939d30d88c, type: 2}
+  - {fileID: 11400000, guid: f3687c1ea11ea3944924f82e4f4a903e, type: 2}
+  - {fileID: 11400000, guid: f3687c1ea11ea3944924f82e4f4a903e, type: 2}
 --- !u!1 &492678729
 GameObject:
   m_ObjectHideFlags: 0
@@ -8333,7 +8333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde6c7bc02b1f074bb7cd0efb2efc778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingSO: {fileID: 0}
+  buildingSO: {fileID: 11400000, guid: 86b7c32625744ba4ea512d42cf73c73d, type: 2}
 --- !u!1 &1503427444
 GameObject:
   m_ObjectHideFlags: 0

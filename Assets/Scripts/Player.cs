@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
         Instance = this;
         selectedUnits = new List<Unit>();
         pathFinder = new PathFinder();
-        pickedTeam = Team.GOBLINS;
+        pickedTeam = Team.HUMANS;
     }
     private void Start()
     {
@@ -50,6 +50,9 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+        }
     }
     private List<List<Vector3>> FindMultiplePaths(List<Unit> units, Vector3 targetWorldPosition)
     {
@@ -95,7 +98,6 @@ public class Player : MonoBehaviour
         else
         {
             StartAttack(targetPosition, target);
-            Debug.Log("Starting attack");
         }
     }
     private void Walk(Vector3 targetWorldPosition)
@@ -131,6 +133,11 @@ public class Player : MonoBehaviour
             for (int i = 0; i < soldierPaths.Count; i++)
             {
                 List<Vector3> soldierPath = new List<Vector3>();
+                if ((soldiers[i] as Soldier).CanAttack(soldiers[i].transform.position))
+                {
+                    soldiers[i].SetPath(soldierPath);
+                    continue;
+                }
                 for (int j = 0; j < soldierPaths[i].Count; j++)
                 {
 
