@@ -9,7 +9,8 @@ public class Building : Entity, IDestructibleObject
 
     public event Action<float> OnDamaged;
     static event Action<Building> built;
-    
+    public event Action OnDestroyed;
+
     public float HealthPoints { get; set; }
 
     int processCompletion;
