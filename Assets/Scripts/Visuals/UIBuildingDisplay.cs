@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIBuildingDisplay : MonoBehaviour
 {
     public static UIBuildingDisplay Instance;
+    [SerializeField] private Transform UIParent;
+    [SerializeField] private GameObject UIButton;
 
     private void Awake()
     {
@@ -18,13 +20,15 @@ public class UIBuildingDisplay : MonoBehaviour
     {
         createButtons();
     }
-
+        
     void createButtons()
     {
         for (int i = 0; i < buildingsList.buildingSOList.Count; i++)
         {
             BuildingSO buildingSO = buildingsList.buildingSOList[i];
-            GameObject buttonInstance = Instantiate(buildingSO.buildingPrefab.gameObject);
+            UIButton.transform.GetChild(0).GetComponent<Image>().sprite = buildingSO.buildingSprite;
+            UIButton.transform.GetComponent<Image>().sprite = null;
+            GameObject buttonInstance = Instantiate(UIButton, UIParent);
             Button button = buttonInstance.AddComponent<Button>();
             button.onClick.AddListener(() => BuildingManager.Instance.UIHelper(buildingSO));
         }

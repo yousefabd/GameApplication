@@ -14,14 +14,11 @@ public class Building : Entity, IDestructibleObject
 
     int processCompletion;
 
-    private void Awake()
-    {
-        //setting the Building health points
-        HealthPoints = buildingSO.health;
-    }
+   
 
     private void Start()
     {
+        HealthPoints = buildingSO.health;
         built?.Invoke(this);
         HealthPoints = 0;
 
