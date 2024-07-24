@@ -31,7 +31,8 @@ public class Cell
         GridManager.Instance.UpdateValues();
 
     }
-    public Unit SpawnUnit(UnitSO characterSO,Vector3 position)
+    //this method is temporarily here, it should exist in the building class
+    public Unit SpawnUnit(UnitSO characterSO, Vector3 position)
     {
         if (entity != null)
         {

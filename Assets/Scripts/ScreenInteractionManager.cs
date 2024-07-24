@@ -5,7 +5,6 @@ using UnityEngine;
 public class ScreenInteractionManager : MonoBehaviour
 {
     private Vector3 startPosition;
-    private Vector3 mousePosition;
     [SerializeField] private Transform selectionAreaTransform;
     public static ScreenInteractionManager Instance { get; private set; }
     public event Action<Vector3> OnRightMouseButtonClicked;
@@ -14,21 +13,19 @@ public class ScreenInteractionManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        if(selectionAreaTransform != null )
-            selectionAreaTransform.gameObject.SetActive(false);
+        selectionAreaTransform.gameObject.SetActive(false);
     }
     private void Update()
     {
         //debug
-        mousePosition = UtilsClass.GetMouseWorldPosition();
+        Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
         OnEntityHovered?.Invoke(GridManager.Instance.GetEntity(mousePosition));
         if (Input.GetMouseButtonDown(0))
         {
             //left mouse button pressed
             //gridMap.GetValue(mousePosition).SetEntity(Entity.OBSTACLE);
             startPosition = UtilsClass.GetMouseWorldPosition();
-            if(selectionAreaTransform!=null)
-                selectionAreaTransform.gameObject.SetActive(true);
+            selectionAreaTransform.gameObject.SetActive(true);
         }
         if (Input.GetMouseButton(0))
         {
@@ -42,26 +39,18 @@ public class ScreenInteractionManager : MonoBehaviour
                 Mathf.Max(startPosition.x, currentMousePosition.x),
                 Mathf.Max(startPosition.y, currentMousePosition.y)
             );
-            if (selectionAreaTransform != null)
-            {
-                selectionAreaTransform.position = lowerLeft;
-                selectionAreaTransform.localScale = upperRight - lowerLeft;
-            }
+            selectionAreaTransform.position = lowerLeft;
+            selectionAreaTransform.localScale = upperRight - lowerLeft;
         }
         if (Input.GetMouseButtonUp(0))
         {
             //left mouse button released
-            if(selectionAreaTransform != null)
-                selectionAreaTransform.gameObject.SetActive(false);
+            selectionAreaTransform.gameObject.SetActive(false);
             OnAreaSelected?.Invoke(startPosition, mousePosition);
         }
         if (Input.GetMouseButtonDown(1))
         {
             OnRightMouseButtonClicked?.Invoke(mousePosition);
         }
-    }
-    public Vector3 GetCurrentMousePosition()
-    {
-        return mousePosition;
     }
 }

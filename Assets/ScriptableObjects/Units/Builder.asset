@@ -15,10 +15,7 @@ MonoBehaviour:
   prefab: {fileID: 7172290462020704586, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
   icon: {fileID: 21300000, guid: 9bdae4fc5be7494499a16ef1cc8367b1, type: 3}
   unitName: Builder
-  maxHealth: 50
-  moveSpeed: 3
+  maxHealth: 100
   team: 0
   interactionRadius: 1
   attackPower: 0
-  attackCooldown: 0
-  soldierType: 0

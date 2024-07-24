@@ -22,11 +22,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7852734560349845199, guid: 28bc75e43dd53dc4ca37cbb25d8e788d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7852734560349845199, guid: 28bc75e43dd53dc4ca37cbb25d8e788d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7852734560349845199, guid: 28bc75e43dd53dc4ca37cbb25d8e788d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -210,8 +210,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce386d40dd18e44789c3e99f025dac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 3
   unitSO: {fileID: 11400000, guid: aac63c2b62365f4438c9a0939d30d88c, type: 2}
-  projectileSO: {fileID: 0}
+  attackCoolDown: 1
 --- !u!114 &6927493758793592161
 MonoBehaviour:
   m_ObjectHideFlags: 0

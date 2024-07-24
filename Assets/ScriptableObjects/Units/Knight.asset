@@ -16,9 +16,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: d3e0e6a338dc6db439ecca5cba611001, type: 3}
   unitName: Knight
   maxHealth: 200
-  moveSpeed: 2
   team: 1
   interactionRadius: 1.5
   attackPower: 13
-  attackCooldown: 1
-  soldierType: 0

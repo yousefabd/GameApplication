@@ -21,28 +21,12 @@ public class HealthBarVisual : MonoBehaviour
             maxHealth = destructibleObject.HealthPoints;
             currentHealth = maxHealth;
             destructibleObject.OnDamaged += DestructibleObject_OnDamaged;
-            if(destructibleObject is Unit)
-            {
-                (destructibleObject as Unit).OnMaxHealthChanged += HealthBarVisual_OnMaxHealthChanged;
-            }
         }
-    }
-
-    private void HealthBarVisual_OnMaxHealthChanged(float newMaxHealth)
-    {
-        maxHealth = newMaxHealth;
-        currentHealth = newMaxHealth;
-        UpdateVisual();
     }
 
     private void DestructibleObject_OnDamaged(float value)
     {
         currentHealth -= value;
-        UpdateVisual();
-    }
-
-    private void UpdateVisual()
-    {
         health.fillAmount = (currentHealth / maxHealth);
     }
 }
