@@ -8,6 +8,12 @@ public class UIManager : MonoBehaviour
 
     private bool scrollToggle=false;
 
+    public static UIManager Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         if (!scrollToggle)

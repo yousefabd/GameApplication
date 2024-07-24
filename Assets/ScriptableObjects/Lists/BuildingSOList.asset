@@ -12,5 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3566b08ca371bb141b8db86c0c5cf036, type: 3}
   m_Name: BuildingSOList
   m_EditorClassIdentifier: 
-  buildingSO: {fileID: 0}
-  buildingSOList: []
+  buildingSOList:
+  - {fileID: 11400000, guid: 925411279747028449a2622fb10b048d, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
+  - {fileID: 11400000, guid: b9f017ed7be52d54ab9851df8f48157c, type: 2}
