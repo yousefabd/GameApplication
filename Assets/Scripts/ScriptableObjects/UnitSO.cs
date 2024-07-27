@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 [CreateAssetMenu(menuName ="ScriptableObjects/Unit")] 
 
@@ -18,4 +19,5 @@ public class UnitSO : ScriptableObject
     public Unit unit { get { return prefab.GetComponent<Unit>(); } }
     public float attackCooldown;
     public SoldierType soldierType;
+
 }

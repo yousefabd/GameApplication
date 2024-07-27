@@ -126,6 +126,7 @@ public class GridManager : MonoBehaviour
 <<<<<<< Updated upstream
     public void MoveEntity(Indices oldPosition, Indices newPosition, Entity entity)
 =======
+
    
     public void MoveEntity(Indices oldPosition,Indices newPosition,Entity entity)
 >>>>>>> Stashed changes

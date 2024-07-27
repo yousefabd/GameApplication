@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -8,6 +9,8 @@ using UnityEditor;
 using Unity.VisualScripting;
 using System;
 >>>>>>> Stashed changes
+
+
 
 public class TileAutomata : MonoBehaviour
 {
@@ -46,20 +49,13 @@ public class TileAutomata : MonoBehaviour
     public float decorationChance = 0.0001f;
 
     [Header("Gold Settings")]
-    public Sprite goldSprite;
     public GameObject goldPrefab;
     public float goldChance = 0.1f;
     private List<Entity> goldInstances = new List<Entity>();
 
     [Header("Wood Settings")]
-    public Sprite woodSprite;
     public GameObject woodPrefab;
     public float woodChance = 0.1f;
-    private List<Sprite> woodInstances = new List<Sprite>();
-    [Header("Rock Settings")]
-    public Sprite rockSprite;
-    public float rockChance = 0.1f;
-    private List<Sprite> rockInstances = new List<Sprite>();
     private List<Entity> woodInstances = new List<Entity>();
 
     [Header("Stone Settings")]
@@ -153,30 +149,10 @@ public class TileAutomata : MonoBehaviour
                 if (terrainMap[x, y] == 1)
                 {
                     topMap.SetTile(position, topTile);
-                    //if (grid != null)
-                    //{
-                    //    // It's safe to access members of grid here
-                    //    //grid.GetValue(x, y).SetEntity(Entity.SAFE);
-                    //}
-                    if (grid != null)
-                    {
-                        // It's safe to access members of grid here
-                        grid.GetValue(x, y).SetEntity(null);
-                    }
                 }
                 else
                 {
                     botMap.SetTile(position, botTile);
-                    //if (grid != null)
-                    //{
-                    //    // It's safe to access members of grid here
-                    //    //grid.GetValue(x, y).SetEntity(Entity.OBSTACLE);
-                    //}
-                    if (grid != null)
-                    {
-                        // It's safe to access members of grid here
-                        //d.GetValue(x, y).SetEntity(test);
-                    }
                 }
             }
         }
@@ -189,7 +165,6 @@ public class TileAutomata : MonoBehaviour
         {
             for (int y = 0; y < height / 2; y++)
             {
-                int cell = Random.Range(1, 101) < iniChance ? 1 : 0;
                 int cell = UnityEngine.Random.Range(1, 101) < iniChance ? 1 : 0;
                 terrainMap[x, y] = cell;
                 terrainMap[width - x - 1, y] = cell;
@@ -199,13 +174,11 @@ public class TileAutomata : MonoBehaviour
         }
     }
 
-
     public int[,] genTilePos(int[,] oldMap)
     {
         int[,] newMap = new int[width, height];
         int neighb;
         BoundsInt myB = new BoundsInt(-1, -1, 0, 3, 3, 1);
-
 
         for (int x = 0; x < width; x++)
         {
@@ -228,32 +201,16 @@ public class TileAutomata : MonoBehaviour
                 if (oldMap[x, y] == 1)
                 {
                     if (neighb < deathLimit) newMap[x, y] = 0;
-
-                    else
-                    {
-                        newMap[x, y] = 1;
-
-                    }
                     else newMap[x, y] = 1;
                 }
 
                 if (oldMap[x, y] == 0)
                 {
                     if (neighb > birthLimit) newMap[x, y] = 1;
-
-                    else
-                    {
-                        newMap[x, y] = 0;
-                    }
                     else newMap[x, y] = 0;
                 }
-
             }
-
         }
-
-
-
         return newMap;
     }
 
@@ -274,12 +231,10 @@ public class TileAutomata : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 Vector3Int position = new Vector3Int(-x + width / 2, -y + height / 2, 0);
-                if (terrainMap[x, y] == 0 && Random.value < decorationChance)
                 if (terrainMap[x, y] == 0 && UnityEngine.Random.value < decorationChance)
                 {
                     decorationMap.SetTile(position, lutosLeafTile);
                 }
-                else if (terrainMap[x, y] == 1 && Random.value < decorationChance)
                 else if (terrainMap[x, y] == 1 &&   UnityEngine.Random.value < decorationChance)
                 {
                     decorationMap.SetTile(position, flowerTile);
@@ -288,16 +243,9 @@ public class TileAutomata : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
 
-        doSim(numR);
-        distributeResources();
-        distributeDecorations();
 
-    }
 
-    void Update()
 
     public void distributeResources()
     {
@@ -305,16 +253,12 @@ public class TileAutomata : MonoBehaviour
         ClearResource(stoneInstances);
         ClearResource(woodInstances);
 
-        if (Input.GetKey(KeyCode.F))
         int goldCount = resources.goldCount;
         int woodCount = resources.woodCount;
         int stoneCount = resources.stoneCount;
 
         for (int x = 0; x < width; x++)
         {
-            doSim(numR);
-            distributeResources();
-            distributeDecorations();
             for (int y = 0; y < height; y++)
             {
                 Vector3Int cellPosition = new Vector3Int(-x + width / 2, -y + height / 2, 0);
@@ -338,11 +282,8 @@ public class TileAutomata : MonoBehaviour
 
         HashSet<Vector3Int> occupiedPositions = new HashSet<Vector3Int>();
 
-        if (Input.GetKey(KeyCode.H))
         for (int i = 0; i < goldCount; i++)
         {
-            clearMap(true);
-            decorationMap.ClearAllTiles();
             Vector3Int position = GetRandomValidPosition(occupiedPositions);
             float size = GetRandomSize();
             if (position != Vector3Int.zero)
@@ -352,13 +293,8 @@ public class TileAutomata : MonoBehaviour
             }
         }
 
-
-
-        if (Input.GetKey(KeyCode.J))
         for (int i = 0; i < woodCount; i++)
         {
-            SaveAssetMap();
-            count++;
             Vector3Int position = GetRandomValidPosition(occupiedPositions);
             float size = GetRandomSize();
             if (position != Vector3Int.zero)
@@ -368,14 +304,8 @@ public class TileAutomata : MonoBehaviour
             }
         }
 
-    }
-
-    public void ClearResource(List<Sprite> resourceInstances)
-    {
-        foreach (Sprite resourceInstance in resourceInstances)
         for (int i = 0; i < stoneCount; i++)
         {
-            Destroy(resourceInstance);
             Vector3Int position = GetRandomValidPosition(occupiedPositions);
             float size = GetRandomSize();
             if (position != Vector3Int.zero)
@@ -384,11 +314,7 @@ public class TileAutomata : MonoBehaviour
                 distributeResource(position, size, stonePrefab);
             }
         }
-
-        resourceInstances.Clear();
     }
-
-    public void SaveAssetMap()
     //private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions)
     //{
     //    for (int attempt = 0; attempt < 100; attempt++)
@@ -406,23 +332,13 @@ public class TileAutomata : MonoBehaviour
     //}
     private bool IsNearHole(Vector3Int position, int bufferZoneSize)
     {
-        string saveName = "tmapXY_" + count;
-        var mf = GameObject.Find("Grid");
         int cellX = position.x + width / 2;
         int cellY = position.y + height / 2;
 
-        if (mf)
         for (int dx = -bufferZoneSize; dx <= bufferZoneSize; dx++)
         {
-            var savePath = "Assets/Prefabs/" + saveName + ".prefab";
-            if (PrefabUtility.CreatePrefab(savePath, mf))
             for (int dy = -bufferZoneSize; dy <= bufferZoneSize; dy++)
             {
-                EditorUtility.DisplayDialog("Tilemap saved", "Your Tilemap was saved under" + savePath, "Continue");
-            }
-            else
-            {
-                EditorUtility.DisplayDialog("Tilemap NOT saved", "An ERROR occured while trying to saveTilemap under" + savePath, "Continue");
                 int checkX = cellX + dx;
                 int checkY = cellY + dy;
 
@@ -456,16 +372,10 @@ public class TileAutomata : MonoBehaviour
         return true;
     }
 
-    public void clearMap(bool complete)
     private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions)
     {
-
-        topMap.ClearAllTiles();
-        botMap.ClearAllTiles();
-        if (complete)
         for (int attempt = 0; attempt < 100; attempt++)
         {
-            terrainMap = null;
             int x = UnityEngine.Random.Range(-width / 2, width / 2);
             int y = UnityEngine.Random.Range(-height / 2, height / 2);
             Vector3Int position = new Vector3Int(x, y, 0);
@@ -518,13 +428,9 @@ public class TileAutomata : MonoBehaviour
     }
 
 
-    public void distributeResources()
 
 private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
     {
-        ClearResource(goldInstances);
-        ClearResource(woodInstances);
-        ClearResource(rockInstances);
         foreach (var resource in resourceList)
         {
             Destroy(resource.gameObject);
@@ -532,16 +438,13 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
         resourceList.Clear();
     }
 
-        int bufferZoneSize = 6;
     public void SaveAssetMap()
     {
         string saveName = "tmapXY_" + count;
         var mf = GameObject.Find("Grid");
 
-        for (int x = bufferZoneSize; x < width - bufferZoneSize; x++)
         if (mf)
         {
-            for (int y = bufferZoneSize; y < height - bufferZoneSize; y++)
             var savePath = "Assets/Prefabs/" + saveName + ".prefab";
             PrefabUtility.SaveAsPrefabAsset(mf, savePath);
             EditorUtility.DisplayDialog("Tilemap saved", "Your Tilemap was saved under " + savePath, "Continue");
@@ -553,8 +456,6 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                bool isNearEdge = false;
-                for (int dx = -bufferZoneSize; dx <= bufferZoneSize; dx++)
                 Vector3Int cellPosition = new Vector3Int(-x + width / 2, -y + height / 2, 0);
                 Vector3 worldPos = topMap.CellToWorld(cellPosition) + topMap.cellSize / 2;
 
@@ -564,16 +465,12 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                 Collider2D collider = gridManager.Overlap(adjustedWorldPos);
                 if (collider != null)
                 {
-                    for (int dy = -bufferZoneSize; dy <= bufferZoneSize; dy++)
                     GameObject colliderGameObject = collider.gameObject;
 
                     if (colliderGameObject.TryGetComponent(out Gold gold))
                     {
-                        if (terrainMap[x + dx, y + dy] == 0)
                         try
                         {
-                            isNearEdge = true;
-                            break;
                             Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(adjustedWorldPos, 0.5f);
                             if (overlappingColliders.Length > 1)
                             {
@@ -590,11 +487,6 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                         {
                             continue; 
                         }
-                    }
-
-                    if (isNearEdge)
-                    {
-                        break;
                     }
                 }
             }
@@ -613,44 +505,13 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                 Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x - 5, cellPosition.y - 8, 0);
                 Vector3 adjustedWorldPos = topMap.CellToWorld(adjustedCellPosition) + topMap.cellSize / 2;
 
-                if (!isNearEdge && terrainMap[x, y] == 1 && x > 0 && y > 0 && x < width - 1 && y < height - 1)
                 Collider2D collider = gridManager.Overlap(adjustedWorldPos);
                 if (collider != null)
                 {
-                    Vector3Int position = new Vector3Int(-x + width / 2, -y + height / 2, 0);
-                    Vector3 worldPos = topMap.CellToWorld(position);
-                    worldPos.x += 0.5f;
-                    worldPos.y += 0.5f;
-
-                    float size;
-                    float rand = Random.value;
-                    if (rand < 0.33f)
-                    {
-                        size = 0.005f; // Small
-                    }
-                    else if (rand < 0.66f)
-                    {
-                        size = 0.01f; // Medium
-                    }
-                    else
-                    {
-                        size = 0.1f; // Large
-                    }
-                    float resourceRand = Random.value;
-                    if (resourceRand < rockChance)
-                    {
-                        distributeResource(rockSprite, rockInstances, worldPos, size);
-                    }
-                    else if (resourceRand < woodChance)
-                    {
-                        distributeResource(woodSprite, woodInstances, worldPos, size);
-                    }
-                    else if (resourceRand < goldChance)
                     GameObject colliderGameObject = collider.gameObject;
 
                     if (colliderGameObject.TryGetComponent(out Wood wood))
                     {
-                        distributeResource(goldSprite, goldInstances, worldPos, size);
                         try
                         {
                             Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(adjustedWorldPos, 0.5f);
@@ -675,7 +536,6 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
         }
     }
 
-    private void distributeResource(Sprite sprite, List<Sprite> instances, Vector3 worldPos, float size)
     private void PlaceStone()
     {
         for (int x = 0; x < width; x++)
@@ -693,14 +553,6 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                 {
                     GameObject colliderGameObject = collider.gameObject;
 
-        GameObject instance = new GameObject();
-        SpriteRenderer renderer = instance.AddComponent<SpriteRenderer>();
-        renderer.sprite = sprite;
-        renderer.sortingLayerName = "Resources";
-        renderer.sortingOrder = 3;
-        instance.transform.position = worldPos;
-        instance.transform.localScale = new Vector3(size, size, size);
-        instances.Add(sprite);
                     if (colliderGameObject.TryGetComponent(out Stone stone))
                     {
                         try
