@@ -63,16 +63,17 @@ public class Building : Entity, IDestructibleObject
         GameObject instantiatedObject = visualTransform.gameObject;
         BuildingManager.Instance.Check(I, J, Visited, this, out bool safe);
         Debug.Log("area is" + safe);
+
         Material material = instantiatedObject.GetComponent<Renderer>().material;
 
-        material.SetColor("_Color", Color.red * 0.7f);
+        
         if (!safe)
         {
-            material.SetFloat("_Color.a", safe ? 0.5f : 0.2f);
+            material.SetColor("_Color", Color.red * 0.7f);
         }
         if (safe && Input.GetMouseButton(0))
         {
-
+            material.SetFloat("_Color.a", safe ? 0.5f : 0.2f);
             Spawn(visualTransform.position);
             Destroy(visualTransform.gameObject);
             return;

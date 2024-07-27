@@ -12,7 +12,6 @@ public class BuildingManager : MonoBehaviour
     private Building building;
     private List<Cell> BuildingCells = new List<Cell>();
     private Transform visualTransform;
-    private bool builder;
 
     private void Awake()
     {
@@ -27,27 +26,24 @@ public class BuildingManager : MonoBehaviour
 
     private void Update()
     {
-     if(builder)
-        {
-            UIHelper(building.buildingSO);
+        if (building != null) {
+            if (visualTransform != null)
+            {
+                visualTransform.position = GetMouseWorldPosition();
+                building.CheckAndSpawn(visualTransform);
+                //building = null;
+            }
+
         }
     }
 
     // Functionality for UI
     public void UIHelper(BuildingSO buildingSO)
     {
-        builder = true;
+
         building = buildingSO.building;
         visualTransform = building.SpawnForCheck(GetMouseWorldPosition());
-        if (visualTransform != null)
-        {
-            visualTransform.position = GetMouseWorldPosition();
-            building.CheckAndSpawn(visualTransform);
-            builder = false;
-            building = null;
-        }else
-        builder = false;
-        building = null;
+       
        
     }
     
@@ -80,6 +76,7 @@ public class BuildingManager : MonoBehaviour
         Visited[I, J] = true;
         // Function to check if cell is overlapping with building collider
         Collider2D collider = GridManager.Instance.Overlap(new Indices(I, J));
+        Debug.Log(collider);
         if (collider != null)
         {
             collider.TryGetComponent<Entity>(out Entity entity);
@@ -94,9 +91,13 @@ public class BuildingManager : MonoBehaviour
                 BuildingCells.Add(GridManager.Instance.GetValue(I, J));
 
                 RecursiveCheck(I + 1, J, Visited, instantiatedBuilding, out safe);
+                if (!safe) return; 
                 RecursiveCheck(I, J + 1, Visited, instantiatedBuilding, out safe);
+                if (!safe) return;
                 RecursiveCheck(I - 1, J, Visited, instantiatedBuilding, out safe);
+                if (!safe) return;
                 RecursiveCheck(I, J - 1, Visited, instantiatedBuilding, out safe);
+                if (!safe) return;
             }
         }
 
