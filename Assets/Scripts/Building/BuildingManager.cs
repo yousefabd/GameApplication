@@ -65,50 +65,52 @@ public class BuildingManager : MonoBehaviour
     // and adds all the surrounding cells into neighbor cells
     public void RecursiveCheck(int I, int J, bool[,] Visited, Building instantiatedBuilding, out bool safe)
     {
+        Debug.Log(I);
+        Debug.Log(J);
         safe = true;
         if (I < 0 || J < 0 || I >= GridManager.Instance.GetWidth() || J >= GridManager.Instance.GetHeight() || Visited[I, J])
         {
-            // Indices are out of bounds or cell has already been visited, return without doing anything
+            safe = false;
             return;
         }
-
+        Debug.Log("level 1");
         Visited[I, J] = true;
         // Function to check if cell is overlapping with building collider
-        Collider2D collider = GridManager.Instance.Overlap(new Indices(I, J));
-        Debug.Log(collider);
-        if (collider != null)
+        Collider2D[] colliders = GridManager.Instance.OverlapAll(new Indices(I, J));
+        Debug.Log(colliders);
+        if(colliders.Length > 1)
         {
-            collider.TryGetComponent<Entity>(out Entity entity);
-            if (entity != null && entity != instantiatedBuilding)
-            {
-                safe = false;
-                return;
-            }
-
-            if (entity == instantiatedBuilding)
+            safe=false; return;
+        }else if(colliders.Length == 1) {
+            colliders[0].TryGetComponent<Entity>(out Entity entity);
+        if(entity != null && entity == instantiatedBuilding)
             {
                 BuildingCells.Add(GridManager.Instance.GetValue(I, J));
-
                 RecursiveCheck(I + 1, J, Visited, instantiatedBuilding, out safe);
-                if (!safe) return; 
+                if (!safe) return;
                 RecursiveCheck(I, J + 1, Visited, instantiatedBuilding, out safe);
                 if (!safe) return;
                 RecursiveCheck(I - 1, J, Visited, instantiatedBuilding, out safe);
                 if (!safe) return;
                 RecursiveCheck(I, J - 1, Visited, instantiatedBuilding, out safe);
                 if (!safe) return;
+
             }
+            else if(entity != null && entity != instantiatedBuilding)
+            {
+                safe = false; return;
+            }
+            else { Debug.Log("collision with non entity"); }
         }
-
-
-        if (collider == null)
+        else
         {
             Cell neighborCell = GridManager.Instance.GetValue(I, J);
             Debug.Log(neighborCell.ToString());
             instantiatedBuilding.buildingSO.NeighborCells.Add(neighborCell);
             Debug.Log("fixed");
             return;
-        }
+        }    
+        
     }
 
     //setting cells to house the entity

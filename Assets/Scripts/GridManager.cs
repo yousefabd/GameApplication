@@ -118,7 +118,7 @@ public class GridManager : MonoBehaviour
     }
     public void SetEntity(Entity entity, Indices indices)
     {
-        gridMap.GetValue(indices.I, indices.J).SetEntity(entity);
+        gridMap.GetValue(indices.I, indices.J).SetEntity(entity);   
         gridMap.UpdateValues();
     }
 
@@ -156,4 +156,15 @@ public class GridManager : MonoBehaviour
         Vector3 endPosition = new Vector3(startPosition.x + GetCellSize(), startPosition.y + GetCellSize(), 0);
         return Physics2D.OverlapArea(startPosition, endPosition);
     }
+
+    public Collider2D[] OverlapAll(Indices cellIndices)
+    {
+        Vector3 startPosition = GridToWorldPosition(cellIndices);
+        Vector3 endPosition = new Vector3(startPosition.x + GetCellSize(), startPosition.y + GetCellSize(), 0);
+
+        Collider2D[] colliders = Physics2D.OverlapAreaAll(startPosition, endPosition);
+
+        return colliders; 
+    }
+
 }
