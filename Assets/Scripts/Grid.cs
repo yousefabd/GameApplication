@@ -11,6 +11,7 @@ public struct Indices
         this.J = J;
     }
 }
+[System.Serializable]
 public class Grid<TGridObject>
 {
     private int width;

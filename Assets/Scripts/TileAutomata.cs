@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -31,9 +32,11 @@ public class TileAutomata : MonoBehaviour
     public Tilemap botMap;
     public RuleTile topTile;
     public Tile botTile;
+
     public Grid<Cell> grid;
     int width;
     int height;
+    
     private GridManager gridManager;
 
 
@@ -63,18 +66,32 @@ public class TileAutomata : MonoBehaviour
 
     private void Start()
     {
-        if (grid != null && gridManager != null)
+        gridManager = FindObjectOfType<GridManager>();
+        StartCoroutine(InitializeGrid());
+
+
+    }
+    private IEnumerator InitializeGrid()
+    {
+        while (gridManager == null || grid == null)
         {
+            yield return null; 
+        }
+
+        DoSimulation();
+    }
+
+    private void DoSimulation()
+    {
             doSim(numR);
             resources = new Recourses(10, 20, 30);
             distributeResources();
             distributeDecorations();
-            gridManager = FindObjectOfType<GridManager>();
+            
 
             PlaceGold();
             PlaceStone();
             PlaceWood();
-        }
 
     }
 
