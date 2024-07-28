@@ -6,7 +6,6 @@ public class BuildingManager : MonoBehaviour
     //singleton pattern
     public static BuildingManager Instance { get; private set; }
 
-    [SerializeField] private List<BuildingSO> buildingSOList;
 
     private Camera mainCamera;
     private Building building;

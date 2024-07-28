@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Building : Entity, IDestructibleObject
+public class Building : Entity, IDestructibleObject 
 {   
     public BuildingSO buildingSO;
     private System.Random _random = new System.Random();
