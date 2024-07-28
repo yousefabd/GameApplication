@@ -538,6 +538,7 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                             wood.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2 - 3, gridCellPosition.y + height / 2 - 4));
+                            GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2-2, gridCellPosition.y + height / 2 -3));
                             Debug.Log("Wood placed at: " + adjustedWorldPos);
                         }
                         catch (NullReferenceException ex)

@@ -9,6 +9,7 @@ public class Wood : Entity, IDestructibleObject,IRecourses
     public float HealthPoints { get; set; }
     public event Action<float> OnDamaged;
     private BoxCollider2D boxCollider;
+  //  private BoxCollider2D boxCollider;
     public event Action OnDestroyed;
 
 
