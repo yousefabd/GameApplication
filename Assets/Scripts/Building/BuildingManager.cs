@@ -77,13 +77,13 @@ public class BuildingManager : MonoBehaviour
         Visited[I, J] = true;
         // Function to check if cell is overlapping with building collider
         Collider2D[] colliders = GridManager.Instance.OverlapAll(new Indices(I, J));
-        Debug.Log(colliders);
+        Debug.Log(colliders.Length);
         if(colliders.Length > 1)
         {
             safe=false; return;
         }else if(colliders.Length == 1) {
-            colliders[0].TryGetComponent<Entity>(out Entity entity);
-        if(entity != null && entity == instantiatedBuilding)
+            colliders[0].TryGetComponent<Building>(out Building entity);
+        if(entity != null && entity.buildingSO == instantiatedBuilding.buildingSO)
             {
                 BuildingCells.Add(GridManager.Instance.GetValue(I, J));
                 RecursiveCheck(I + 1, J, Visited, instantiatedBuilding, out safe);
@@ -96,7 +96,7 @@ public class BuildingManager : MonoBehaviour
                 if (!safe) return;
 
             }
-            else if(entity != null && entity != instantiatedBuilding)
+            else if(entity != null && entity.buildingSO != instantiatedBuilding.buildingSO)
             {
                 safe = false; return;
             }

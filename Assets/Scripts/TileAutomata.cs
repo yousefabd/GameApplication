@@ -63,16 +63,18 @@ public class TileAutomata : MonoBehaviour
 
     private void Start()
     {
-        doSim(numR);
-        resources = new Recourses(10, 20, 30);
-        distributeResources();
-        distributeDecorations();
-        gridManager = FindObjectOfType<GridManager>();
+        if (grid != null && gridManager != null)
+        {
+            doSim(numR);
+            resources = new Recourses(10, 20, 30);
+            distributeResources();
+            distributeDecorations();
+            gridManager = FindObjectOfType<GridManager>();
 
-        PlaceGold();
-        PlaceStone();
-        PlaceWood();
-
+            PlaceGold();
+            PlaceStone();
+            PlaceWood();
+        }
 
     }
 

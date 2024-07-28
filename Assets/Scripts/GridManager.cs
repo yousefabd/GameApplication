@@ -162,9 +162,18 @@ public class GridManager : MonoBehaviour
         Vector3 startPosition = GridToWorldPosition(cellIndices);
         Vector3 endPosition = new Vector3(startPosition.x + GetCellSize(), startPosition.y + GetCellSize(), 0);
 
+        // Debugging lines to visualize the overlap area
+        Debug.DrawLine(startPosition, new Vector3(startPosition.x, endPosition.y, 0), Color.red, 1.0f);
+        Debug.DrawLine(startPosition, new Vector3(endPosition.x, startPosition.y, 0), Color.red, 1.0f);
+        Debug.DrawLine(endPosition, new Vector3(startPosition.x, endPosition.y, 0), Color.red, 1.0f);
+        Debug.DrawLine(endPosition, new Vector3(endPosition.x, startPosition.y, 0), Color.red, 1.0f);
+
         Collider2D[] colliders = Physics2D.OverlapAreaAll(startPosition, endPosition);
 
-        return colliders; 
+        // Log the number of detected colliders
+        Debug.Log($"Detected colliders: {colliders.Length}");
+
+        return colliders;
     }
 
 }
