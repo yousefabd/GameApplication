@@ -47,7 +47,7 @@ public class BuildingManager : MonoBehaviour
     }
     
     //Mouse position tracking
-    private Vector3 GetMouseWorldPosition()
+    public Vector3 GetMouseWorldPosition()
     {
         Vector3 mouseScreenPosition = Input.mousePosition;
         mouseScreenPosition.z = mainCamera.nearClipPlane; 

@@ -14,29 +14,28 @@ using UnityEngine;
 
 namespace CodeMonkey.MonoBehaviours
 {
-
     /*
-     * Easy set up for CameraFollow, it will follow the transform with zoom
+     * Easy set up for CameraFollow, it will follow the mouse position with zoom
      * */
     public class CameraFollowSetup : MonoBehaviour
     {
-
         [SerializeField] private CameraFollow cameraFollow;
-        [SerializeField] private Transform followTransform;
         [SerializeField] private float zoom;
 
         private void Start()
         {
-            if (followTransform == null)
-            {
-                Debug.LogError("followTransform is null! Intended?");
-                cameraFollow.Setup(() => Vector3.zero, () => zoom);
-            }
-            else
-            {
-                cameraFollow.Setup(() => followTransform.position, () => zoom);
-            }
+            cameraFollow.Setup(() => GetMouseWorldPosition(), () => 1);
+        }
+
+        private void Update()
+        {
+        }
+
+        private Vector3 GetMouseWorldPosition()
+        {
+            Vector3 mousePos = Input.mousePosition;
+            mousePos.z = Camera.main.nearClipPlane;
+            return Camera.main.ScreenPointToRay(mousePos).origin;
         }
     }
-
 }

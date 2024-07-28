@@ -96,7 +96,6 @@ public class Grid<TGridObject>
         {
             return gridArray[x, y];
         }
-        Debug.Log(x + "," + y);
         return default;
     }
     public TGridObject GetValue(Vector3 worldPosition)
