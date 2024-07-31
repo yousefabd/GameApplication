@@ -9,10 +9,8 @@ public class TDPlayer : MonoBehaviour
     public static TDPlayer Instance { get; private set; }
     [SerializeField] private Transform slash;
     [SerializeField] private TowerSO towerSO;
-    public event Action OnNextWave;
     public event Action<TowerSO> OnSelectTower;
-    public event Action<TowerSO,Vector3> OnBuildTower;
-    public event Action OnDisplayShop;
+    public event Action<TowerSO,TDTowerBase> OnBuildTower;
     private float interactionRadius = 0.2f;
     private float damageValue = 20f;
     private TowerSO currentSelectedTower;
@@ -51,7 +49,7 @@ public class TDPlayer : MonoBehaviour
             return false;
         if(collider.TryGetComponent(out TDTowerBase towerBase))
         {
-            OnBuildTower?.Invoke(currentSelectedTower,towerBase.transform.position);
+            OnBuildTower?.Invoke(currentSelectedTower,towerBase);
             TDCurrencyManager.Instance.Buy(currentSelectedTower.cost);
             currentSelectedTower = null;
             return true;
@@ -73,16 +71,6 @@ public class TDPlayer : MonoBehaviour
     private bool HasSelectedTower()
     {
         return currentSelectedTower != null;
-    }
-    public void DisplayShop()
-    {
-        Debug.Log("Display Shop");
-        OnDisplayShop?.Invoke();
-    }
-
-    public void NextWave()
-    {
-        OnNextWave?.Invoke();
     }
 
     public void SelectTower(TowerSO towerSO)

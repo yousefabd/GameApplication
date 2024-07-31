@@ -18,7 +18,7 @@ public class TDUnitSpawner : MonoBehaviour
     private System.Random random;
     private int currentUnitCount = 0;
     private enum UnitSpawnState { IDLE,SPAWNING}
-    private UnitSpawnState currentSpawnState=UnitSpawnState.SPAWNING;
+    private UnitSpawnState currentSpawnState=UnitSpawnState.IDLE;
     public event Action<Unit> OnUnitSpawned;
     public event Action<float> OnUnitDestroyed;
     public static TDUnitSpawner Instance { get; private set; }

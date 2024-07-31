@@ -27,7 +27,7 @@ public class TDWaveManager : MonoBehaviour
     private float currentWaveTimerCount = 0f;
     private float currentUnitHealthPoints=100f;
     private enum WaveState { PLAYING,FINISHED}
-    private WaveState waveState;
+    private WaveState waveState=WaveState.FINISHED;
     //events
     public event Action OnFinishedWave;
     public event Action OnStartedWave;
@@ -35,17 +35,16 @@ public class TDWaveManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        Restart();
     }
     private void Start()
     {
-        TDPlayer.Instance.OnNextWave += TDPlayer_OnNextWave;
+        TDGameManager.Instance.OnNextWave += TDGameManager_OnNextWave;
+        Restart();
     }
 
-    private void TDPlayer_OnNextWave()
+    private void TDGameManager_OnNextWave()
     {
         waveState = WaveState.PLAYING;
-        Time.timeScale = 1.0f;
         OnStartedWave?.Invoke();
     }
 
@@ -145,7 +144,6 @@ public class TDWaveManager : MonoBehaviour
     {
         currentWave = 1;
         OnSetGameDifficulty(gameDifficulty);
-        waveState = WaveState.PLAYING;
         currentWaveTimer = 20f;
         currentWaveTimerCount = 0f;
         currentUnitHealthPoints = 100f;
