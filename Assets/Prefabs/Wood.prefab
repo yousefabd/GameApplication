@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: -6719522246807880800}
   - component: {fileID: -4499944363209944100}
   - component: {fileID: -196780794627570555}
+  - component: {fileID: 3127617489959290039}
   m_Layer: 8
   m_Name: Wood
   m_TagString: Untagged
@@ -147,6 +148,21 @@ SortingGroup:
   m_SortAtRoot: 0
 --- !u!61 &-4499944363209944100
 BoxCollider2D:
+--- !u!114 &-196780794627570555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8135612963390663519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf2777eb3ea0c14b9f37e313425a8be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8135612963390663519}
+--- !u!60 &3127617489959290039
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -203,3 +219,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 0}
+  m_Points:
+    m_Paths:
+    - - {x: -0.25052717, y: 1.1073688}
+      - {x: -0.5484235, y: 0.89059794}
+      - {x: -0.7144331, y: 0.19181953}
+      - {x: -0.1952098, y: 0.13051003}
+      - {x: -0.40044764, y: -0.19218332}
+      - {x: -0.2067613, y: -0.74021494}
+      - {x: -0.5519955, y: -0.898491}
+      - {x: 0.15439484, y: -0.90229964}
+      - {x: -0.19958574, y: -0.20059378}
+      - {x: 0.6736871, y: 0.3537541}
+  m_UseDelaunayMesh: 0

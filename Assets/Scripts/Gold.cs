@@ -11,6 +11,7 @@ public class Gold : Entity, IDestructibleObject, IRecourses
     private BoxCollider2D boxCollider;
     public event Action OnDestroyed;
 
+
     public void Initialize(Vector3Int cellPosition, float size)
     {
         if (prefab == null)
@@ -18,6 +19,7 @@ public class Gold : Entity, IDestructibleObject, IRecourses
             Debug.LogError("Prefab is not assigned in the Stone script.");
             return;
         }
+        
 
         if (boxCollider == null)
         {

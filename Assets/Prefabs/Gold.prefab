@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 4151059171227423214}
   - component: {fileID: -6847337910387002840}
   - component: {fileID: -7182670429948171805}
+  - component: {fileID: 2167419286282160367}
   m_Layer: 8
   m_Name: Gold
   m_TagString: Untagged
@@ -146,6 +147,20 @@ SortingGroup:
   m_SortingOrder: 3
   m_SortAtRoot: 0
 --- !u!61 &-6847337910387002840
+--- !u!114 &-7182670429948171805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8050817228691020220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498e63674fafca44298db56abd97e0d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8050817228691020220}
+--- !u!61 &2167419286282160367
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,6 +193,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.008639112, y: 0.011518821}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -189,6 +205,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.38374373, y: 0.4125407}
   m_EdgeRadius: 0
 --- !u!114 &-7182670429948171805
 MonoBehaviour:
