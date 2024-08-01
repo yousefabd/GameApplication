@@ -20,7 +20,7 @@ public class Grid<TGridObject>
     Vector3 originPosition;
     private TGridObject[,] gridArray;
     private TextMesh[,] worldTextRef;
-    bool showDebug;
+    bool showDebug = false;
     public void Awake()
     {
 

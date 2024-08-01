@@ -495,7 +495,7 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                             gold.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(gold, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
-                            Debug.Log("Gold placed at: " + adjustedWorldPos);
+                           // Debug.Log("Gold placed at: " + adjustedWorldPos);
                         }
                         catch (NullReferenceException ex)
                         {
@@ -539,7 +539,7 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2 - 3, gridCellPosition.y + height / 2 - 4));
                             GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2-2, gridCellPosition.y + height / 2 -3));
-                            Debug.Log("Wood placed at: " + adjustedWorldPos);
+                          //  Debug.Log("Wood placed at: " + adjustedWorldPos);
                         }
                         catch (NullReferenceException ex)
                         {
@@ -582,7 +582,7 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                             stone.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(stone, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
-                            Debug.Log("Stone placed at: " + adjustedWorldPos);
+                           // Debug.Log("Stone placed at: " + adjustedWorldPos);
                         }
                         catch (NullReferenceException ex)
                         {

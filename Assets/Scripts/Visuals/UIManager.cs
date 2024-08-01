@@ -1,14 +1,20 @@
+using Assets.HeroEditor4D.Common.Scripts.Common;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] GameObject buildingContent,unitContent;
+    [SerializeField] GameObject BuildingContent;
+    [SerializeField] GameObject UnitContent;
 
-    private bool scrollToggle=false;
+    private bool scrollToggle = false;
 
     public static UIManager Instance;
+
+    private GameObject buildingContent;  
+    private GameObject unitContent;      
+
     private void Awake()
     {
         Instance = this;
@@ -16,16 +22,22 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        // Initialize the buildingContent and unitContent
+        buildingContent = BuildingContent;
+        unitContent = UnitContent;
+
         if (!scrollToggle)
         {
             buildingContent.SetActive(true);
             unitContent.SetActive(false);
         }
     }
+
     private void Update()
     {
-        checkIfMousepressed();
+        checkIfMousePressed();
     }
+
     public void SwitchContent(bool setToggle)
     {
         scrollToggle = setToggle;
@@ -40,20 +52,12 @@ public class UIManager : MonoBehaviour
             unitContent.SetActive(false);
         }
     }
-    public void checkIfMousepressed()
+
+    public void checkIfMousePressed()
     {
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             SwitchContent(false);
         }
     }
-
-
-
-
-
-
-
-
-
 }

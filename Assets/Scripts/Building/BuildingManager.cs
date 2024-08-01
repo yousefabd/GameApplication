@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
@@ -45,7 +46,15 @@ public class BuildingManager : MonoBehaviour
        
        
     }
-    
+    public void AIUIHelper(BuildingSO buildingSO,Vector3 position)
+    {
+
+        building = buildingSO.building;
+        visualTransform = building.SpawnForCheck(position);
+
+
+    }
+
     //Mouse position tracking
     public Vector3 GetMouseWorldPosition()
     {
@@ -82,8 +91,8 @@ public class BuildingManager : MonoBehaviour
         {
             safe=false; return;
         }else if(colliders.Length == 1) {
-                colliders[0].TryGetComponent<Building>(out Building entity);
-        if(entity != null && entity.buildingSO == instantiatedBuilding.buildingSO)
+                colliders[0].TryGetComponent<Entity>(out Entity entity);
+        if(entity != null && entity is Building building && building.buildingSO == instantiatedBuilding.buildingSO)
             {
                 BuildingCells.Add(GridManager.Instance.GetValue(I, J));
                 RecursiveCheck(I + 1, J, Visited, instantiatedBuilding, out safe);
@@ -92,11 +101,19 @@ public class BuildingManager : MonoBehaviour
                 RecursiveCheck(I, J - 1, Visited, instantiatedBuilding, out safe);
 
             }
-            else if(entity != null && entity.buildingSO != instantiatedBuilding.buildingSO)
+            else if(entity != null && entity is Building otherBuilding && otherBuilding.buildingSO != instantiatedBuilding.buildingSO)
             {
                 safe = false; return;
             }
-            else { Debug.Log("collision with non entity"); Debug.Log(colliders[0]); }
+            else {
+                if (entity) { 
+                   // Debug.Log("collision with entity"); Debug.Log(colliders[0]);
+                }
+                else { 
+                   // Debug.Log("collision with non entity"); Debug.Log(colliders[0]); 
+                }
+                    
+            }
         }
         else
         {

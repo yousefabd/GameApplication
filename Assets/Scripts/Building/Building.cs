@@ -10,7 +10,7 @@ public class Building : Entity, IDestructibleObject
     public event Action<float> OnDamaged;
     static event Action<Building> built;
     public event Action OnDestroyed;
-
+    
     public float HealthPoints { get; set; }
 
     int processCompletion;
@@ -57,13 +57,11 @@ public class Building : Entity, IDestructibleObject
     //checks that the current object form SpawnForCheck is Safe to Build
     public void CheckAndSpawn(Transform visualTransform)
     {
-
         GridManager.Instance.GetValue(visualTransform.position).GetIndices(out int I, out int J);
         bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
         GameObject instantiatedObject = visualTransform.gameObject;
         BuildingManager.Instance.Check(I, J, Visited, this, out bool safe);
-        Debug.Log("area is" + safe);
-
+        //Debug.Log("area is" + safe);
         Material material = instantiatedObject.GetComponent<Renderer>().material;
 
         
@@ -71,12 +69,14 @@ public class Building : Entity, IDestructibleObject
         {
             material.SetColor("_Color", Color.red * 0.7f);
         }
-        if (safe && Input.GetMouseButton(0))
+        if (safe)
         {
             material.SetFloat("_Color.a", safe ? 0.5f : 0.2f);
-            Spawn(visualTransform.position);
-            Destroy(visualTransform.gameObject);
-            return;
+            if (Input.GetMouseButton(0)) {
+                Spawn(visualTransform.position);
+                Destroy(visualTransform.gameObject);
+                return;
+            }
         }
 
 
@@ -117,9 +117,11 @@ public class Building : Entity, IDestructibleObject
     }
     private void OnMouseDown()
     {
+        Debug.Log(buildingSO.unitGenerationData);
+        Debug.Log(this);
         UIUnitDisplay.Instance.createButtons(buildingSO.unitGenerationData, this);
     }
-
+   
 
 
 
