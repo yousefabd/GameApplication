@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: -4499944363209944100}
   - component: {fileID: -196780794627570555}
   - component: {fileID: 3127617489959290039}
+  - component: {fileID: 3730418783888600959}
   m_Layer: 8
   m_Name: Wood
   m_TagString: Untagged
@@ -162,6 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8135612963390663519}
 --- !u!60 &3127617489959290039
+--- !u!60 &3730418783888600959
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,6 +196,7 @@ PolygonCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.15, y: -0.6}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -231,4 +234,17 @@ MonoBehaviour:
       - {x: 0.15439484, y: -0.90229964}
       - {x: -0.19958574, y: -0.20059378}
       - {x: 0.6736871, y: 0.3537541}
+    - - {x: -0.25052714, y: 1.0357896}
+      - {x: -0.5126341, y: 0.90849257}
+      - {x: -0.47368369, y: 0.46532214}
+      - {x: -0.65841717, y: 0.1916204}
+      - {x: -0.27634776, y: 0.01791206}
+      - {x: -0.36490402, y: -0.17012644}
+      - {x: -0.1847302, y: -0.63642067}
+      - {x: -0.43567944, y: -0.93428063}
+      - {x: -0.13708165, y: -0.8668363}
+      - {x: 0.10462582, y: -0.92533314}
+      - {x: -0.13595244, y: -0.35929492}
+      - {x: -0.20692131, y: -0.2244266}
+      - {x: 0.6289501, y: 0.49691248}
   m_UseDelaunayMesh: 0
