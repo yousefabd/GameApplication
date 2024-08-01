@@ -2,6 +2,7 @@ using Assets.HeroEditor4D.Common.Scripts.Common;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,8 +13,8 @@ public class UIManager : MonoBehaviour
 
     public static UIManager Instance;
 
-    private GameObject buildingContent;  
-    private GameObject unitContent;      
+    private GameObject buildingContent;
+    private GameObject unitContent;
 
     private void Awake()
     {
@@ -55,9 +56,27 @@ public class UIManager : MonoBehaviour
 
     public void checkIfMousePressed()
     {
-        if (Input.GetMouseButton(0))
+        Debug.Log("wtf");
+        if (Input.GetMouseButtonDown(0))
         {
-            SwitchContent(false);
+            Debug.Log("mouse pressed");
+
+
+            GridManager.Instance.WorldToGridPosition(BuildingManager.Instance.GetMouseWorldPosition(), out int i, out int j);
+            Indices indices = new Indices(i,j);
+            Collider2D[] colliders = GridManager.Instance.OverlapAll(indices);
+
+            foreach (Collider2D collider in colliders)
+            {
+                Debug.Log(collider);
+            }
+
+            if (colliders.Length == 0 || colliders[0].gameObject.GetComponent<Building>() == null)
+            {
+                SwitchContent(false);
+            }
+
+
         }
     }
 }
