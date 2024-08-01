@@ -10,21 +10,8 @@ public class Gold : Entity, IDestructibleObject, IRecourses
     public event Action<float> OnDamaged;
     public event Action OnDestroyed;
 
-
     public void Initialize(Vector3Int cellPosition, float size)
     {
-        if (prefab == null)
-        {
-            Debug.LogError("Prefab is not assigned in the Stone script.");
-            return;
-        }
-        
-
-        if (boxCollider == null)
-        {
-            Debug.LogError("BoxCollider2D is missing on the Stone prefab.");
-            return;
-        }
         // Set the size of the stone object
         transform.localScale = new Vector3(size, size, 1);
 

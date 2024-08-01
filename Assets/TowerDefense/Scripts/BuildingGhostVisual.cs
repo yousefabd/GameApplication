@@ -13,7 +13,7 @@ public class BuildingGhostVisual : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void Player_OnBuildTower(TowerSO arg1, TDTowerBase arg2)
+    private void Player_OnBuildTower(TowerSO arg1, Vector3 arg2)
     {
         gameObject.SetActive(false);
     }
@@ -25,7 +25,6 @@ public class BuildingGhostVisual : MonoBehaviour
     {
         SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = towerSO.prefab.GetComponent<SpriteRenderer>().sprite;
-        gameObject.transform.position = ScreenInteractionManager.Instance.GetCurrentMousePosition();
         gameObject.SetActive(true);
     }
 }

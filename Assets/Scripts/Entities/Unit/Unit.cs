@@ -209,9 +209,4 @@ public class Unit : Entity, IDestructibleObject
         OnMaxHealthChanged?.Invoke(newMaxHealth);
         HealthPoints = newMaxHealth;
     }
-
-    public bool IsDying()
-    {
-        return currentUnitState == UnitState.DYING;
-    }
 }
