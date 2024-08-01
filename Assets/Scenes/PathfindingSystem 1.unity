@@ -6237,6 +6237,8 @@ MonoBehaviour:
   testUnitSOList:
   - {fileID: 11400000, guid: f3687c1ea11ea3944924f82e4f4a903e, type: 2}
   - {fileID: 11400000, guid: f3687c1ea11ea3944924f82e4f4a903e, type: 2}
+  - {fileID: 11400000, guid: 1f91a3027bf2da548a9a0eddc300f440, type: 2}
+  - {fileID: 11400000, guid: 1f91a3027bf2da548a9a0eddc300f440, type: 2}
 --- !u!1 &492678729
 GameObject:
   m_ObjectHideFlags: 0

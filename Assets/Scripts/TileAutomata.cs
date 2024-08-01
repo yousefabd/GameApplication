@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+using UnityEditor;
+using Unity.VisualScripting;
+using System;
 
 
 
@@ -67,7 +69,7 @@ public class TileAutomata : MonoBehaviour
     private void Start()
     {
         gridManager = FindObjectOfType<GridManager>();
-        StartCoroutine(InitializeGrid());
+        RemoveOverlappingObjects();
 
 
     }
@@ -344,6 +346,7 @@ public class TileAutomata : MonoBehaviour
     //    }
     //    return Vector3Int.zero;
     //}
+    
     private bool IsNearHole(Vector3Int position, int bufferZoneSize)
     {
         int cellX = position.x + width / 2;
@@ -378,6 +381,7 @@ public class TileAutomata : MonoBehaviour
         }
 
         int bufferZoneSize = 6; 
+        int bufferZoneSize = 7; 
         if (IsNearHole(position, bufferZoneSize))
         {
             return false;
@@ -392,6 +396,8 @@ public class TileAutomata : MonoBehaviour
         {
             int x = UnityEngine.Random.Range(-width / 2, width / 2);
             int y = UnityEngine.Random.Range(-height / 2, height / 2);
+            int x = UnityEngine.Random.Range(-width / 2 + 7, width / 2 - 7); 
+            int y = UnityEngine.Random.Range(-height / 2 + 7, height / 2 - 7); 
             Vector3Int position = new Vector3Int(x, y, 0);
 
             if (!occupiedPositions.Contains(position) && IsPositionValidForResource(position))
@@ -407,16 +413,20 @@ public class TileAutomata : MonoBehaviour
         float size;
         float rand = UnityEngine.Random.value;
         if (rand < 0.33f)
+        if (rand < 0.7f)
         {
             size = 1f; // Small
         }
         else if (rand < 0.66f)
+        else if (rand < 0.9f)
         {
             size = 2f; // Medium
+            size = 1.5f; // Medium
         }
         else
         {
             size = 4f; // Large
+            size = 2f; // Large
         }
         return size;
     }
@@ -426,6 +436,26 @@ public class TileAutomata : MonoBehaviour
         GameObject resourceObject = Instantiate(prefab, position, Quaternion.identity);
         IRecourses resource = resourceObject.GetComponent<IRecourses>();
         resource.Initialize(cellPosition, size);
+
+        if (resource is Stone && size == 2f)
+        {
+            PolygonCollider2D polygonCollider = resourceObject.GetComponent<PolygonCollider2D>();
+            if (polygonCollider != null)
+            {
+                Vector2[] stonePoints = new Vector2[]
+                {
+                new Vector2(0.803833544f/3, 0.988152266f/3),
+                new Vector2(0f / 3, 2/3f),
+                new Vector2(-0.663296282f/3, 0.834273696f / 3),
+                new Vector2(-2.4507699f / 3, -0.810295224f / 3),
+                new Vector2(-2.4507699f / 3 , -0.810295224f / 3),
+                new Vector2(0.0516949892f / 3, -2.07405996f / 3),
+                new Vector2(2.00738406f / 3, -1.47305143f / 3),
+                new Vector2(2.62270093f / 3 , -0.406489909f / 3)
+                };
+                polygonCollider.points = stonePoints;
+            }
+        }
 
         if (resource is Gold)
         {
@@ -444,6 +474,9 @@ public class TileAutomata : MonoBehaviour
 
 
 private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
+
+
+    private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
     {
         foreach (var resource in resourceList)
         {
@@ -464,6 +497,28 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
             EditorUtility.DisplayDialog("Tilemap saved", "Your Tilemap was saved under " + savePath, "Continue");
         }
     }
+    private void RemoveOverlappingObjects()
+    {
+        float overlapRadius = 0.5f;
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Vector3Int cellPosition = new Vector3Int(-x + width / 2, -y + height / 2, 0);
+                Vector3 worldPos = topMap.CellToWorld(cellPosition) + topMap.cellSize / 2;
+
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(worldPos, overlapRadius);
+                if (colliders.Length > 1)
+                {
+                    foreach (var collider in colliders)
+                    {
+                        Destroy(collider.gameObject);
+                    }
+                }
+            }
+        }
+    }
     private void PlaceGold()
     {
         for (int x = 0; x < width; x++)
@@ -474,6 +529,7 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                 Vector3 worldPos = topMap.CellToWorld(cellPosition) + topMap.cellSize / 2;
 
                 Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x - 6, cellPosition.y - 8, 0);
+                Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x, cellPosition.y, 0);
                 Vector3 adjustedWorldPos = topMap.CellToWorld(adjustedCellPosition) + topMap.cellSize / 2;
 
                 Collider2D collider = gridManager.Overlap(adjustedWorldPos);
@@ -491,11 +547,13 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                                 Destroy(gold.gameObject);
                                 continue; 
                             }
+                           
 
                             gold.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(gold, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
-                           // Debug.Log("Gold placed at: " + adjustedWorldPos);
+                            GridManager.Instance.SetEntity(gold, new Indices(gridCellPosition.x + width / 2 - 1, gridCellPosition.y + height / 2 - 1));
+                            Debug.Log("Gold placed at: " + adjustedWorldPos);
                         }
                         catch (NullReferenceException ex)
                         {
@@ -517,6 +575,7 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                 Vector3 worldPos = topMap.CellToWorld(cellPosition) + topMap.cellSize / 2;
 
                 Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x - 5, cellPosition.y - 8, 0);
+                Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x , cellPosition.y , 0);
                 Vector3 adjustedWorldPos = topMap.CellToWorld(adjustedCellPosition) + topMap.cellSize / 2;
 
                 Collider2D collider = gridManager.Overlap(adjustedWorldPos);
@@ -534,12 +593,13 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                                 Destroy(wood.gameObject);
                                 continue;
                             }
+                       
 
                             wood.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2 - 3, gridCellPosition.y + height / 2 - 4));
-                            GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2-2, gridCellPosition.y + height / 2 -3));
-                          //  Debug.Log("Wood placed at: " + adjustedWorldPos);
+                            GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
+                            Debug.Log("Wood placed at: " + adjustedWorldPos);
                         }
                         catch (NullReferenceException ex)
                         {
@@ -561,6 +621,7 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                 Vector3 worldPos = topMap.CellToWorld(cellPosition) + topMap.cellSize / 2;
 
                 Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x - 5, cellPosition.y - 8, 0);
+                Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x , cellPosition.y , 0);
                 Vector3 adjustedWorldPos = topMap.CellToWorld(adjustedCellPosition) + topMap.cellSize / 2;
 
                 Collider2D collider = gridManager.Overlap(adjustedWorldPos);
@@ -578,6 +639,7 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                                 Destroy(stone.gameObject);
                                 continue;
                             }
+                           
 
                             stone.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);

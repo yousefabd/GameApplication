@@ -7,11 +7,20 @@ public class TDTowerBase : MonoBehaviour
     private void Start()
     {
         TDPlayer.Instance.OnBuildTower += Player_OnBuild;
+        SellButtonUI.Instance.OnSell += Instance_OnSell;
     }
 
-    private void Player_OnBuild(TowerSO towerSO,Vector3 position)
+    private void Instance_OnSell(Vector3 position)
     {
-        if (position == transform.position)
+        if (position.Equals(transform.position))
+        {
+            gameObject.SetActive(true);
+        }
+    }
+
+    private void Player_OnBuild(TowerSO towerSO,TDTowerBase towerBase)
+    {
+        if (towerBase.Equals(this))
         {
             Build(towerSO);
         }

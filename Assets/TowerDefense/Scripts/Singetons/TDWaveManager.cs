@@ -11,6 +11,7 @@ public class TDWaveManager : MonoBehaviour
     public static TDWaveManager Instance { get; private set; }
     //game variables
     private float maxWaveTime=120f;
+    private GameDifficulty gameDifficulty = GameDifficulty.MEDIUM;
     private float maxUnitDamage;
     private float maxUnitSpeed;
     private float minUnitSpawnCooldown;
@@ -26,25 +27,24 @@ public class TDWaveManager : MonoBehaviour
     private float currentWaveTimerCount = 0f;
     private float currentUnitHealthPoints=100f;
     private enum WaveState { PLAYING,FINISHED}
-    private WaveState waveState = WaveState.PLAYING;
+    private WaveState waveState=WaveState.FINISHED;
     //events
     public event Action OnFinishedWave;
     public event Action OnStartedWave;
+    public event Action OnRestart;
     private void Awake()
     {
         Instance = this;
-        currentWave = 1;
-        OnSetGameDifficulty(GameDifficulty.MEDIUM);
     }
     private void Start()
     {
-        TDPlayer.Instance.OnNextWave += TDPlayer_OnNextWave;
+        TDGameManager.Instance.OnNextWave += TDGameManager_OnNextWave;
+        Restart();
     }
 
-    private void TDPlayer_OnNextWave()
+    private void TDGameManager_OnNextWave()
     {
         waveState = WaveState.PLAYING;
-        Time.timeScale = 1.0f;
         OnStartedWave?.Invoke();
     }
 
@@ -138,5 +138,15 @@ public class TDWaveManager : MonoBehaviour
     public bool IsOver()
     {
         return currentWaveTimerCount > currentWaveTimer;
+    }
+
+    public void Restart()
+    {
+        currentWave = 1;
+        OnSetGameDifficulty(gameDifficulty);
+        currentWaveTimer = 20f;
+        currentWaveTimerCount = 0f;
+        currentUnitHealthPoints = 100f;
+        OnRestart?.Invoke();
     }
 }

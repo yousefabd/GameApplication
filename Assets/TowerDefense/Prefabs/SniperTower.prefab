@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: unitSO
       value: 
       objectReference: {fileID: 11400000, guid: f3687c1ea11ea3944924f82e4f4a903e, type: 2}
+    - target: {fileID: 3358504622424668779, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
+      propertyPath: towerSO
+      value: 
+      objectReference: {fileID: 11400000, guid: cbd9aa45270b2524aa54b8a976495b3a, type: 2}
     - target: {fileID: 5888123422143801932, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
       propertyPath: m_Name
       value: SniperTower
