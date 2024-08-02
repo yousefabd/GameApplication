@@ -117,7 +117,9 @@ public class BuildingManager : MonoBehaviour
         }
         else
         {
+
             Cell neighborCell = GridManager.Instance.GetValue(I, J);
+           // Debug.Log("neighbor cell is" + neighborCell);
             instantiatedBuilding.buildingSO.NeighborCells.Add(neighborCell);
             return;
         }    

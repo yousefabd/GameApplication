@@ -28,6 +28,8 @@ public class UIBuildingDisplay : MonoBehaviour
             BuildingSO buildingSO = buildingsList.buildingSOList[i];
             UIButton.transform.GetChild(0).GetComponent<Image>().sprite = buildingSO.buildingSprite;
             UIButton.transform.GetComponent<Image>().sprite = null;
+            ButtonTextController buttonText = UIButton.transform.GetChild(1).GetComponent<ButtonTextController>();
+            buttonText.buildingType = buildingSO.buildingType;
             GameObject buttonInstance = Instantiate(UIButton, UIParent);
             Button button = buttonInstance.AddComponent<Button>();
             button.onClick.AddListener(() => BuildingManager.Instance.UIHelper(buildingSO));    

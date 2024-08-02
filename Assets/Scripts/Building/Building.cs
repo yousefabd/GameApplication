@@ -69,6 +69,8 @@ public class Building : Entity, IDestructibleObject
         {
             material.SetColor("_Color", Color.red * 0.7f);
         }
+        Debug.Log("what");
+        Debug.Log("type count is " + Player.Instance.buildingCount[buildingSO.buildingType]);
         if (safe && Player.Instance.buildingCount[buildingSO.buildingType] > 0)
         {
             material.SetFloat("_Color.a", safe ? 0.5f : 0.2f);
@@ -107,7 +109,10 @@ public class Building : Entity, IDestructibleObject
         {
             OnDamaged?.Invoke(value);
             HealthPoints -= value;
-            if (HealthPoints < 0) { Destruct(); }
+            if (HealthPoints < 0) { Destruct();
+                OnDestroyed?.Invoke();
+
+            }
         }
     }
     //logic to destroy building after damage
@@ -117,8 +122,8 @@ public class Building : Entity, IDestructibleObject
     }
     private void OnMouseDown()
     {
-        Debug.Log(buildingSO.unitGenerationData);
-        Debug.Log(this);
+        //Debug.Log(buildingSO.unitGenerationData);
+        //Debug.Log(this);
         UIUnitDisplay.Instance.createButtons(buildingSO.unitGenerationData, this);
     }
    

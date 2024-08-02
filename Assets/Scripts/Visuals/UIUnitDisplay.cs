@@ -20,7 +20,7 @@ public class UIUnitDisplay : MonoBehaviour
     }
     public void createButtons(List<UnitSO> unitSOList, Building building)
     {
-        Debug.Log("entered");
+        //Debug.Log("entered");
         UIManager.Instance.SwitchContent(true);
 
         foreach (UnitSO unitSO in unitSOList)
