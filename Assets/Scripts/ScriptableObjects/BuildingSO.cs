@@ -9,6 +9,8 @@ public class BuildingSO : ScriptableObject
     public int goldStorage;
     public Sprite buildingSprite;
 
+   public BuildingType buildingType;
+
     public bool resourceGenerator = false;
     public ResourceGeneratorData resourceGeneratorData;
 

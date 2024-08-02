@@ -8,7 +8,7 @@ public class Building : Entity, IDestructibleObject
     private System.Random _random = new System.Random();
 
     public event Action<float> OnDamaged;
-    static event Action<Building> built;
+    public static event Action<Building> built;
     public event Action OnDestroyed;
     
     public float HealthPoints { get; set; }
@@ -69,7 +69,7 @@ public class Building : Entity, IDestructibleObject
         {
             material.SetColor("_Color", Color.red * 0.7f);
         }
-        if (safe)
+        if (safe && Player.Instance.buildingCount[buildingSO.buildingType] > 0)
         {
             material.SetFloat("_Color.a", safe ? 0.5f : 0.2f);
             if (Input.GetMouseButton(0)) {
@@ -126,4 +126,13 @@ public class Building : Entity, IDestructibleObject
 
 
 
+}
+public enum BuildingType
+{
+    None,
+    ResourceGenerator,
+    UnitSpawner,
+    UnitEvolver,
+    DefenseTower,
+    BaseBuilding
 }

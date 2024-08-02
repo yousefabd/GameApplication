@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     public event Action OnClearTarget;
     public static Player Instance { get; private set; }
 
+    public Dictionary<BuildingType,int> buildingCount;
+
+    public GameRules gameRules;
 
     private void Awake()
     {
@@ -29,13 +32,26 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
+        buildingCount = gameRules.buildingCount; 
         ScreenInteractionManager.Instance.OnRightMouseButtonClicked += Player_HandleInteraction;
         ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
         Unit.OnFinishedPath += Unit_OnFinishedPath;
+        Building.built += (building) => updateBuildingCount(building);
 
 
     }
 
+    private void updateBuildingCount(Building building)
+    {
+        BuildingSO buildingSOInstance = building.buildingSO; 
+        BuildingType buildingType = buildingSOInstance.buildingType;
+        buildingCount[buildingType] -= 1;
+    }
+
+    private void initializeBuildingDictionary()
+    {
+
+    }
     private void ScreenInteractionManager_OnAreaSelected(Vector3 start, Vector3 end)
     {
         ClearSelectedUnits();

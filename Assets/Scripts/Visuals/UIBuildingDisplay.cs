@@ -30,7 +30,7 @@ public class UIBuildingDisplay : MonoBehaviour
             UIButton.transform.GetComponent<Image>().sprite = null;
             GameObject buttonInstance = Instantiate(UIButton, UIParent);
             Button button = buttonInstance.AddComponent<Button>();
-            button.onClick.AddListener(() => BuildingManager.Instance.UIHelper(buildingSO));
+            button.onClick.AddListener(() => BuildingManager.Instance.UIHelper(buildingSO));    
         }
     }
 }

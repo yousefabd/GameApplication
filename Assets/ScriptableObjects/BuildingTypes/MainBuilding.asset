@@ -22,7 +22,8 @@ MonoBehaviour:
     TimerMax: 0
     ResourceType: 0
   unitSpawner: 1
-  unitGenerationData: []
+  unitGenerationData:
+  - {fileID: 11400000, guid: f4456f7d8a2e1df4f8e1db0aa9a2f918, type: 2}
   unitEvolver: 0
   defenseTower: 0
   baseBuilding: 1
