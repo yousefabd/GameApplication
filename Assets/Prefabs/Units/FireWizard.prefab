@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitSO: {fileID: 11400000, guid: c826a3ee0093a4c4c98101e86dd55ee9, type: 2}
+  attackRadius: 0
   projectileSO: {fileID: 11400000, guid: 54e3fc66ce644f548a26146928cca289, type: 2}
 --- !u!114 &7032012033961989446
 MonoBehaviour:

@@ -7,7 +7,7 @@ public enum SoldierType { SWORDSMAN,RANGER}
 public class Soldier : Unit
 {
     private Entity currentTargetEnemy;
-    private float attackRadius;
+    public float attackRadius;
     private float attackDamage;
     [SerializeField] private ProjectileSO projectileSO;
     private System.Random random;
@@ -162,5 +162,10 @@ public class Soldier : Unit
     public void SetAttackDamage(float newAttackDamage)
     {
         attackDamage = newAttackDamage;
+    }
+    public Entity GetCurrentTargetEnemy()
+    {
+
+        return currentTargetEnemy;
     }
 }

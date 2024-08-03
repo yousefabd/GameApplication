@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    protected Team team;
+    public Team team;
     public Team GetTeam()
     {
         return team;

@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
     private List<Unit> selectedUnits;
     private PathFinder pathFinder;
-    private Team pickedTeam { get; set; }
+    public  Team pickedTeam { get; set; }
     public event Action<Vector3, float> OnAttacked;
     public event Action<Entity> OnSetTarget;
     public event Action OnClearTarget;

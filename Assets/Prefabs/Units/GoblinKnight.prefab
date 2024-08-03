@@ -75,6 +75,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3401424066833153046}
+    - targetCorrespondingSourceObject: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4307808389438973393}
+    - targetCorrespondingSourceObject: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 467155946358723312}
+    - targetCorrespondingSourceObject: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7062143471436205005}
   m_SourcePrefab: {fileID: 100100000, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
 --- !u!1 &4113802000061823851 stripped
 GameObject:
@@ -94,6 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitSO: {fileID: 11400000, guid: b84ac44dd37ab7c49a328ed213ca9591, type: 2}
+  attackRadius: 0
   projectileSO: {fileID: 0}
 --- !u!114 &3401424066833153046
 MonoBehaviour:
@@ -107,6 +117,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7595b2f7206f247478fad84c9ccaca53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4307808389438973393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4113802000061823851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e122a1dca74c7a48bf9ec71d6b5ef40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions: []
+  currentAction: {fileID: 0}
+--- !u!114 &467155946358723312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4113802000061823851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e6369e0407bdd4f89be64dd5815ec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: Backoff
+  cost: 1
+  Target: {x: 0, y: 0, z: 0}
+  duration: 5
+  preConditions: []
+  afterEffect:
+  - key: RoamingAway
+    value: 0
+  running: 0
+--- !u!114 &7062143471436205005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4113802000061823851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c938c9f352d844c974932c6585de65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionName: AttckByOthers
+  cost: 1
+  Target: {x: 0, y: 0, z: 0}
+  duration: 3
+  preConditions:
+  - key: RoamigAway
+    value: 0
+  afterEffect:
+  - key: OpponentCharacterKilled
+    value: 0
+  running: 0
 --- !u!4 &8241215476486690030 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7172290462020704586, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}

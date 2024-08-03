@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    private Vector3 gridOriginPosition = new Vector3(-16f, -9f);
-    private const int gridWidth = 32;
-    private const int gridHeight = 18;
     private Vector3 gridOriginPosition = new Vector3(-39f,-39f);
     private const int gridWidth = 80;
     private const int gridHeight = 80;
@@ -123,13 +120,9 @@ public class GridManager : MonoBehaviour
         gridMap.GetValue(indices.I, indices.J).SetEntity(entity);
         gridMap.UpdateValues();
     }
-<<<<<<< Updated upstream
-    public void MoveEntity(Indices oldPosition, Indices newPosition, Entity entity)
-=======
 
-   
-    public void MoveEntity(Indices oldPosition,Indices newPosition,Entity entity)
->>>>>>> Stashed changes
+    public void MoveEntity(Indices oldPosition, Indices newPosition, Entity entity)
+
     {
         gridMap.GetValue(oldPosition.I, oldPosition.J).ClearEntity();
         gridMap.GetValue(newPosition.I, newPosition.J).SetEntity(entity);

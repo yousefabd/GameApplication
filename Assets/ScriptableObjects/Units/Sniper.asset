@@ -15,7 +15,7 @@ MonoBehaviour:
   prefab: {fileID: 8295814765293263267, guid: 815511201ea161e4bb3216e32b1881b4, type: 3}
   icon: {fileID: 21300000, guid: 61ebce8529eaff84f9b7ed521172ea0d, type: 3}
   unitName: Sniper
-  maxHealth: 75
+  maxHealth: 500
   moveSpeed: 2
   team: 0
   interactionRadius: 10
