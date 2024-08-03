@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3652636831445062913}
   - component: {fileID: 3953681355994551170}
   - component: {fileID: 8749676646938079781}
+  - component: {fileID: -5194401046669885319}
   m_Layer: 8
   m_Name: Stone
   m_TagString: Untagged
@@ -78,6 +79,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 863573229958092027}
 --- !u!60 &8749676646938079781
+  prefab: {fileID: 0}
+--- !u!60 &-5194401046669885319
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

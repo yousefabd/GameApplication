@@ -12,6 +12,7 @@ public class Wood : Entity, IDestructibleObject,IRecourses
     public event Action OnDestroyed;
 
 
+    protected Team team;
 
     public void Initialize(Vector3Int cellPosition, float size)
     {
@@ -58,6 +59,26 @@ public class Wood : Entity, IDestructibleObject,IRecourses
 
     public void Destruct()
     {
+       //ResourceManager.Instance.updateResource("WOOD", 1);
+        OnDestroyed?.Invoke();
+
+        Vector3 worldPosition = transform.position;
+
+        GridManager.Instance.WorldToGridPosition(worldPosition, out int x, out int y);
+
+        Debug.Log(x);
+        Debug.Log(y);
+
+        GridManager.Instance.SetEntity(null, new Indices(x, y));
+        GridManager.Instance.SetEntity(null, new Indices(x + 1, y));
+        GridManager.Instance.SetEntity(null, new Indices(x - 1, y));
+        GridManager.Instance.SetEntity(null, new Indices(x, y + 1));
+        GridManager.Instance.SetEntity(null, new Indices(x, y - 1));
+        GridManager.Instance.SetEntity(null, new Indices(x + 1, y + 1));
+        Debug.Log("true");
         Destroy(gameObject);
     }
+   
+
+
 }

@@ -10,12 +10,16 @@ public class Stone : Entity, IDestructibleObject, IRecourses
     public event Action<float> OnDamaged;
     private BoxCollider2D boxCollider;
     public event Action OnDestroyed;
+    protected Team team;
 
+    private float size;
 
 
     public void Initialize(Vector3Int cellPosition, float size)
     {
        
+        this.size = size;
+
         transform.localScale = new Vector3(size, size, 1);
 
         
@@ -45,10 +49,14 @@ public class Stone : Entity, IDestructibleObject, IRecourses
     {
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
         var entity = instance.GetComponent<Entity>();
+
         return entity;
     }
 
     public void Damage(Vector3 position, float value)
+}
+
+public void Damage(Vector3 position, float value)
     {
         HealthPoints -= value;
         OnDamaged?.Invoke(value);
@@ -58,8 +66,47 @@ public class Stone : Entity, IDestructibleObject, IRecourses
         }
     }
 
+   
     public void Destruct()
     {
+        // ResourceManager.Instance.updateResource("STONE", 1);
+
+
+        OnDestroyed?.Invoke();
+
+        Vector3 worldPosition = transform.position;
+
+        GridManager.Instance.WorldToGridPosition(worldPosition, out int x, out int y);
+
+        //Debug.Log(x);
+        //Debug.Log(y);
+
+        if (size==2f) {
+            GridManager.Instance.SetEntity(null, new Indices(x, y));
+            GridManager.Instance.SetEntity(null, new Indices(x , y-1));
+            GridManager.Instance.SetEntity(null, new Indices(x +1, y));
+            GridManager.Instance.SetEntity(null, new Indices(x+1, y - 1));
+            GridManager.Instance.SetEntity(null, new Indices(x + 2, y ));
+            GridManager.Instance.SetEntity(null, new Indices(x + 2, y - 1));
+            GridManager.Instance.SetEntity(null, new Indices(x - 1, y));
+            GridManager.Instance.SetEntity(null, new Indices(x - 1, y-1));
+            GridManager.Instance.SetEntity(null, new Indices(x , y + 1));
+            GridManager.Instance.SetEntity(null, new Indices(x + 1, y + 1));
+            GridManager.Instance.SetEntity(null, new Indices(x, y - 2));
+            GridManager.Instance.SetEntity(null, new Indices(x + 1, y -2));
+        }else
+        {
+            GridManager.Instance.SetEntity(null, new Indices(x, y));
+            GridManager.Instance.SetEntity(null, new Indices(x + 1, y));
+            GridManager.Instance.SetEntity(null, new Indices(x - 1, y));
+            GridManager.Instance.SetEntity(null, new Indices(x, y + 1));
+            GridManager.Instance.SetEntity(null, new Indices(x, y - 1));
+            GridManager.Instance.SetEntity(null, new Indices(x + 1, y + 1));
+            GridManager.Instance.SetEntity(null, new Indices(x - 1, y - 1));
+            GridManager.Instance.SetEntity(null, new Indices(x + 1, y-1));
+            
+        }
+        //Debug.Log("true");
         Destroy(gameObject);
     }
 }

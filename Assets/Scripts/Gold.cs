@@ -10,6 +10,7 @@ public class Gold : Entity, IDestructibleObject, IRecourses
     public event Action<float> OnDamaged;
     private BoxCollider2D boxCollider;
     public event Action OnDestroyed;
+    static string Team = null;
 
 
     public void Initialize(Vector3Int cellPosition, float size)

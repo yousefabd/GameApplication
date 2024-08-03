@@ -100,6 +100,11 @@ GameObject:
   - component: {fileID: 3127617489959290039}
   - component: {fileID: 3730418783888600959}
   m_Layer: 8
+  - component: {fileID: 1041675540486487611}
+  - component: {fileID: 8980919178297719784}
+  - component: {fileID: 7895823010105532192}
+  - component: {fileID: 2765682442692355587}
+  m_Layer: 0
   m_Name: Wood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,6 +129,32 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-8687655970550807096
 MonoBehaviour:
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7400701672278483092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf2777eb3ea0c14b9f37e313425a8be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7400701672278483092}
+--- !u!210 &7895823010105532192
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7400701672278483092}
+  m_Enabled: 1
+  m_SortingLayerID: 2135412131
+  m_SortingLayer: 3
+  m_SortingOrder: 3
+  m_SortAtRoot: 0
+--- !u!60 &2765682442692355587
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -247,4 +278,19 @@ MonoBehaviour:
       - {x: -0.13595244, y: -0.35929492}
       - {x: -0.20692131, y: -0.2244266}
       - {x: 0.6289501, y: 0.49691248}
+  m_Points:
+    m_Paths:
+    - - {x: 0.51013786, y: 0.13449489}
+      - {x: 0.68738544, y: 0.71151423}
+      - {x: 0, y: 1}
+      - {x: -0.34141284, y: 0.5984692}
+      - {x: -0.2709526, y: 0.20914704}
+      - {x: -0.50320554, y: 0.26833993}
+      - {x: -0.68699795, y: 0.034396023}
+      - {x: -0.6407822, y: -0.3128925}
+      - {x: -0.15586472, y: -0.36679333}
+      - {x: -0.2814772, y: -0.7773299}
+      - {x: 0.19697857, y: -0.7878922}
+      - {x: 0.058083445, y: -0.40032774}
+      - {x: 0.7081226, y: -0.08178961}
   m_UseDelaunayMesh: 0
