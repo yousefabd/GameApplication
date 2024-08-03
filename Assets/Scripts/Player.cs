@@ -203,4 +203,8 @@ public class Player : MonoBehaviour
         }
         selectedUnits.Clear();
     }
+    public Team GetTeam()
+    {
+        return pickedTeam;
+    }
 }

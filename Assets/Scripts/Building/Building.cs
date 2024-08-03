@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -94,6 +95,7 @@ public class Building : Entity, IDestructibleObject
     {
         Instantiate(buildingSO.buildingPrefab, position, Quaternion.identity);
         BuildingManager.Instance.BuildAfterCheck(this);
+        setNeighborCells(position);
         built?.Invoke(this);
         return this;
     }
@@ -103,7 +105,7 @@ public class Building : Entity, IDestructibleObject
         if (unitSO != null && buildingSO.NeighborCells.Count > 0)
         {
             int randomIndex = _random.Next(0, buildingSO.NeighborCells.Count);
-            Cell cell = buildingSO.NeighborCells[randomIndex];
+            Cell cell = neighborCellList[randomIndex];
             unitSO.unit.Spawn(GridManager.Instance.GridToWorldPositionCentered(cell.GetIndices()));
         }
     }
@@ -115,7 +117,8 @@ public class Building : Entity, IDestructibleObject
         {
             OnDamaged?.Invoke(value);
             HealthPoints -= value;
-            if (HealthPoints < 0) { Destruct();
+            if (HealthPoints < 0) { 
+                Destruct();
                 OnDestroyed?.Invoke();
 
             }
@@ -124,8 +127,18 @@ public class Building : Entity, IDestructibleObject
     //logic to destroy building after damage
     public void Destruct()
     {
+        setCellsNull();
         Destroy(buildingSO.buildingPrefab.gameObject);
     }
+
+    private void setCellsNull()
+    {
+        for(int i = 0; i < builtCellList.Count; i++)
+        {
+            builtCellList[i].SetEntity(null);
+        }
+    }
+
     private void OnMouseDown()
     {
         //Debug.Log(buildingSO.unitGenerationData);
@@ -139,6 +152,24 @@ private void setNeighborCells(Vector3 position)
         bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
         BuildingManager.Instance.NeighborRecursiveCheck(I, J, Visited, this, out bool safe);
 
+    }
+private void Healing()
+    {
+        Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position, 3 * GridManager.Instance.GetCellSize());
+        foreach(Collider2D collision in collisions)
+        {
+            if ((collision.gameObject.TryGetComponent<Unit>(out Unit unit)) || unit.GetTeam() == Player.Instance.GetTeam()) {
+
+                if(!(unit.HealthPoints + 10 > unit.GetMaxHealth()))
+                unit.HealthPoints += 10;
+
+            }
+                
+
+            
+            
+            
+        }
     }
 
 
