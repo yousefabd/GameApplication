@@ -7,13 +7,17 @@ public class ButtonTextController : MonoBehaviour
 {
 
     public TMP_Text counter;
-    private int currentValue = 0;
+    private int currentValue;
     private int maxValue;
     public BuildingType buildingType;
 
     private void Start()
     {
+       // Debug.Log(buildingType);
+        //Debug.Log(Player.Instance.gameRules.buildingCount[buildingType]);
         maxValue = Player.Instance.gameRules.buildingCount[buildingType];
+        //Debug.Log(maxValue);
+        currentValue = Player.Instance.currentBuildingCount[buildingType];
         UpdateText();
         Building.built += Building_built;
     }
@@ -36,6 +40,7 @@ public class ButtonTextController : MonoBehaviour
         if (currentValue < maxValue)
         {
             currentValue++;
+            Player.Instance.currentBuildingCount[buildingType] = currentValue;
             UpdateText();
         }
         else

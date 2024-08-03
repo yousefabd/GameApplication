@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public event Action OnClearTarget;
     public static Player Instance { get; private set; }
 
-    public Dictionary<BuildingType,int> buildingCount;
+    public Dictionary<BuildingType,int> currentBuildingCount;
 
     public GameRules gameRules;
 
@@ -32,21 +32,22 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-        buildingCount = gameRules.buildingCount; 
+        currentBuildingCount = new Dictionary<BuildingType, int>(gameRules.buildingCount);
+        var keys = currentBuildingCount.Keys.ToList();
+        for (int i = 0; i < keys.Count; i++)
+        {
+            currentBuildingCount[keys[i]] = 0;
+        }
+        Debug.Log("after");
         ScreenInteractionManager.Instance.OnRightMouseButtonClicked += Player_HandleInteraction;
         ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
         Unit.OnFinishedPath += Unit_OnFinishedPath;
-        Building.built += (building) => updateBuildingCount(building);
+       
 
 
     }
 
-    private void updateBuildingCount(Building building)
-    {
-        BuildingSO buildingSOInstance = building.buildingSO; 
-        BuildingType buildingType = buildingSOInstance.buildingType;
-        buildingCount[buildingType] -= 1;
-    }
+ 
 
     private void initializeBuildingDictionary()
     {

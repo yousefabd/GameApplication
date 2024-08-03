@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,12 +16,16 @@ public class Building : Entity, IDestructibleObject
 
     int processCompletion;
 
-   
+    public List<Cell> neighborCellList;
+    public List<Cell> builtCellList;
 
     private void Start()
     {
+        neighborCellList = new List<Cell>();    
+        builtCellList = new List<Cell>();   
+
         HealthPoints = buildingSO.health;
-        built?.Invoke(this);
+        
         HealthPoints = 0;
 
         if (buildingSO.resourceGenerator == true )
@@ -70,8 +75,8 @@ public class Building : Entity, IDestructibleObject
             material.SetColor("_Color", Color.red * 0.7f);
         }
         Debug.Log("what");
-        Debug.Log("type count is " + Player.Instance.buildingCount[buildingSO.buildingType]);
-        if (safe && Player.Instance.buildingCount[buildingSO.buildingType] > 0)
+        Debug.Log("type count is " + Player.Instance.gameRules.buildingCount[buildingSO.buildingType]);
+        if (safe && Player.Instance.currentBuildingCount[buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[buildingSO.buildingType])
         {
             material.SetFloat("_Color.a", safe ? 0.5f : 0.2f);
             if (Input.GetMouseButton(0)) {
@@ -89,6 +94,7 @@ public class Building : Entity, IDestructibleObject
     {
         Instantiate(buildingSO.buildingPrefab, position, Quaternion.identity);
         BuildingManager.Instance.BuildAfterCheck(this);
+        built?.Invoke(this);
         return this;
     }
     //function for spawning units around the building is neighbor cells
@@ -127,7 +133,13 @@ public class Building : Entity, IDestructibleObject
         UIUnitDisplay.Instance.createButtons(buildingSO.unitGenerationData, this);
     }
    
+private void setNeighborCells(Vector3 position)
+    {
+        GridManager.Instance.GetValue(position).GetIndices(out int I, out int J);
+        bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
+        BuildingManager.Instance.NeighborRecursiveCheck(I, J, Visited, this, out bool safe);
 
+    }
 
 
 

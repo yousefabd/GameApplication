@@ -17,6 +17,7 @@ MonoBehaviour:
   health: 1000
   goldStorage: 0
   buildingSprite: {fileID: 21300000, guid: c2cbaca0d16110e4290f3191e2b466c0, type: 3}
+  buildingType: 5
   resourceGenerator: 0
   resourceGeneratorData:
     TimerMax: 0

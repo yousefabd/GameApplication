@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Game Rules
   m_EditorClassIdentifier: 
   NoneCount: 0
-  ResourceGeneratorCount: 0
-  UnitSpawnerCount: 0
-  UnitEvolverCount: 0
-  DefenseTowerCount: 0
-  BaseBuildingCount: 0
+  ResourceGeneratorCount: 1
+  UnitSpawnerCount: 1
+  UnitEvolverCount: 1
+  DefenseTowerCount: 1
+  BaseBuildingCount: 1
