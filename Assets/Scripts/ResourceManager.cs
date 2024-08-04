@@ -10,18 +10,16 @@ public class ResourceManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        resourceDictionary = new Dictionary<string, int>();
+        resourceDictionary.Add("WOOD", 0);
+        resourceDictionary.Add("GOLD", 0);
+        resourceDictionary.Add("STONE", 0);
     }
     private static Dictionary<string, int> resourceDictionary ;
     private string wood = "WOOD", gold="GOLD", stone="STONE";
 
    
-    private void Start()
-    {
-        resourceDictionary = new Dictionary<string, int>();
-        resourceDictionary.Add(wood, 0);
-        resourceDictionary.Add(gold, 0);
-        resourceDictionary.Add(stone, 0);
-    }
+    
 
     public static Action resourceChanged;
     public void updateResource(string key,int amount)
