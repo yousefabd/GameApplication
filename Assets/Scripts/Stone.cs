@@ -10,14 +10,12 @@ public class Stone : Entity, IDestructibleObject, IRecourses
     public event Action<float> OnDamaged;
     private BoxCollider2D boxCollider;
     public event Action OnDestroyed;
-    protected Team team;
 
     private float size;
 
 
     public void Initialize(Vector3Int cellPosition, float size)
     {
-       
         this.size = size;
 
         transform.localScale = new Vector3(size, size, 1);
@@ -49,11 +47,9 @@ public class Stone : Entity, IDestructibleObject, IRecourses
     {
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
         var entity = instance.GetComponent<Entity>();
-
+        team = Team.HUMANS;
         return entity;
-    }
 
-    public void Damage(Vector3 position, float value)
 }
 
 public void Damage(Vector3 position, float value)
@@ -65,7 +61,6 @@ public void Damage(Vector3 position, float value)
             Destruct();
         }
     }
-
    
     public void Destruct()
     {
