@@ -52,10 +52,10 @@ public class Stone : Entity, IDestructibleObject, IRecourses
         return entity;
     }
 
-    public void Damage(Vector3 position, float value)
-}
 
-public void Damage(Vector3 position, float value)
+
+
+   public void Damage(Vector3 position, float value)
     {
         HealthPoints -= value;
         OnDamaged?.Invoke(value);

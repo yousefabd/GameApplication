@@ -1,10 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+using UnityEditor;
+using Unity.VisualScripting;
+using System;
 
 
 
@@ -32,11 +33,9 @@ public class TileAutomata : MonoBehaviour
     public Tilemap botMap;
     public RuleTile topTile;
     public Tile botTile;
-
     public Grid<Cell> grid;
     int width;
     int height;
-    
     private GridManager gridManager;
 
 
@@ -67,36 +66,16 @@ public class TileAutomata : MonoBehaviour
     private void Start()
     {
         doSim(numR);
-        resources = new Recourses(10, 20, 30);
         resources = new Recourses(4, 24, 16);
         distributeResources();
         distributeDecorations();
         gridManager = FindObjectOfType<GridManager>();
-        StartCoroutine(InitializeGrid());
+        RemoveOverlappingObjects();
 
+        PlaceGold();
+        PlaceStone();
+        PlaceWood();
 
-    }
-    private IEnumerator InitializeGrid()
-    {
-        while (gridManager == null || grid == null)
-        {
-            yield return null; 
-        }
-
-        DoSimulation();
-    }
-
-    private void DoSimulation()
-    {
-            doSim(numR);
-            resources = new Recourses(10, 20, 30);
-            distributeResources();
-            distributeDecorations();
-            
-
-            PlaceGold();
-            PlaceStone();
-            PlaceWood();
 
     }
 
@@ -121,10 +100,6 @@ public class TileAutomata : MonoBehaviour
             SaveAssetMap();
             count++;
         }
-        //if (Input.GetKey(KeyCode.T))
-        //{
-        //    TestDamageFunction();
-        //}
         if (Input.GetKey(KeyCode.T))
         {
             //TestDestructWood();
@@ -258,7 +233,6 @@ public class TileAutomata : MonoBehaviour
                 {
                     decorationMap.SetTile(position, lutosLeafTile);
                 }
-                else if (terrainMap[x, y] == 1 &&   UnityEngine.Random.value < decorationChance)
                 else if (terrainMap[x, y] == 1 && UnityEngine.Random.value < decorationChance)
                 {
                     decorationMap.SetTile(position, flowerTile);
@@ -306,16 +280,6 @@ public class TileAutomata : MonoBehaviour
 
         HashSet<Vector3Int> occupiedPositions = new HashSet<Vector3Int>();
 
-        for (int i = 0; i < goldCount; i++)
-        {
-            Vector3Int position = GetRandomValidPosition(occupiedPositions);
-            float size = GetRandomSize();
-            if (position != Vector3Int.zero)
-            {
-                occupiedPositions.Add(position);
-                distributeResource(position, size, goldPrefab);
-            }
-        }
         //for (int i = 0; i < goldCount; i++)
         //{
         //    Vector3Int position = GetRandomValidPosition(occupiedPositions);
@@ -327,16 +291,6 @@ public class TileAutomata : MonoBehaviour
         //    }
         //}
 
-        for (int i = 0; i < woodCount; i++)
-        {
-            Vector3Int position = GetRandomValidPosition(occupiedPositions);
-            float size = GetRandomSize();
-            if (position != Vector3Int.zero)
-            {
-                occupiedPositions.Add(position);
-                distributeResource(position, size, woodPrefab);
-            }
-        }
         //for (int i = 0; i < woodCount; i++)
         //{
         //    Vector3Int position = GetRandomValidPosition(occupiedPositions);
@@ -380,16 +334,6 @@ public class TileAutomata : MonoBehaviour
         DistributeInQuadrant(stonePerQuadrant, stonePrefab, occupiedPositions, -width / 2, 0, 0, height / 2);
         DistributeInQuadrant(stonePerQuadrant, stonePrefab, occupiedPositions, 0, width / 2, 0, height / 2);
 
-        for (int i = 0; i < stoneCount; i++)
-        {
-            Vector3Int position = GetRandomValidPosition(occupiedPositions);
-            float size = GetRandomSize();
-            if (position != Vector3Int.zero)
-            {
-                occupiedPositions.Add(position);
-                distributeResource(position, size, stonePrefab);
-            }
-        }
     }
     //private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions)
     //{
@@ -406,7 +350,6 @@ public class TileAutomata : MonoBehaviour
     //    }
     //    return Vector3Int.zero;
     //}
-    
 
     private bool IsNearHole(Vector3Int position, int bufferZoneSize)
     {
@@ -441,8 +384,6 @@ public class TileAutomata : MonoBehaviour
             return false;
         }
 
-        int bufferZoneSize = 6; 
-        int bufferZoneSize = 7; 
         int bufferZoneSize = 7;
         if (IsNearHole(position, bufferZoneSize))
         {
@@ -466,15 +407,10 @@ public class TileAutomata : MonoBehaviour
     }
     private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions, int xMin, int xMax, int yMin, int yMax)
 
-    private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions)
     //private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions)
     {
         for (int attempt = 0; attempt < 100; attempt++)
         {
-            int x = UnityEngine.Random.Range(-width / 2, width / 2);
-            int y = UnityEngine.Random.Range(-height / 2, height / 2);
-            int x = UnityEngine.Random.Range(-width / 2 + 7, width / 2 - 7); 
-            int y = UnityEngine.Random.Range(-height / 2 + 7, height / 2 - 7); 
 
             //int x = UnityEngine.Random.Range(-width / 2 + 7, width / 2 - 7);
             //int y = UnityEngine.Random.Range(-height / 2 + 7, height / 2 - 7);
@@ -494,17 +430,17 @@ public class TileAutomata : MonoBehaviour
     {
         float size;
         float rand = UnityEngine.Random.value;
-        if (rand < 0.33f)
+        if (rand < 0.7f)
         {
             size = 1f; // Small
         }
-        else if (rand < 0.66f)
+        else if (rand < 0.9f)
         {
-            size = 2f; // Medium
+            size = 1.5f; // Medium
         }
         else
         {
-            size = 4f; // Large
+            size = 2f; // Large
         }
         return size;
     }
@@ -515,9 +451,31 @@ public class TileAutomata : MonoBehaviour
         IRecourses resource = resourceObject.GetComponent<IRecourses>();
         resource.Initialize(cellPosition, size);
 
+        if (resource is Stone && size == 2f)
+        {
+            PolygonCollider2D polygonCollider = resourceObject.GetComponent<PolygonCollider2D>();
+            if (polygonCollider != null)
+            {
+                Vector2[] stonePoints = new Vector2[]
+                {
+                new Vector2(0.803833544f/3, 0.988152266f/3),
+                new Vector2(0f / 3, 2/3f),
+                new Vector2(-0.663296282f/3, 0.834273696f / 3),
+                new Vector2(-2.4507699f / 3, -0.810295224f / 3),
+                new Vector2(-2.4507699f / 3 , -0.810295224f / 3),
+                new Vector2(0.0516949892f / 3, -2.07405996f / 3),
+                new Vector2(2.00738406f / 3, -1.47305143f / 3),
+                new Vector2(2.62270093f / 3 , -0.406489909f / 3)
+                };
+                polygonCollider.points = stonePoints;
+            }
+        }
+
         if (resource is Gold)
         {
             goldInstances.Add((Gold)resource);
+
+
         }
         else if (resource is Wood)
         {
@@ -531,7 +489,9 @@ public class TileAutomata : MonoBehaviour
 
 
 
-private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
+
+
+    private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
     {
         foreach (var resource in resourceList)
         {
@@ -552,6 +512,28 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
             EditorUtility.DisplayDialog("Tilemap saved", "Your Tilemap was saved under " + savePath, "Continue");
         }
     }
+    private void RemoveOverlappingObjects()
+    {
+        float overlapRadius = 0.5f;
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Vector3Int cellPosition = new Vector3Int(-x + width / 2, -y + height / 2, 0);
+                Vector3 worldPos = topMap.CellToWorld(cellPosition) + topMap.cellSize / 2;
+
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(worldPos, overlapRadius);
+                if (colliders.Length > 1)
+                {
+                    foreach (var collider in colliders)
+                    {
+                        Destroy(collider.gameObject);
+                    }
+                }
+            }
+        }
+    }
     private void PlaceGold()
     {
         for (int x = 0; x < width; x++)
@@ -561,7 +543,7 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                 Vector3Int cellPosition = new Vector3Int(-x + width / 2, -y + height / 2, 0);
                 Vector3 worldPos = topMap.CellToWorld(cellPosition) + topMap.cellSize / 2;
 
-                Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x - 6, cellPosition.y - 8, 0);
+                Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x, cellPosition.y, 0);
                 Vector3 adjustedWorldPos = topMap.CellToWorld(adjustedCellPosition) + topMap.cellSize / 2;
 
                 Collider2D collider = gridManager.Overlap(adjustedWorldPos);
@@ -574,22 +556,16 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                         try
                         {
                             Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(adjustedWorldPos, 0.5f);
-                            if (overlappingColliders.Length > 1)
-                            {
-                                Destroy(gold.gameObject);
-                                continue; 
-                            }
 
 
 
                             gold.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(gold, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
-                           // Debug.Log("Gold placed at: " + adjustedWorldPos);
+                            Debug.Log("Gold placed at: " + adjustedWorldPos);
                         }
                         catch (NullReferenceException ex)
                         {
-                            continue; 
                             continue;
                         }
                     }
@@ -607,8 +583,6 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                 Vector3Int cellPosition = new Vector3Int(-x + width / 2, -y + height / 2, 0);
                 Vector3 worldPos = topMap.CellToWorld(cellPosition) + topMap.cellSize / 2;
 
-                Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x - 5, cellPosition.y - 8, 0);
-                Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x , cellPosition.y , 0);
                 Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x, cellPosition.y, 0);
                 Vector3 adjustedWorldPos = topMap.CellToWorld(adjustedCellPosition) + topMap.cellSize / 2;
 
@@ -622,24 +596,16 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                         try
                         {
                             Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(adjustedWorldPos, 0.5f);
-                            if (overlappingColliders.Length > 1)
-                            {
-                                Destroy(wood.gameObject);
-                                continue;
-                            }
 
 
 
                             wood.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
-                            GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2 - 3, gridCellPosition.y + height / 2 - 4));
-                            GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
                             GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 1));
                             Debug.Log("Wood placed at: " + adjustedWorldPos);
                         }
                         catch (NullReferenceException ex)
                         {
-                            continue; 
                             continue;
                         }
                     }
@@ -657,8 +623,6 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                 Vector3Int cellPosition = new Vector3Int(-x + width / 2, -y + height / 2, 0);
                 Vector3 worldPos = topMap.CellToWorld(cellPosition) + topMap.cellSize / 2;
 
-                Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x - 5, cellPosition.y - 8, 0);
-                Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x , cellPosition.y , 0);
                 Vector3Int adjustedCellPosition = new Vector3Int(cellPosition.x, cellPosition.y, 0);
                 Vector3 adjustedWorldPos = topMap.CellToWorld(adjustedCellPosition) + topMap.cellSize / 2;
 
@@ -672,18 +636,13 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
                         try
                         {
                             Collider2D[] overlappingColliders = Physics2D.OverlapCircleAll(adjustedWorldPos, 0.5f);
-                            if (overlappingColliders.Length > 1)
-                            {
-                                Destroy(stone.gameObject);
-                                continue;
-                            }
 
 
 
                             stone.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(stone, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
-                           // Debug.Log("Stone placed at: " + adjustedWorldPos);
+                            Debug.Log("Stone placed at: " + adjustedWorldPos);
                         }
                         catch (NullReferenceException ex)
                         {
@@ -708,8 +667,6 @@ private void ClearResource<T>(List<T> resourceList) where T : MonoBehaviour
             }
         }
     }
-
-
 
 
 }
