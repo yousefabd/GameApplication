@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -13,6 +14,12 @@ public class BuildingManager : MonoBehaviour
     private List<Cell> BuildingCells = new List<Cell>();
     private Transform visualTransform;
 
+    public event Action<Building> built; 
+
+    public void onBuilt(Building building)
+    {
+        built?.Invoke(building);
+    }
     private void Awake()
     {
         Instance = this;

@@ -14,7 +14,7 @@ public class DefenseBuilding : MonoBehaviour
     {
         TryGetComponent<Building>(out Building building);
         team = building.GetTeam();
-        Building.built += Building_built;
+        BuildingManager.Instance.built += Building_built;
 
     }
 
