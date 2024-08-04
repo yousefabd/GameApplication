@@ -280,38 +280,6 @@ public class TileAutomata : MonoBehaviour
 
         HashSet<Vector3Int> occupiedPositions = new HashSet<Vector3Int>();
 
-        //for (int i = 0; i < goldCount; i++)
-        //{
-        //    Vector3Int position = GetRandomValidPosition(occupiedPositions);
-        //    float size = GetRandomSize();
-        //    if (position != Vector3Int.zero)
-        //    {
-        //        occupiedPositions.Add(position);
-        //        distributeResource(position, size, goldPrefab);
-        //    }
-        //}
-
-        //for (int i = 0; i < woodCount; i++)
-        //{
-        //    Vector3Int position = GetRandomValidPosition(occupiedPositions);
-        //    float size = GetRandomSize();
-        //    if (position != Vector3Int.zero)
-        //    {
-        //        occupiedPositions.Add(position);
-        //        distributeResource(position, size, woodPrefab);
-        //    }
-        //}
-
-        //for (int i = 0; i < stoneCount; i++)
-        //{
-        //    Vector3Int position = GetRandomValidPosition(occupiedPositions);
-        //    float size = GetRandomSize();
-        //    if (position != Vector3Int.zero)
-        //    {
-        //        occupiedPositions.Add(position);
-        //        distributeResource(position, size, stonePrefab);
-        //    }
-        //}
         int goldPerQuadrant = goldCount / 4;
         int woodPerQuadrant = woodCount / 4;
         int stonePerQuadrant = stoneCount / 4;
@@ -335,21 +303,7 @@ public class TileAutomata : MonoBehaviour
         DistributeInQuadrant(stonePerQuadrant, stonePrefab, occupiedPositions, 0, width / 2, 0, height / 2);
 
     }
-    //private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions)
-    //{
-    //    for (int attempt = 0; attempt < 100; attempt++)
-    //    {
-    //        int x = Random.Range(-34, 36); 
-    //        int y = Random.Range(-34, 36); 
-    //        Vector3Int position = new Vector3Int(x, y, 0);
-
-    //        if (!occupiedPositions.Contains(position) && IsPositionValidForResource(position))
-    //        {
-    //            return position;
-    //        }
-    //    }
-    //    return Vector3Int.zero;
-    //}
+ 
 
     private bool IsNearHole(Vector3Int position, int bufferZoneSize)
     {
@@ -375,23 +329,23 @@ public class TileAutomata : MonoBehaviour
         return false;
     }
 
-    private bool IsPositionValidForResource(Vector3Int position)
-    {
-        Vector3 worldPosition = topMap.CellToWorld(position) + topMap.cellSize / 2;
+    //private bool IsPositionValidForResource(Vector3Int position)
+    //{
+    //    Vector3 worldPosition = topMap.CellToWorld(position) + topMap.cellSize / 2;
 
-        if (Physics2D.OverlapCircle(worldPosition, 0.5f))
-        {
-            return false;
-        }
+    //    if (Physics2D.OverlapCircle(worldPosition, 0.5f))
+    //    {
+    //        return false;
+    //    }
 
-        int bufferZoneSize = 7;
-        if (IsNearHole(position, bufferZoneSize))
-        {
-            return false;
-        }
+    //    int bufferZoneSize = 7;
+    //    if (IsNearHole(position, bufferZoneSize))
+    //    {
+    //        return false;
+    //    }
 
-        return true;
-    }
+    //    return true;
+    //}
     private void DistributeInQuadrant(int count, GameObject prefab, HashSet<Vector3Int> occupiedPositions, int xMin, int xMax, int yMin, int yMax)
     {
         for (int i = 0; i < count; i++)
@@ -406,14 +360,9 @@ public class TileAutomata : MonoBehaviour
         }
     }
     private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions, int xMin, int xMax, int yMin, int yMax)
-
-    //private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions)
     {
         for (int attempt = 0; attempt < 100; attempt++)
         {
-
-            //int x = UnityEngine.Random.Range(-width / 2 + 7, width / 2 - 7);
-            //int y = UnityEngine.Random.Range(-height / 2 + 7, height / 2 - 7);
             int x = UnityEngine.Random.Range(xMin + 7, xMax - 7);
             int y = UnityEngine.Random.Range(yMin + 7, yMax - 7);
             Vector3Int position = new Vector3Int(x, y, 0);
@@ -533,6 +482,25 @@ public class TileAutomata : MonoBehaviour
                 }
             }
         }
+    }
+    private bool IsPositionValidForResource(Vector3Int position)
+    {
+        Vector3 worldPosition = topMap.CellToWorld(position) + topMap.cellSize / 2;
+
+        // Check for overlaps using a small radius
+        float overlapRadius = 0.5f;
+        if (Physics2D.OverlapCircle(worldPosition, overlapRadius))
+        {
+            return false;
+        }
+
+        int bufferZoneSize = 6; // Adjust the buffer zone size as needed
+        if (IsNearHole(position, bufferZoneSize))
+        {
+            return false;
+        }
+
+        return true;
     }
     private void PlaceGold()
     {
