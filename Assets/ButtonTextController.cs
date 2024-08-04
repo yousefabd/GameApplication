@@ -19,11 +19,12 @@ public class ButtonTextController : MonoBehaviour
         //Debug.Log(maxValue);
         currentValue = Player.Instance.currentBuildingCount[buildingType];
         UpdateText();
-        Building.built += Building_built;
+        BuildingManager.Instance.built += Building_built;
     }
 
     private void Building_built(Building building)
     {
+        Debug.Log("buttons works");
      if(building.buildingSO.buildingType == buildingType)
         {
             IncrementCounter();
