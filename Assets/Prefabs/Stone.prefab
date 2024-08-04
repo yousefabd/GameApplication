@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3941522309883404400}
   - component: {fileID: 3652636831445062913}
   - component: {fileID: 3953681355994551170}
+  - component: {fileID: 8749676646938079781}
+  - component: {fileID: -5194401046669885319}
   m_Layer: 8
   m_Name: Stone
   m_TagString: Untagged
@@ -63,6 +65,23 @@ SortingGroup:
   m_SortAtRoot: 0
 --- !u!61 &3652636831445062913
 BoxCollider2D:
+--- !u!114 &3953681355994551170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863573229958092027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ba4ba8ab5192247ae26ac52306a4de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 863573229958092027}
+--- !u!60 &8749676646938079781
+  prefab: {fileID: 0}
+--- !u!60 &-5194401046669885319
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}

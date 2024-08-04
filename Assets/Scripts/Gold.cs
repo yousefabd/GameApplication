@@ -9,6 +9,7 @@ public class Gold : Entity, IDestructibleObject, IRecourses
     public float HealthPoints { get; set; }
     public event Action<float> OnDamaged;
     public event Action OnDestroyed;
+    static string Team = null;
 
     public void Initialize(Vector3Int cellPosition, float size)
     {

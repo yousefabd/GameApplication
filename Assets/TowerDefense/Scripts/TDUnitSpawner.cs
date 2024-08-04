@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 
 public class TDUnitSpawner : MonoBehaviour
 {
-    [SerializeField] UnitSO unitSO;
+    [SerializeField] List<UnitSO> unitSOList;
     [SerializeField] TowerSO towerSO;
     [SerializeField] TDCastle castle;
     private float maxSpawnCooldown = 3f;
@@ -15,6 +15,7 @@ public class TDUnitSpawner : MonoBehaviour
     private float currentUnitSpeed;
     private float currentUnitDamage;
     private float currentUnitHealth;
+    private int currentSpawnIndicator = 1;
     private System.Random random;
     private int currentUnitCount = 0;
     private enum UnitSpawnState { IDLE,SPAWNING}
@@ -39,6 +40,10 @@ public class TDUnitSpawner : MonoBehaviour
     {
         currentSpawnState = UnitSpawnState.SPAWNING;
         TDWaveManager.Instance.GetUnitVariables(out currentUnitSpeed, out currentUnitDamage, out maxSpawnCooldown, out currentUnitHealth);
+        if (TDWaveManager.Instance.GetCurrentWave() >= 10)
+        {
+            currentSpawnIndicator++;
+        }
     }
 
     private void WaveManager_OnFinishedWave()
@@ -66,13 +71,15 @@ public class TDUnitSpawner : MonoBehaviour
     {
         currentUnitCount++;
         Vector3 spawnPoint = WayPointPath.Instance.GetRandomPath(out List<Vector3> path);
-        Transform unitTransform = Instantiate(unitSO.prefab, spawnPoint, Quaternion.identity);
+        int randomInd = random.Next(currentSpawnIndicator)+1;
+        UnitSO chosenUnitSO = unitSOList[randomInd-1];
+        Transform unitTransform = Instantiate(chosenUnitSO.prefab, spawnPoint, Quaternion.identity);
         Unit unit = unitTransform.GetComponent<Unit>();
         unit.SetPath(path);
         unit.ToggleSelect(true);
-        unit.SetSpeed(GetUnitSpeed());
+        unit.SetSpeed(GetUnitSpeed()*randomInd);
         (unit as Soldier).SetAttackDamage(currentUnitDamage);
-        unit.SetMaxHealth(currentUnitHealth);
+        unit.SetMaxHealth(currentUnitHealth/(randomInd*randomInd));
         unit.OnDestroyed += Unit_OnDestroyed;
         OnUnitSpawned?.Invoke(unit);
         Transform selectedTransform = unitTransform.Find("Selected");

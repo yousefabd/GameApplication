@@ -9062,6 +9062,7 @@ MonoBehaviour:
   goldPrefab: {fileID: 8050817228691020220, guid: ddb338cac049f0245be356586a8bb285, type: 3}
   goldChance: 0.001
   woodPrefab: {fileID: 8135612963390663519, guid: 723d30a461eab66449fdd4552e7bedc1, type: 3}
+  woodPrefab: {fileID: 7400701672278483092, guid: 723d30a461eab66449fdd4552e7bedc1, type: 3}
   woodChance: 0.002
   stonePrefab: {fileID: 863573229958092027, guid: d443dcbca48c5e646a8bfe10575f2c27, type: 3}
   stoneChance: 0.004
