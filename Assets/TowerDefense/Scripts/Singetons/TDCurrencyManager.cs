@@ -21,7 +21,7 @@ public class TDCurrencyManager : MonoBehaviour
 
     private void UnitSpawner_OnUnitDestroyed(float health)
     {
-        AddToCurrency((int)(health / 5f));
+        AddToCurrency(TDWaveManager.Instance.GetUnitKillPrize((int)health));
     }
     private void AddToCurrency(int amount)
     {
