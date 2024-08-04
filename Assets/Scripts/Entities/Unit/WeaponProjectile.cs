@@ -49,6 +49,10 @@ public class WeaponProjectile : MonoBehaviour
     }
     public static WeaponProjectile Throw(Vector3 originPosition, Transform prefab,Entity target,Team team)
     {
+        if (target == null)
+        {
+            return null;
+        }
         Vector3 offset = new Vector3(0f, yOffset, 0f);
         Transform projectileTransform = Instantiate(prefab, originPosition+offset, Quaternion.identity);
         WeaponProjectile projectile = projectileTransform.GetComponent<WeaponProjectile>();

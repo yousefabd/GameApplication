@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: DefenseBuilding
   m_EditorClassIdentifier: 
   stringName: 
-  buildingPrefab: {fileID: 0}
-  health: 0
+  buildingPrefab: {fileID: 7733108270738238660, guid: 7a803679464a67c44994d32c2bb60caa, type: 3}
+  health: 1000
   goldStorage: 0
-  buildingSprite: {fileID: 0}
-  buildingType: 0
+  buildingSprite: {fileID: 95532343, guid: d7d99efdb07092c49afa1d44433bebbf, type: 3}
+  buildingType: 4
   resourceGenerator: 0
   resourceGeneratorData:
     TimerMax: 0

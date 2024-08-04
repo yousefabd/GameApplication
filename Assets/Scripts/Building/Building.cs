@@ -7,7 +7,11 @@ using UnityEngine.UI;
 
 public class Building : Entity, IDestructibleObject 
 {   
-    public BuildingSO buildingSO; 
+    public BuildingSO buildingSO;
+    private BuildingState buildingState;
+
+   public BuildingState GetBuildingState() { return buildingState; }    
+
     private System.Random _random = new System.Random();
 
     public event Action<float> OnDamaged;
@@ -31,7 +35,9 @@ public class Building : Entity, IDestructibleObject
     protected virtual void Start()
     {
         neighborCellList = new List<Cell>();    
-        builtCellList = new List<Cell>();   
+        builtCellList = new List<Cell>();
+
+        buildingState = BuildingState.GHOST;
 
         HealthPoints = buildingSO.health;
         
@@ -111,6 +117,7 @@ public class Building : Entity, IDestructibleObject
         setNeighborCells(position);
         //built?.Invoke(this);
         BuildingManager.Instance.onBuilt(this);
+        buildingState = BuildingState.BUILT;
         return this;
     }
     //function for spawning units around the building is neighbor cells
@@ -187,7 +194,10 @@ private void Healing()
     }
 
 
-
+    public enum BuildingState
+    {
+        GHOST,BUILT
+    }
 }
 public enum BuildingType
 {

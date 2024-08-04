@@ -9,24 +9,22 @@ public class DefenseBuilding : MonoBehaviour
     [SerializeField] Transform shootingTransform;
     [SerializeField] ProjectileSO projectileSO;
     private Team team;
-
+    Building building;
     private void Start()
     {
-        TryGetComponent<Building>(out Building building);
+        TryGetComponent<Building>(out Building Cbuilding);
+        building = Cbuilding;
         team = building.GetTeam();
-        BuildingManager.Instance.built += Building_built;
 
     }
 
-    private void Building_built(Building obj)
-    {
-        Debug.Log("works");
-    }
-
+   
     private void Update()
     {
-        
-                  WeaponProjectile.Throw(shootingTransform.position, projectileSO.prefab, SearchForEnemy(), Team.HUMANS);
+        if (building.GetBuildingState() == Building.BuildingState.BUILT)
+        {
+            WeaponProjectile.Throw(shootingTransform.position, projectileSO.prefab, SearchForEnemy(), Team.HUMANS);
+        }
         
         }
     private Entity SearchForEnemy()
