@@ -51,10 +51,9 @@ public class ScreenInteractionManager : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             //left mouse button released
-            if(selectionAreaTransform != null)
-                selectionAreaTransform.gameObject.SetActive(false);
-            if (selectionAreaTransform.gameObject is Unit)
+            if (selectionAreaTransform != null)
             {
+                selectionAreaTransform?.gameObject.SetActive(false);
                 OnAreaSelected?.Invoke(startPosition, mousePosition);
             }
         }

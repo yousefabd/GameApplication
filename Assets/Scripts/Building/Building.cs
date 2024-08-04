@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,14 @@ public class Building : Entity, IDestructibleObject
     
     public float HealthPoints { get; set; }
 
-    int processCompletion;
+    
+    private int processCompletion = 0;
+
+    public void SetProcessCompletion(int newProcessCompletion)
+    {
+        processCompletion += newProcessCompletion; 
+    }
+    
 
     public List<Cell> neighborCellList;
     public List<Cell> builtCellList;
@@ -34,7 +42,7 @@ public class Building : Entity, IDestructibleObject
             raiseCapacity(this);
         }
     }
-    public void buildProcess()
+    private void BuildProcess()
     {
        
         Renderer renderer = buildingSO.buildingPrefab.gameObject.GetComponent<Renderer>();
@@ -45,6 +53,11 @@ public class Building : Entity, IDestructibleObject
         material.color = color;
 
         HealthPoints = Mathf.Lerp(0f, buildingSO.health, (float)processCompletion / 100f);
+    }
+
+    private void Update()
+    {
+        BuildProcess();
     }
 
     //raises the capacity of Gold Storage using Events (Called when a specific building is initizialized)

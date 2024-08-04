@@ -60,8 +60,11 @@ public class Player : MonoBehaviour
         foreach (Collider2D collider2D in collider2DArray)
         {
             Unit unit = collider2D.GetComponent<Unit>();
-            if (unit.GetTeam() == pickedTeam)
-                AddSelectedUnit(unit);
+            if (unit != null)
+            {
+                if (unit.GetTeam() == pickedTeam)
+                    AddSelectedUnit(unit);
+            }
         }
     }
 
