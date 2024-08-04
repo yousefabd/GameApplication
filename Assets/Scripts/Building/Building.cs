@@ -45,12 +45,12 @@ public class Building : Entity, IDestructibleObject
     private void BuildProcess()
     {
        
-        Renderer renderer = buildingSO.buildingPrefab.gameObject.GetComponent<Renderer>();
-        Material material = renderer.material;
-        float opacity = Mathf.Lerp(0.1f, 1f, (float)processCompletion / 100f);
-        Color color = material.color;
-        color.a = opacity;
-        material.color = color;
+        //Renderer renderer = buildingSO.buildingPrefab.gameObject.GetComponent<Renderer>();
+        //Material material = renderer.material;
+        //float opacity = Mathf.Lerp(0.1f, 1f, (float)processCompletion / 100f);
+        //Color color = material.color;
+        //color.a = opacity;
+        //material.color = color;
 
         HealthPoints = Mathf.Lerp(0f, buildingSO.health, (float)processCompletion / 100f);
     }

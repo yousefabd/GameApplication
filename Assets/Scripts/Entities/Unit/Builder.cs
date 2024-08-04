@@ -1,3 +1,5 @@
+using System.Numerics;
+
 public class Builder : Unit
 {
     private float buildRadius;
@@ -5,5 +7,10 @@ public class Builder : Unit
     {
         base.Awake();
         buildRadius = unitSO.interactionRadius;
+    }
+
+    public void StartBuilding(Vector3 buildingPosition)
+    {
+        
     }
 }

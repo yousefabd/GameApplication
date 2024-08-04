@@ -42,12 +42,37 @@ public class Player : MonoBehaviour
         ScreenInteractionManager.Instance.OnRightMouseButtonClicked += Player_HandleInteraction;
         ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
         Unit.OnFinishedPath += Unit_OnFinishedPath;
-       
-
-
+        BuildingManager.Instance.built += BuildingManager_OnBuilt;
     }
 
- 
+    private void BuildingManager_OnBuilt(Building building)
+    {
+        Builder[] buildersList = FindObjectsByType<Builder>(FindObjectsSortMode.None);
+        Debug.Log("bruh");
+        if (buildersList != null)
+        {
+            Builder closestBuilder = buildersList[0];
+            float minDistance = Mathf.Infinity;
+            foreach (Builder builder in buildersList)
+            {
+                if (minDistance < Vector3.Distance(builder.transform.position, building.transform.position))
+                {
+                    minDistance = Vector3.Distance(builder.transform.position, building.transform.position);
+                    closestBuilder = builder;
+                }
+            }
+            Indices buildingPosition = new Indices();
+            Indices builderPosition = new Indices();
+            GridManager.Instance.WorldToGridPosition(building.transform.position, out buildingPosition.I, out buildingPosition.J);
+            GridManager.Instance.WorldToGridPosition(building.transform.position, out builderPosition.I, out builderPosition.J);
+            List<Vector3>path = pathFinder.FindPath(builderPosition, buildingPosition);
+            if (path != null)
+            {
+                closestBuilder.SetPath(path);
+            }
+        
+        }
+    }
 
     private void initializeBuildingDictionary()
     {

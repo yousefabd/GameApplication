@@ -24,7 +24,7 @@ public class GridManager : MonoBehaviour
     }
     private void Start()
     {
-        //CreatePlayerBase();
+        CreatePlayerBase();
     }
 
     public void CreateGridMap()
@@ -36,7 +36,7 @@ public class GridManager : MonoBehaviour
             return cell;
         });
     }
-   /* public void CreatePlayerBase()
+    public void CreatePlayerBase()
     {
         for (int i = 0; i < initialUnitPosition.Count; i++)
         {
@@ -49,7 +49,7 @@ public class GridManager : MonoBehaviour
             unitCell.SetEntity(unit);
             gridMap.UpdateValues();
         }
-    }*/
+    }
 
     public void UpdateValues()
     {
