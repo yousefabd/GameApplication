@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEditor;
-using Unity.VisualScripting;
-using System;
+
 
 
 
@@ -530,9 +528,9 @@ public class TileAutomata : MonoBehaviour
                             gold.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(gold, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
-                            Debug.Log("Gold placed at: " + adjustedWorldPos);
+                           // Debug.Log("Gold placed at: " + adjustedWorldPos);
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException)
                         {
                             continue;
                         }
@@ -570,9 +568,9 @@ public class TileAutomata : MonoBehaviour
                             wood.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 1));
-                            Debug.Log("Wood placed at: " + adjustedWorldPos);
+                            //Debug.Log("Wood placed at: " + adjustedWorldPos);
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException)
                         {
                             continue;
                         }
@@ -610,9 +608,9 @@ public class TileAutomata : MonoBehaviour
                             stone.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(stone, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
-                            Debug.Log("Stone placed at: " + adjustedWorldPos);
+                            //Debug.Log("Stone placed at: " + adjustedWorldPos);
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException)
                         {
                             continue;
                         }

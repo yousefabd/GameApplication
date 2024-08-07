@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject BuildingContent;
@@ -56,27 +56,44 @@ public class UIManager : MonoBehaviour
 
     public void checkIfMousePressed()
     {
-        Debug.Log("wtf");
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("mouse pressed");
+          //  Debug.Log("Mouse pressed");
 
+            // Create a PointerEventData to check for UI elements
+            PointerEventData pointerData = new PointerEventData(EventSystem.current)
+            {
+                position = Input.mousePosition
+            };
 
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
+
+            // Check if any UI elements were hit
+            if (results.Count > 0)
+            {
+                foreach (RaycastResult result in results)
+                {
+                    //Debug.Log("Mouse is over UI element: " + result.gameObject.name);
+                }
+                return; // Exit if over any UI element
+            }
+
+            // If not over UI, proceed with the logic
             GridManager.Instance.WorldToGridPosition(BuildingManager.Instance.GetMouseWorldPosition(), out int i, out int j);
-            Indices indices = new Indices(i,j);
+            Indices indices = new Indices(i, j);
             Collider2D[] colliders = GridManager.Instance.OverlapAll(indices);
 
             foreach (Collider2D collider in colliders)
             {
-                Debug.Log(collider);
+               // Debug.Log(collider);
             }
 
+            // Only switch content if there are no colliders or the first collider is not a Building
             if (colliders.Length == 0 || colliders[0].gameObject.GetComponent<Building>() == null)
             {
                 SwitchContent(false);
             }
-
-
         }
     }
 }

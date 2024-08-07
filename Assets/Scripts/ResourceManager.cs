@@ -12,7 +12,7 @@ public class ResourceManager : MonoBehaviour
         Instance = this;
         resourceDictionary = new Dictionary<string, int>();
         resourceDictionary.Add("WOOD", 0);
-        resourceDictionary.Add("GOLD", 0);
+        resourceDictionary.Add("GOLD", 10000);
         resourceDictionary.Add("STONE", 0);
     }
     private static Dictionary<string, int> resourceDictionary ;

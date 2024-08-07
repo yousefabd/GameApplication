@@ -12,4 +12,6 @@ public class Entity : MonoBehaviour
         Entity entity = null;
         return entity;
     }
+
+    public ResourceType resourceType;
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static Building;
@@ -50,10 +51,16 @@ public class BuildingManager : MonoBehaviour
     // Functionality for UI
     public void UIHelper(BuildingSO buildingSO)
     {
+        if (buildingSO.price <= ResourceManager.Instance.getGoldResource() && (Player.Instance.currentBuildingCount[buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[buildingSO.buildingType]))
+        {
+            if (visualTransform != null && !(visualTransform.gameObject.IsDestroyed()))
+            {
+                Destroy(visualTransform.gameObject);
+            }
 
-        building = buildingSO.building;
-        visualTransform = SpawnForCheck(GetMouseWorldPosition(),building);
-
+            building = buildingSO.building;
+            visualTransform = SpawnForCheck(GetMouseWorldPosition(), building);
+        }
 
     }
     public Transform SpawnForCheck(Vector3 position, Building visualBuilding)
@@ -69,26 +76,39 @@ public class BuildingManager : MonoBehaviour
         Check(I, J, Visited, visualObject.GetComponent<Building>(), out bool safe);
         //Debug.Log("area is" + safe);
         Material material = visualObject.GetComponent<Renderer>().material;
-        Color originalColor = material.GetColor("_Color");
 
-        if (!safe)
+        if (!(Player.Instance.currentBuildingCount[building.buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[building.buildingSO.buildingType]))
         {
-            material.SetColor("_Color", new Color(1.0f, 0.0f, 0.0f, 0.7f)); // Red color with 70% opacity
+            safe = false;
         }
-        else
+           if (building.buildingSO.buildingType == BuildingType.ResourceGenerator)
         {
-            material.SetColor("_Color", originalColor); // Revert to the original color
+            AutoMiner autoMiner = visualObject.GetComponent<AutoMiner>();
+            if (autoMiner != null)
+            {
+                Debug.Log(autoMiner.CanBuild());
+                safe = autoMiner.CanBuild();
+            }
         }
+
+
+
+            if (!safe)
+        {
+            Color redColor = new Color(1f, 0f, 0f, 0.7f);
+            material.color = redColor;
+        }
+       
         Debug.Log("what");
         Debug.Log("type count is " + Player.Instance.gameRules.buildingCount[building.buildingSO.buildingType]);
         if (safe && Player.Instance.currentBuildingCount[building.buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[building.buildingSO.buildingType])
         {
+            Color whiteColor = new Color(1f, 1f, 1f, 0.7f);
+            material.color = whiteColor;
 
-            Color currentColor = material.GetColor("_Color");
-            currentColor.a = 0.5f; // Set alpha to 50%
-            material.SetColor("_Color", currentColor);
             if (Input.GetMouseButton(0))
             {
+
                 Spawn(visualTransform.position);
                 Destroy(visualTransform.gameObject);
                 return;
@@ -101,10 +121,12 @@ public class BuildingManager : MonoBehaviour
     {
         Building instantiatedBuilding = Instantiate(building.buildingSO.buildingPrefab, position, Quaternion.identity).GetComponent<Building>();
         BuildAfterCheck(instantiatedBuilding);
+        ResourceManager.Instance.updateResource("GOLD", -building.buildingSO.price);
         setNeighborCells(position,instantiatedBuilding);
         //built?.Invoke(this);
         onBuilt(instantiatedBuilding);
         instantiatedBuilding.SetBuildingState(BuildingState.BUILT);
+        instantiatedBuilding.UpdateChildVisibility();
         BuildingCells.Clear();
         building = null;
         return instantiatedBuilding;
@@ -195,64 +217,64 @@ public class BuildingManager : MonoBehaviour
     public void NeighborRecursiveCheck(int I, int J, bool[,] Visited, Building instantiatedBuilding, out bool safe)
     {
         safe = true;
-        if (Visited[I, J])
-        {
-            return;
-        }
+
+        // Check boundaries first
         if (I < 0 || J < 0 || I >= GridManager.Instance.GetWidth() || J >= GridManager.Instance.GetHeight())
         {
             safe = false;
             return;
         }
+
+        // Check if already visited
+        if (Visited[I, J])
+        {
+            return;
+        }
+
         Visited[I, J] = true;
-        // Function to check if cell is overlapping with building collider
+
+        // Check for colliders
         Collider2D[] colliders = GridManager.Instance.OverlapAll(new Indices(I, J));
         if (colliders.Length > 1)
         {
-            safe = false; return;
+            safe = false;
+            return;
         }
-        else if (colliders.Length == 1)
+
+        if (colliders.Length == 1)
         {
             colliders[0].TryGetComponent<Entity>(out Entity entity);
             if (entity != null && entity is Building building && building.buildingSO == instantiatedBuilding.buildingSO)
             {
                 BuildingCells.Add(GridManager.Instance.GetValue(I, J));
-                RecursiveCheck(I + 1, J, Visited, instantiatedBuilding, out safe);
-                RecursiveCheck(I, J + 1, Visited, instantiatedBuilding, out safe);
-                RecursiveCheck(I - 1, J, Visited, instantiatedBuilding, out safe);
-                RecursiveCheck(I, J - 1, Visited, instantiatedBuilding, out safe);
-
+                // Recursively check neighbors
+                NeighborRecursiveCheck(I + 1, J, Visited, instantiatedBuilding, out safe);
+                NeighborRecursiveCheck(I, J + 1, Visited, instantiatedBuilding, out safe);
+                NeighborRecursiveCheck(I - 1, J, Visited, instantiatedBuilding, out safe);
+                NeighborRecursiveCheck(I, J - 1, Visited, instantiatedBuilding, out safe);
             }
             else if (entity != null && entity is Building otherBuilding && otherBuilding.buildingSO != instantiatedBuilding.buildingSO)
             {
-                safe = false; return;
-            }
-            else
-            {
-                if (entity)
-                {
-                    // Debug.Log("collision with entity"); Debug.Log(colliders[0]);
-                }
-                else
-                {
-                    // Debug.Log("collision with non entity"); Debug.Log(colliders[0]); 
-                }
-
+                safe = false;
+                return;
             }
         }
-        else
+        else if (colliders.Length == 0)
         {
-
             Cell neighborCell = GridManager.Instance.GetValue(I, J);
+            Debug.Log(neighborCell.ToSafeString());
             instantiatedBuilding.neighborCellList.Add(neighborCell);
-            return;
         }
     }
 
     //setting cells to house the entity
     public void BuildAfterCheck(Building instantiatedBuilding)
     {
-
+        BuildingCells.Clear();
+        GridManager.Instance.GetValue(instantiatedBuilding.transform.position).GetIndices(out int I, out int J);
+        bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
+        Check(I, J, Visited, instantiatedBuilding, out bool safe);
+        NeighborRecursiveCheck(I, J, Visited, instantiatedBuilding, out bool safe1);
         for (int i = 0; i < BuildingCells.Count; i++)
         {
             BuildingCells[i].SetEntity(instantiatedBuilding);

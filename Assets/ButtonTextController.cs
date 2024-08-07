@@ -7,10 +7,11 @@ public class ButtonTextController : MonoBehaviour
 {
 
     public TMP_Text counter;
+    public TMP_Text price;
     private int currentValue;
     private int maxValue;
     public BuildingType buildingType;
-
+    public int buildingPrice;
     private void Start()
     {
        // Debug.Log(buildingType);
@@ -19,7 +20,20 @@ public class ButtonTextController : MonoBehaviour
         //Debug.Log(maxValue);
         currentValue = Player.Instance.currentBuildingCount[buildingType];
         UpdateText();
+        price.text = buildingPrice.ToString();
         BuildingManager.Instance.built += Building_built;
+    }
+
+    private void Update()
+    {
+        if(buildingPrice > ResourceManager.Instance.getGoldResource())
+        {
+            price.color = Color.red;
+        }
+        else
+        {
+            price.color = Color.black;
+        }
     }
 
     private void Building_built(Building building)

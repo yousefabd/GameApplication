@@ -20,4 +20,8 @@ public class Recourses
 
    
 }
+public enum ResourceType
+{
+GOLD,WOOD,STONE
+}
 

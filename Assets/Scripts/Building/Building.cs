@@ -10,8 +10,20 @@ public class Building : Entity, IDestructibleObject
     public BuildingSO buildingSO;
     private BuildingState buildingState;
 
-   public void SetBuildingState(BuildingState newBuildingState) { buildingState = newBuildingState; }    
+    public List<Cell> neighborCellList;
+    public List<Cell> builtCellList;
+
+
+    public void SetBuildingState(BuildingState newBuildingState) { buildingState = newBuildingState; }    
    public BuildingState GetBuildingState() { return buildingState; }
+
+    private void Awake()
+    {
+        neighborCellList = new List<Cell>();
+        builtCellList = new List<Cell>();
+
+        buildingState = BuildingState.GHOST;
+    }
 
     private System.Random _random = new System.Random();
 
@@ -30,29 +42,36 @@ public class Building : Entity, IDestructibleObject
     }
     
 
-    public List<Cell> neighborCellList;
-    public List<Cell> builtCellList;
-
+ 
     protected virtual void Start()
     {
-        neighborCellList = new List<Cell>();    
-        builtCellList = new List<Cell>();
+        UpdateChildVisibility();
 
-        buildingState = BuildingState.GHOST;
-
-        HealthPoints = buildingSO.health;
         
-        HealthPoints = 0;
-
-        if (buildingSO.resourceGenerator == true )
+        if (buildingState == BuildingState.BUILT)
         {
-            raiseCapacity(this);
+            HealthPoints = buildingSO.health;
+            HealthPoints = 0;
+            
+        }
+    }
+    public void UpdateChildVisibility()
+    {
+        Transform childTransform = transform.GetChild(0);   
+
+        if (buildingState == BuildingState.GHOST)
+        {
+            childTransform.gameObject.SetActive(false);
+        }
+        else
+        {
+            childTransform.gameObject.SetActive(true);
         }
     }
     private void BuildProcess()
     {
        
-        Renderer renderer = buildingSO.buildingPrefab.gameObject.GetComponent<Renderer>();
+        Renderer renderer = transform.GetComponent<Renderer>();
         Material material = renderer.material;
         float opacity = Mathf.Lerp(0.1f, 1f, (float)processCompletion / 100f);
         Color color = material.color;
@@ -64,7 +83,11 @@ public class Building : Entity, IDestructibleObject
 
     private void Update()
     {
-        BuildProcess();
+        if (buildingState == BuildingState.BUILT)
+        {
+            processCompletion += 1;
+            BuildProcess();
+        }
     }
 
     //raises the capacity of Gold Storage using Events (Called when a specific building is initizialized)
@@ -77,11 +100,20 @@ public class Building : Entity, IDestructibleObject
     //function for spawning units around the building is neighbor cells
     public void Spawner(UnitSO unitSO)
     {
-        if (unitSO != null && buildingSO.NeighborCells.Count > 0)
+        Debug.Log(neighborCellList.Count);
+       if(neighborCellList.Count == 0)
         {
-            int randomIndex = _random.Next(0, buildingSO.NeighborCells.Count);
+            bool[,] visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
+            bool safe;
+            GridManager.Instance.WorldToGridPosition(transform.position,out int i, out int j);
+            BuildingManager.Instance.NeighborRecursiveCheck(i, j, visited, this, out safe);
+        }
+        Debug.Log(neighborCellList.Count);
+        if (unitSO != null && neighborCellList.Count > 0)
+        {
+            int randomIndex = _random.Next(0, neighborCellList.Count);
             Cell cell = neighborCellList[randomIndex];
-            unitSO.unit.Spawn(GridManager.Instance.GridToWorldPositionCentered(cell.GetIndices()));
+            Unit.Spawn(unitSO,GridManager.Instance.GridToWorldPositionCentered(cell.GetIndices()));
         }
     }
     
@@ -116,9 +148,10 @@ public class Building : Entity, IDestructibleObject
 
     private void OnMouseDown()
     {
-        //Debug.Log(buildingSO.unitGenerationData);
-        //Debug.Log(this);
-        UIUnitDisplay.Instance.createButtons(buildingSO.unitGenerationData, this);
+        if (buildingSO.buildingType == BuildingType.UnitSpawner)
+        {
+            UIUnitDisplay.Instance.createButtons(buildingSO.unitGenerationData, this);
+        }
     }
    
 

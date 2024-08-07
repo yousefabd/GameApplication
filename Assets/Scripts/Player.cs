@@ -38,7 +38,6 @@ public class Player : MonoBehaviour
         {
             currentBuildingCount[keys[i]] = 0;
         }
-        Debug.Log("after");
         ScreenInteractionManager.Instance.OnRightMouseButtonClicked += Player_HandleInteraction;
         ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
         Unit.OnFinishedPath += Unit_OnFinishedPath;
