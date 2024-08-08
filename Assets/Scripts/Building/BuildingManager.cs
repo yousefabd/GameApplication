@@ -108,9 +108,13 @@ public class BuildingManager : MonoBehaviour
 
             if (Input.GetMouseButton(0))
             {
-
+                
                 Spawn(visualTransform.position);
-                Destroy(visualTransform.gameObject);
+                
+                    Destroy(visualTransform.gameObject);
+                    Destroy(visualTransform);
+                visualTransform = null;
+                
                 return;
             }
         }
@@ -121,7 +125,7 @@ public class BuildingManager : MonoBehaviour
     {
         Building instantiatedBuilding = Instantiate(building.buildingSO.buildingPrefab, position, Quaternion.identity).GetComponent<Building>();
         BuildAfterCheck(instantiatedBuilding);
-        ResourceManager.Instance.updateResource("GOLD", -building.buildingSO.price);
+        ResourceManager.Instance.updateResource(ResourceType.GOLD, -building.buildingSO.price);
         setNeighborCells(position,instantiatedBuilding);
         //built?.Invoke(this);
         onBuilt(instantiatedBuilding);

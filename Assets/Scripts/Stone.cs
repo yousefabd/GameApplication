@@ -14,6 +14,7 @@ public class Stone : Entity, IDestructibleObject, IRecourses
     private float size;
 
     public ResourceType resourceType = ResourceType.STONE;
+    
 
 
     public void Initialize(Vector3Int cellPosition, float size)
