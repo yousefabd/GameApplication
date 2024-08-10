@@ -6,16 +6,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
+
     [SerializeField] GameObject BuildingContent;
     [SerializeField] GameObject UnitContent;
 
-    private bool scrollToggle = false;
+    [SerializeField] Transform contentParent;
 
-    public static UIManager Instance;
-
-    private GameObject buildingContent;
+    private bool unitToggle = false;
     private GameObject unitContent;
-
+    public static UIManager Instance;
     private void Awake()
     {
         Instance = this;
@@ -23,14 +22,10 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        // Initialize the buildingContent and unitContent
-        buildingContent = BuildingContent;
-        unitContent = UnitContent;
-
-        if (!scrollToggle)
+        
+        if (!unitToggle)
         {
-            buildingContent.SetActive(true);
-            unitContent.SetActive(false);
+            BuildingContent.SetActive(true);
         }
     }
 
@@ -41,16 +36,19 @@ public class UIManager : MonoBehaviour
 
     public void SwitchContent(bool setToggle)
     {
-        scrollToggle = setToggle;
-        if (scrollToggle)
+        unitToggle = setToggle;
+        if (unitToggle)
         {
-            buildingContent.SetActive(false);
-            unitContent.SetActive(true);
+            BuildingContent.SetActive(false);
+           unitContent = Instantiate(UnitContent, contentParent);
+           unitContent.SetActive(true);
         }
-        else
+        else if (!unitToggle)
         {
-            buildingContent.SetActive(true);
-            unitContent.SetActive(false);
+            BuildingContent.SetActive(true);
+            Destroy(unitContent.gameObject);
+            
+            
         }
     }
 
@@ -58,9 +56,7 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-          //  Debug.Log("Mouse pressed");
 
-            // Create a PointerEventData to check for UI elements
             PointerEventData pointerData = new PointerEventData(EventSystem.current)
             {
                 position = Input.mousePosition
@@ -69,27 +65,15 @@ public class UIManager : MonoBehaviour
             List<RaycastResult> results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
 
-            // Check if any UI elements were hit
             if (results.Count > 0)
             {
-                foreach (RaycastResult result in results)
-                {
-                    //Debug.Log("Mouse is over UI element: " + result.gameObject.name);
-                }
-                return; // Exit if over any UI element
-            }
 
-            // If not over UI, proceed with the logic
+                return;
+            }
             GridManager.Instance.WorldToGridPosition(BuildingManager.Instance.GetMouseWorldPosition(), out int i, out int j);
             Indices indices = new Indices(i, j);
             Collider2D[] colliders = GridManager.Instance.OverlapAll(indices);
 
-            foreach (Collider2D collider in colliders)
-            {
-               // Debug.Log(collider);
-            }
-
-            // Only switch content if there are no colliders or the first collider is not a Building
             if (colliders.Length == 0 || colliders[0].gameObject.GetComponent<Building>() == null)
             {
                 SwitchContent(false);

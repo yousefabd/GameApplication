@@ -15,13 +15,11 @@ public class UIUnitDisplay : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-    }
+  
     public void createButtons(List<UnitSO> unitSOList, Building building)
     {
         //Debug.Log("entered");
-        UIManager.Instance.SwitchContent(true); 
+        //UIManager.Instance.SwitchContent(true); 
 
         foreach (UnitSO unitSO in unitSOList)
         {

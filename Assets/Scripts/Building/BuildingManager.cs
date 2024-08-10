@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 using static Building;
 
 public class BuildingManager : MonoBehaviour
@@ -31,6 +33,10 @@ public class BuildingManager : MonoBehaviour
     {
 
         mainCamera = Camera.main;
+        Indices indices = new Indices();
+        indices.I = 40;
+        indices.J = 20;
+        placeBuilding(MainBuilding,indices,0,80,0,40);
     }
 
     private void Update()
@@ -55,7 +61,7 @@ public class BuildingManager : MonoBehaviour
         {
             if (visualTransform != null && !(visualTransform.gameObject.IsDestroyed()))
             {
-                Destroy(visualTransform.gameObject);
+                Destroy(visualTransform);
             }
 
             building = buildingSO.building;
@@ -111,10 +117,16 @@ public class BuildingManager : MonoBehaviour
                 
                 Spawn(visualTransform.position);
                 
-                    Destroy(visualTransform.gameObject);
                     Destroy(visualTransform);
-                visualTransform = null;
-                
+                Building[] buildingComponents = FindObjectsOfType<Building>();
+
+                foreach (var component in buildingComponents)
+                {
+                    if (component.GetBuildingState() == BuildingState.GHOST)
+                    {
+                        Destroy(component.gameObject);
+                    }
+                }
                 return;
             }
         }
@@ -123,11 +135,19 @@ public class BuildingManager : MonoBehaviour
     }
     public Entity Spawn(Vector3 position)
     {
+        if (visualTransform != null)
+        {
+            Destroy(visualTransform.gameObject);
+            visualTransform = null;
+        }
+
+        // Spawn the actual building
+        Debug.Log(building);
         Building instantiatedBuilding = Instantiate(building.buildingSO.buildingPrefab, position, Quaternion.identity).GetComponent<Building>();
+        Debug.Log(instantiatedBuilding);
         BuildAfterCheck(instantiatedBuilding);
         ResourceManager.Instance.updateResource(ResourceType.GOLD, -building.buildingSO.price);
-        setNeighborCells(position,instantiatedBuilding);
-        //built?.Invoke(this);
+        setNeighborCells(position, instantiatedBuilding);
         onBuilt(instantiatedBuilding);
         instantiatedBuilding.SetBuildingState(BuildingState.BUILT);
         instantiatedBuilding.UpdateChildVisibility();
@@ -293,6 +313,59 @@ public class BuildingManager : MonoBehaviour
         GridManager.Instance.GetValue(position).GetIndices(out int I, out int J);
         bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
         BuildingManager.Instance.NeighborRecursiveCheck(I, J, Visited, instantiatedBuilding, out bool safe);
+
+    }
+
+    [SerializeField] private BuildingSO MainBuilding;
+
+    public void placeBuilding(BuildingSO buildingSO,Indices indices,int ILconstrict,int IRconstrict, int JDconstrict, int JUconstrict)
+    {
+        
+       
+        
+        Vector3 potentialPosition = new Vector3();
+        potentialPosition =  GridManager.Instance.GridToWorldPosition(indices);
+        Transform visualTransform = Instantiate(buildingSO.buildingPrefab, potentialPosition, Quaternion.identity);
+        bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
+        mapRecursion(indices.I, indices.J, Visited, visualTransform.gameObject.GetComponent<Building>(), out bool safe,ILconstrict,IRconstrict,JDconstrict,JUconstrict);
+        Debug.Log(safe);
+        if(safe)
+        {
+            building = buildingSO.building;
+            Spawn(visualTransform.position);
+            Destroy(visualTransform.gameObject);
+        }
+
+    }
+    public void mapRecursion(int I, int J, bool[,] Visited, Building instantiatedBuilding, out bool safe,int ILconstrict,int IRconstrict,int JDconstrict,int JUconstrict)
+    {
+        safe = true;
+        if (Visited[I, J])
+        {
+            return;
+        }
+        if (I < 0 || J < 0 || I >= GridManager.Instance.GetWidth() ||J <= GridManager.Instance.GetHeight() || I >= ILconstrict||I<=IRconstrict|| J <= JUconstrict || J >=JDconstrict)
+        {
+            safe = false;
+            return;
+        }
+        Visited[I, J] = true;
+        RecursiveCheck(I, J, Visited, instantiatedBuilding, out bool safeToBuild);
+        if (safeToBuild)
+        {
+            safe = true; return;
+        }
+        else if (!safeToBuild)
+        {
+            
+            
+                mapRecursion(I + 1, J, Visited, instantiatedBuilding, out safe,IRconstrict, ILconstrict,JUconstrict,JDconstrict);
+                mapRecursion(I, J + 1, Visited, instantiatedBuilding, out safe, IRconstrict, ILconstrict, JUconstrict, JDconstrict);
+                mapRecursion(I - 1, J, Visited, instantiatedBuilding, out safe, IRconstrict, ILconstrict, JUconstrict, JDconstrict);
+                mapRecursion(I, J - 1, Visited, instantiatedBuilding, out safe, IRconstrict, ILconstrict, JUconstrict, JDconstrict);
+
+            
+        }
 
     }
 }

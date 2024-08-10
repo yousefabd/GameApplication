@@ -100,7 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ba4ba8ab5192247ae26ac52306a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceType: 2
   prefab: {fileID: 2181116904812614109}
+  resourceType: 2
 --- !u!210 &4243710017037810654
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -186,7 +188,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 172b75bf46881d44b9e6fdda651f0134, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e72f87b7325fec245ad59659c4675bdc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

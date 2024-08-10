@@ -90,11 +90,7 @@ public class Building : Entity, IDestructibleObject
         }
     }
 
-    //raises the capacity of Gold Storage using Events (Called when a specific building is initizialized)
-    private void raiseCapacity(Building building)
-    {
-        Player.goldStorage += building.buildingSO.goldStorage;
-    }
+  
 
     
     //function for spawning units around the building is neighbor cells
@@ -150,6 +146,7 @@ public class Building : Entity, IDestructibleObject
     {
         if (buildingSO.buildingType == BuildingType.UnitSpawner)
         {
+            UIManager.Instance.SwitchContent(true);
             UIUnitDisplay.Instance.createButtons(buildingSO.unitGenerationData, this);
         }
     }

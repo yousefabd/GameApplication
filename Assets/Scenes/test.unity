@@ -552,11 +552,6 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 4577391924631925637, guid: ea71ec31c77363348b11b1fa2f9c81cd, type: 3}
   m_Damping: 0.5
   m_MaxWindowSize: -1
---- !u!1 &731870376 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4000474659160639932, guid: 7a10fd5ece4c5574aa2b92c4a3c986ec, type: 3}
-  m_PrefabInstance: {fileID: 1504840852}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &751610489
 GameObject:
   m_ObjectHideFlags: 0
@@ -992,6 +987,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1440757313}
   m_CullTransparentMesh: 1
+--- !u!224 &1455581736 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 858378208337034948, guid: 7a10fd5ece4c5574aa2b92c4a3c986ec, type: 3}
+  m_PrefabInstance: {fileID: 1504840852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1504840852
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1018,12 +1018,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 989153252331183654, guid: 7a10fd5ece4c5574aa2b92c4a3c986ec, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -300.0005
+      value: -300.00003
       objectReference: {fileID: 0}
     - target: {fileID: 4046485234484202353, guid: 7a10fd5ece4c5574aa2b92c4a3c986ec, type: 3}
       propertyPath: UIButton
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3405990254644527409, guid: a5fa8cc9386fea643b3442b65a4fb82b, type: 3}
     - target: {fileID: 4281743729066041733, guid: 7a10fd5ece4c5574aa2b92c4a3c986ec, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1221,7 +1221,8 @@ PrefabInstance:
       value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4000474659160639932, guid: 7a10fd5ece4c5574aa2b92c4a3c986ec, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5669240363285761184, guid: 7a10fd5ece4c5574aa2b92c4a3c986ec, type: 3}
       insertIndex: -1
@@ -1278,7 +1279,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BuildingContent: {fileID: 1797078221}
-  UnitContent: {fileID: 731870376}
+  UnitContent: {fileID: 6282703830478569974, guid: 9e9055e154892c24da601fd53620075d, type: 3}
+  contentParent: {fileID: 1455581736}
 --- !u!1 &1695069682
 GameObject:
   m_ObjectHideFlags: 0
