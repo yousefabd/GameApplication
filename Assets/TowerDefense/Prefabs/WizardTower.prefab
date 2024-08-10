@@ -56,10 +56,6 @@ PrefabInstance:
       propertyPath: unitSO
       value: 
       objectReference: {fileID: 11400000, guid: c826a3ee0093a4c4c98101e86dd55ee9, type: 2}
-    - target: {fileID: 3358504622424668779, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
-      propertyPath: towerSO
-      value: 
-      objectReference: {fileID: 11400000, guid: 1003bf02f6efbdc46b2a581b21aa2a60, type: 2}
     - target: {fileID: 5888123422143801932, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
       propertyPath: m_Name
       value: WizardTower
@@ -67,22 +63,6 @@ PrefabInstance:
     - target: {fileID: 6163202504098357113, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.153
-      objectReference: {fileID: 0}
-    - target: {fileID: 6373538729660050145, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
-      propertyPath: m_Size.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6373538729660050145, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
-      propertyPath: m_Size.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6373538729660050145, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
-      propertyPath: m_Offset.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6373538729660050145, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8372652141631782887, guid: b51a29c86853b9c448c6a7f678ec86d5, type: 3}
       propertyPath: m_Controller

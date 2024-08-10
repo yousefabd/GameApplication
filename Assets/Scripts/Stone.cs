@@ -13,6 +13,9 @@ public class Stone : Entity, IDestructibleObject, IRecourses
 
     private float size;
 
+    public ResourceType resourceType = ResourceType.STONE;
+    
+
 
     public void Initialize(Vector3Int cellPosition, float size)
     {
@@ -50,9 +53,12 @@ public class Stone : Entity, IDestructibleObject, IRecourses
         team = Team.HUMANS;
         return entity;
 
+
     }
 
-    public void Damage(Vector3 position, float value)
+
+
+public void Damage(Vector3 position, float value)
     {
         HealthPoints -= value;
         OnDamaged?.Invoke(value);

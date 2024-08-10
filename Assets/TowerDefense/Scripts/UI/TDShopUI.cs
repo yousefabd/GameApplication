@@ -11,13 +11,12 @@ public class TDShopUI : MonoBehaviour
     private void Start()
     {
         CreateShopItems();
-        TDGameManager.Instance.OnDisplayShop += Player_OnDisplayShop;
+        TDPlayer.Instance.OnDisplayShop += Player_OnDisplayShop;
         shopItemTemplate.gameObject.SetActive(false);
         backButton.onClick.AddListener(() =>
         {
-            gameObject.SetActive(false);
-            Time.timeScale = 1.0f;
-            TDGameManager.Instance.NextWave();
+            gameObject.SetActive(false);    
+            TDPlayer.Instance.NextWave();
         });
         gameObject.SetActive(false);
     }

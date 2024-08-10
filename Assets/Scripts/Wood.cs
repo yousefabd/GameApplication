@@ -8,12 +8,9 @@ public class Wood : Entity, IDestructibleObject,IRecourses
     public GameObject prefab;
     public float HealthPoints { get; set; }
     public event Action<float> OnDamaged;
-    private BoxCollider2D boxCollider;
     public event Action OnDestroyed;
 
-
-    protected Team team;
-
+    public ResourceType resourceType = ResourceType.WOOD;
     public void Initialize(Vector3Int cellPosition, float size)
     {
         transform.localScale = new Vector3(size, size, 1);
@@ -39,11 +36,15 @@ public class Wood : Entity, IDestructibleObject,IRecourses
             HealthPoints = 25f;
           //  boxCollider.size = new Vector2(4.504134f, 6.390672f);
         }
+
     }
+  
     public override Entity Spawn(Vector3 position)
     {
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
         var entity = instance.GetComponent<Entity>();
+        team = Team.HUMANS;
+
         return entity;
     }
 

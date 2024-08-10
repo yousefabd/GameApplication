@@ -210,9 +210,9 @@ public class Unit : Entity, IDestructibleObject
         HealthPoints = newMaxHealth;
     }
 
-    public bool IsDying()
+    public float GetMaxHealth()
     {
-        return currentUnitState == UnitState.DYING;
+        return unitSO.maxHealth;
     }
     public Indices GetCurrentGridPosition() 
     {

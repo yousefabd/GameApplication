@@ -6175,6 +6175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca580d48a3443e40be89a4b3705a12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameRules: {fileID: 0}
 --- !u!4 &139941490
 Transform:
   m_ObjectHideFlags: 0
@@ -6235,8 +6236,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testUnitSOList:
+  - {fileID: 11400000, guid: c826a3ee0093a4c4c98101e86dd55ee9, type: 2}
   - {fileID: 11400000, guid: b84ac44dd37ab7c49a328ed213ca9591, type: 2}
-  - {fileID: 11400000, guid: 6e3d28e20fdacc7468f903a5a9af3969, type: 2}
 --- !u!1 &492678729
 GameObject:
   m_ObjectHideFlags: 0
@@ -8203,8 +8204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce27b97317e4c6c4da084c5b19b4d9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingSOList:
-  - {fileID: 11400000, guid: 7f0b3e971fba7264b9e07ea498030c58, type: 2}
 --- !u!1 &1087618033
 GameObject:
   m_ObjectHideFlags: 0
@@ -8333,6 +8332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde6c7bc02b1f074bb7cd0efb2efc778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceType: 0
   buildingSO: {fileID: 11400000, guid: 86b7c32625744ba4ea512d42cf73c73d, type: 2}
 --- !u!1 &1503427444
 GameObject:

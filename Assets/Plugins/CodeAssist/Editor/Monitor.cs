@@ -1,8 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
@@ -88,7 +89,7 @@ namespace Meryel.UnityCodeAssist.Editor
                 // since unity does not commit changes to the file immediately, checking if user is displaying and focusing on tag manager (tags & layers) inspector
                 isAppFocusedOnTagManager = true;
             }
-
+            
 
             if (isAppFocused != UnityEditorInternal.InternalEditorUtility.isApplicationActive)
             {
@@ -166,11 +167,11 @@ namespace Meryel.UnityCodeAssist.Editor
 
         static void OnSelectionChanged()
         {
-
+            
             //**--check order, last selected should be sent last as well
             //**--limit here, what if too many?
             //selectedObjects.UnionWith(Selection.objects);
-            foreach (var so in Selection.objects)
+            foreach(var so in Selection.objects)
             {
                 SetDirty(so);
             }
@@ -190,7 +191,7 @@ namespace Meryel.UnityCodeAssist.Editor
                     SetDirty(componentGo);
             }
             //else
-            //;//**--scriptable obj
+                //;//**--scriptable obj
         }
 
         public static void SetDirty(GameObject go)
@@ -237,11 +238,11 @@ namespace Meryel.UnityCodeAssist.Editor
             {
                 Preferences.PreferenceMonitor.InstanceOfPlayerPrefs.Bump();
             }
-            else if (category == "EditorPrefs")
+            else if(category == "EditorPrefs")
             {
                 Preferences.PreferenceMonitor.InstanceOfEditorPrefs.Bump();
             }
-            else if (category == "InputManager")
+            else if(category == "InputManager")
             {
                 Input.InputManagerMonitor.Instance.Bump();
             }

@@ -3,9 +3,7 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    //private Vector3 gridOriginPosition = new Vector3(-16f, -9f);
-    //private const int gridWidth = 32;
-    //private const int gridHeight = 18;
+   
     private Vector3 gridOriginPosition = new Vector3(-39f,-39f);
     private const int gridWidth = 80;
     private const int gridHeight = 80;
@@ -21,12 +19,12 @@ public class GridManager : MonoBehaviour
     {
         Instance = this;
         //giving a static list of initial characters position temporarily in the future we should get that list from the Map
+        CreateGridMap();
         initialUnitPosition = new List<Vector3> { new Vector3(0.5f, 0.5f, 0), new Vector3(1.5f, 0.5f, 0), new Vector3(-5.5f, 2.5f, 0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
     }
     private void Start()
     {
-        CreateGridMap();
-        CreatePlayerBase();
+        //CreatePlayerBase();
     }
 
     public void CreateGridMap()
@@ -38,7 +36,7 @@ public class GridManager : MonoBehaviour
             return cell;
         });
     }
-    public void CreatePlayerBase()
+   /* public void CreatePlayerBase()
     {
         for (int i = 0; i < initialUnitPosition.Count; i++)
         {
@@ -51,7 +49,7 @@ public class GridManager : MonoBehaviour
             unitCell.SetEntity(unit);
             gridMap.UpdateValues();
         }
-    }
+    }*/
 
     public void UpdateValues()
     {
@@ -120,9 +118,10 @@ public class GridManager : MonoBehaviour
     }
     public void SetEntity(Entity entity, Indices indices)
     {
-        gridMap.GetValue(indices.I, indices.J).SetEntity(entity);
+        gridMap.GetValue(indices.I, indices.J).SetEntity(entity);   
         gridMap.UpdateValues();
     }
+
 
    
     public void MoveEntity(Indices oldPosition,Indices newPosition,Entity entity)
@@ -157,4 +156,22 @@ public class GridManager : MonoBehaviour
         Vector3 endPosition = new Vector3(startPosition.x + GetCellSize(), startPosition.y + GetCellSize(), 0);
         return Physics2D.OverlapArea(startPosition, endPosition);
     }
+
+    public Collider2D[] OverlapAll(Indices cellIndices)
+{
+    Vector3 startPosition = GridToWorldPosition(cellIndices);
+    Vector3 endPosition = new Vector3(startPosition.x + GetCellSize(), startPosition.y + GetCellSize(), 0);
+
+    // Debugging lines to visualize the overlap area
+    Debug.DrawLine(startPosition, new Vector3(startPosition.x, endPosition.y, 0), Color.red, 1.0f);
+    Debug.DrawLine(startPosition, new Vector3(endPosition.x, startPosition.y, 0), Color.red, 1.0f);
+    Debug.DrawLine(endPosition, new Vector3(startPosition.x, endPosition.y, 0), Color.red, 1.0f);
+    Debug.DrawLine(endPosition, new Vector3(endPosition.x, startPosition.y, 0), Color.red, 1.0f);
+
+    Collider2D[] colliders = Physics2D.OverlapAreaAll(startPosition, endPosition);
+
+
+    return colliders; 
+}
+
 }

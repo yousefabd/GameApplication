@@ -5,9 +5,15 @@ public class BuildingSO : ScriptableObject
 {
     public string stringName;
     public Transform buildingPrefab;
-    public int width, height;
     public float health;
     public int goldStorage;
+    public Sprite buildingSprite;
+    public int price;
+
+
+   public BuildingType buildingType;
+    public ResourceType resourceType;
+
 
     public bool resourceGenerator = false;
     public ResourceGeneratorData resourceGeneratorData;

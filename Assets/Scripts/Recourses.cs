@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Recourses 
 {
-    public int goldCount;
-    public int woodCount;
-    public int stoneCount;
+
+    
+
+    public  int goldCount;
+    public  int woodCount;
+    public  int stoneCount;
 
     public Recourses(int gold, int wood, int stone)
     {
@@ -14,5 +17,11 @@ public class Recourses
         woodCount = wood;
         stoneCount = stone;
     }
+
+   
+}
+public enum ResourceType
+{
+GOLD,WOOD,STONE
 }
 

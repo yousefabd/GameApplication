@@ -15,7 +15,7 @@ public class TDGameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        currentGameState = TDGameState.COUNTDOWN;
+        currentGameState = TDGameState.STARTING;
     }
     private void Update()
     {
@@ -55,5 +55,10 @@ public class TDGameManager : MonoBehaviour
     public float GetCountdownTimer()
     {
         return countdownTimer;
+    }
+
+    public void StartGame()
+    {
+        currentGameState= TDGameState.COUNTDOWN;
     }
 }

@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class TDTower : MonoBehaviour
 {
-    [SerializeField] Transform passengerTransform;
-    private Transform passenger;
+    [SerializeField] Transform passenger;
     [SerializeField] UnitSO unitSO;
-    [SerializeField] private TowerSO towerSO;
     public static TDTower Build(Transform prefab,Vector3 position)
     {
         Transform towerTransform=Instantiate(prefab,position,Quaternion.identity);
@@ -17,13 +15,7 @@ public class TDTower : MonoBehaviour
     }
     public void SpawnUnit()
     {
-        passenger = Instantiate(unitSO.prefab,passengerTransform.position,Quaternion.identity);
-        passenger.AddComponent<TDDefender>();
-    }
-    public void Sell()
-    {
-        TDCurrencyManager.Instance.Buy(-1 * (towerSO.cost/5));
-        Destroy(passenger.gameObject);
-        Destroy(gameObject);
+        Transform unitTransform =Instantiate(unitSO.prefab,passenger.position,Quaternion.identity);
+        unitTransform.AddComponent<TDDefender>();
     }
 }

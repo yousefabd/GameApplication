@@ -13,13 +13,12 @@ public class WaveCompleteChoices : MonoBehaviour
         TDWaveManager.Instance.OnFinishedWave += WaveManager_OnFinishedWave;
         shop.onClick.AddListener(() =>
         {
-            TDGameManager.Instance.DisplayShop();
+            TDPlayer.Instance.DisplayShop();
             gameObject.SetActive(false);
         });
         nextWave.onClick.AddListener(() =>
         {
-            Time.timeScale = 1.0f;
-            TDGameManager.Instance.NextWave();
+            TDPlayer.Instance.NextWave();
             gameObject.SetActive(false);
         });
         gameObject.SetActive(false);
