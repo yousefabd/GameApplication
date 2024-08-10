@@ -24,7 +24,7 @@ public class Gold : Entity, IDestructibleObject, IRecourses
 
         if (boxCollider == null)
         {
-            Debug.LogError("BoxCollider2D is missing on the Stone prefab.");
+            //Debug.LogError("BoxCollider2D is missing on the Stone prefab.");
             return;
         }
         // Set the size of the stone object

@@ -214,4 +214,8 @@ public class Unit : Entity, IDestructibleObject
     {
         return currentUnitState == UnitState.DYING;
     }
+    public Indices GetCurrentGridPosition() 
+    {
+        return currentGridPosition; 
+    }
 }

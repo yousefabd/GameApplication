@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SniperVisual
       objectReference: {fileID: 0}
+    - target: {fileID: 223219766314640320, guid: 03c1644ae75162942b0c1a1147e2311d, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 2438747509852976376, guid: 03c1644ae75162942b0c1a1147e2311d, type: 3}
       propertyPath: m_SortingLayer
       value: 3
@@ -124,6 +128,10 @@ PrefabInstance:
     - target: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
       propertyPath: m_Name
       value: Sniper
+      objectReference: {fileID: 0}
+    - target: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+      propertyPath: m_TagString
+      value: Building or Human character
       objectReference: {fileID: 0}
     - target: {fileID: 7172290462020704586, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
       propertyPath: m_LocalPosition.x

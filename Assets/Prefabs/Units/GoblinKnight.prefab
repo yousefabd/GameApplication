@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GoblinKnight
       objectReference: {fileID: 0}
+    - target: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 7172290462020704586, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -75,6 +79,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3401424066833153046}
+    - targetCorrespondingSourceObject: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6221517068897982221}
   m_SourcePrefab: {fileID: 100100000, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
 --- !u!1 &4113802000061823851 stripped
 GameObject:
@@ -107,6 +114,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7595b2f7206f247478fad84c9ccaca53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6221517068897982221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4113802000061823851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816dfb0b3aabed84db2b4cab06cb3c55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healing: 0
 --- !u!4 &8241215476486690030 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7172290462020704586, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
