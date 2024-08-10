@@ -6175,6 +6175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca580d48a3443e40be89a4b3705a12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameRules: {fileID: 0}
 --- !u!4 &139941490
 Transform:
   m_ObjectHideFlags: 0
@@ -8204,8 +8205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce27b97317e4c6c4da084c5b19b4d9e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingSOList:
-  - {fileID: 11400000, guid: 7f0b3e971fba7264b9e07ea498030c58, type: 2}
 --- !u!1 &1087618033
 GameObject:
   m_ObjectHideFlags: 0
@@ -8334,6 +8333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde6c7bc02b1f074bb7cd0efb2efc778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceType: 0
   buildingSO: {fileID: 11400000, guid: 86b7c32625744ba4ea512d42cf73c73d, type: 2}
 --- !u!1 &1503427444
 GameObject:
@@ -9060,11 +9060,11 @@ MonoBehaviour:
   lutosLeafTile: {fileID: 11400000, guid: 6e15979cdde88424cbb6c71d70a732fa, type: 2}
   flowerTile: {fileID: 11400000, guid: df37402183dcab047bab57d7a861af59, type: 2}
   decorationChance: 0.001
-  goldPrefab: {fileID: 8050817228691020220, guid: ddb338cac049f0245be356586a8bb285, type: 3}
+  goldPrefab: {fileID: 1416409666759563463, guid: ddb338cac049f0245be356586a8bb285, type: 3}
   goldChance: 0.001
-  woodPrefab: {fileID: 8135612963390663519, guid: 723d30a461eab66449fdd4552e7bedc1, type: 3}
+  woodPrefab: {fileID: 9103891957308768971, guid: 723d30a461eab66449fdd4552e7bedc1, type: 3}
   woodChance: 0.002
-  stonePrefab: {fileID: 863573229958092027, guid: d443dcbca48c5e646a8bfe10575f2c27, type: 3}
+  stonePrefab: {fileID: 2181116904812614109, guid: d443dcbca48c5e646a8bfe10575f2c27, type: 3}
   stoneChance: 0.004
   obstaclePrefab: {fileID: 5344021891293421634, guid: 560fe8880c1f9ae46957d0ce38cdec1c, type: 3}
 --- !u!1660057539 &9223372036854775807

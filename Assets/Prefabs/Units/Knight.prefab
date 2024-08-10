@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: KnightVisual
       objectReference: {fileID: 0}
+    - target: {fileID: 6566854268425186426, guid: 28bc75e43dd53dc4ca37cbb25d8e788d, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 7852734560349845199, guid: 28bc75e43dd53dc4ca37cbb25d8e788d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -123,6 +127,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight
       objectReference: {fileID: 0}
+    - target: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+      propertyPath: m_TagString
+      value: Building or Human character
+      objectReference: {fileID: 0}
     - target: {fileID: 7172290462020704586, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -210,6 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce386d40dd18e44789c3e99f025dac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceType: 0
   unitSO: {fileID: 11400000, guid: aac63c2b62365f4438c9a0939d30d88c, type: 2}
   attackRadius: 0
   projectileSO: {fileID: 0}

@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Building or Human character
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - TopMap
   - Resources
   - 
-  - 
+  - Camera
   - 
   - 
   - 
@@ -52,4 +53,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 1596774859
+    locked: 0
+  - name: Camera
+    uniqueID: 3928456279
     locked: 0

@@ -209,4 +209,13 @@ public class Unit : Entity, IDestructibleObject
         OnMaxHealthChanged?.Invoke(newMaxHealth);
         HealthPoints = newMaxHealth;
     }
+
+    public float GetMaxHealth()
+    {
+        return unitSO.maxHealth;
+    }
+    public Indices GetCurrentGridPosition() 
+    {
+        return currentGridPosition; 
+    }
 }

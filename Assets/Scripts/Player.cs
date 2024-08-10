@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     public event Action OnClearTarget;
     public static Player Instance { get; private set; }
 
+    public Dictionary<BuildingType,int> currentBuildingCount;
+
+    public GameRules gameRules;
 
     private void Awake()
     {
@@ -29,13 +32,26 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
+        currentBuildingCount = new Dictionary<BuildingType, int>(gameRules.buildingCount);
+        var keys = currentBuildingCount.Keys.ToList();
+        for (int i = 0; i < keys.Count; i++)
+        {
+            currentBuildingCount[keys[i]] = 0;
+        }
         ScreenInteractionManager.Instance.OnRightMouseButtonClicked += Player_HandleInteraction;
         ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
         Unit.OnFinishedPath += Unit_OnFinishedPath;
+       
 
 
     }
 
+ 
+
+    private void initializeBuildingDictionary()
+    {
+
+    }
     private void ScreenInteractionManager_OnAreaSelected(Vector3 start, Vector3 end)
     {
         ClearSelectedUnits();
@@ -43,16 +59,16 @@ public class Player : MonoBehaviour
         foreach (Collider2D collider2D in collider2DArray)
         {
             Unit unit = collider2D.GetComponent<Unit>();
-            if (unit.GetTeam() == pickedTeam)
-                AddSelectedUnit(unit);
+            if (unit != null)
+            {
+                if (unit.GetTeam() == pickedTeam)
+                    AddSelectedUnit(unit);
+            }
         }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-        }
     }
     private List<List<Vector3>> FindMultiplePaths(List<Unit> units, Vector3 targetWorldPosition)
     {
@@ -188,5 +204,9 @@ public class Player : MonoBehaviour
             }
         }
         selectedUnits.Clear();
+    }
+    public Team GetTeam()
+    {
+        return pickedTeam;
     }
 }

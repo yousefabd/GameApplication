@@ -11,6 +11,7 @@ public struct Indices
         this.J = J;
     }
 }
+[System.Serializable]
 public class Grid<TGridObject>
 {
     private int width;
@@ -19,7 +20,7 @@ public class Grid<TGridObject>
     Vector3 originPosition;
     private TGridObject[,] gridArray;
     private TextMesh[,] worldTextRef;
-    bool showDebug;
+    bool showDebug = false;
     public void Awake()
     {
 
@@ -95,7 +96,9 @@ public class Grid<TGridObject>
         {
             return gridArray[x, y];
         }
-       // Debug.Log(x + "," + y);
+
+        //Debug.Log(x + "," + y);
+
         return default;
     }
     public TGridObject GetValue(Vector3 worldPosition)

@@ -8,11 +8,9 @@ public class Wood : Entity, IDestructibleObject,IRecourses
     public GameObject prefab;
     public float HealthPoints { get; set; }
     public event Action<float> OnDamaged;
-    private BoxCollider2D boxCollider;
     public event Action OnDestroyed;
 
-
-
+    public ResourceType resourceType = ResourceType.WOOD;
     public void Initialize(Vector3Int cellPosition, float size)
     {
         transform.localScale = new Vector3(size, size, 1);
@@ -38,11 +36,15 @@ public class Wood : Entity, IDestructibleObject,IRecourses
             HealthPoints = 25f;
           //  boxCollider.size = new Vector2(4.504134f, 6.390672f);
         }
+
     }
+  
     public override Entity Spawn(Vector3 position)
     {
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
         var entity = instance.GetComponent<Entity>();
+        team = Team.HUMANS;
+
         return entity;
     }
 
@@ -58,6 +60,26 @@ public class Wood : Entity, IDestructibleObject,IRecourses
 
     public void Destruct()
     {
+       //ResourceManager.Instance.updateResource("WOOD", 1);
+        OnDestroyed?.Invoke();
+
+        Vector3 worldPosition = transform.position;
+
+        GridManager.Instance.WorldToGridPosition(worldPosition, out int x, out int y);
+
+        Debug.Log(x);
+        Debug.Log(y);
+
+        GridManager.Instance.SetEntity(null, new Indices(x, y));
+        GridManager.Instance.SetEntity(null, new Indices(x + 1, y));
+        GridManager.Instance.SetEntity(null, new Indices(x - 1, y));
+        GridManager.Instance.SetEntity(null, new Indices(x, y + 1));
+        GridManager.Instance.SetEntity(null, new Indices(x, y - 1));
+        GridManager.Instance.SetEntity(null, new Indices(x + 1, y + 1));
+        Debug.Log("true");
         Destroy(gameObject);
     }
+   
+
+
 }

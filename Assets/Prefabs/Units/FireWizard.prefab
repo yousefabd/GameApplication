@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireWizard
       objectReference: {fileID: 0}
+    - target: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+      propertyPath: m_TagString
+      value: Building or Human character
+      objectReference: {fileID: 0}
     - target: {fileID: 7172290462020704586, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -58,6 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2209438833542651188, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+    - {fileID: 753509882022041111, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
     m_RemovedGameObjects:
     - {fileID: 6331208794833536401, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
     m_AddedGameObjects:
@@ -168,6 +173,10 @@ PrefabInstance:
     - target: {fileID: 6417746190835587088, guid: 6aefa7650d573744d95a1fe396e1c178, type: 3}
       propertyPath: m_Name
       value: FireWizardVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 6417746190835587088, guid: 6aefa7650d573744d95a1fe396e1c178, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7128609179007192542, guid: 6aefa7650d573744d95a1fe396e1c178, type: 3}
       propertyPath: m_SortingLayer

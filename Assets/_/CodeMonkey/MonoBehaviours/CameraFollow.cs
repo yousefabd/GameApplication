@@ -15,14 +15,12 @@ using UnityEngine;
 
 namespace CodeMonkey.MonoBehaviours
 {
-
     /*
      * Script to handle Camera Movement and Zoom
      * Place on Camera GameObject
      * */
     public class CameraFollow : MonoBehaviour
     {
-
         private Camera myCamera;
         private Func<Vector3> GetCameraFollowPositionFunc;
         private Func<float> GetCameraZoomFunc;
@@ -57,7 +55,6 @@ namespace CodeMonkey.MonoBehaviours
         {
             this.GetCameraZoomFunc = GetCameraZoomFunc;
         }
-
 
         // Update is called once per frame
         void Update()
@@ -97,6 +94,12 @@ namespace CodeMonkey.MonoBehaviours
             if (GetCameraZoomFunc == null) return;
             float cameraZoom = GetCameraZoomFunc();
 
+            // Check if the zoom value is set to a specific value (e.g., 1) to disable zooming
+            if (Mathf.Approximately(cameraZoom, 1f))
+            {
+                return; // Ignore zooming if the zoom value is 1
+            }
+
             float cameraZoomDifference = cameraZoom - myCamera.orthographicSize;
             float cameraZoomSpeed = 1f;
 
@@ -118,5 +121,4 @@ namespace CodeMonkey.MonoBehaviours
             }
         }
     }
-
 }
