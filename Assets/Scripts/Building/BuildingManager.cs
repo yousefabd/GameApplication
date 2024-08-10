@@ -318,54 +318,65 @@ public class BuildingManager : MonoBehaviour
 
     [SerializeField] private BuildingSO MainBuilding;
 
-    public void placeBuilding(BuildingSO buildingSO,Indices indices,int ILconstrict,int IRconstrict, int JDconstrict, int JUconstrict)
+    public void placeBuilding(BuildingSO buildingSO, Indices indices, int ILconstrict, int IRconstrict, int JDconstrict, int JUconstrict)
     {
-        
-       
-        
-        Vector3 potentialPosition = new Vector3();
-        potentialPosition =  GridManager.Instance.GridToWorldPosition(indices);
+        Vector3 potentialPosition = GridManager.Instance.GridToWorldPosition(indices);
         Transform visualTransform = Instantiate(buildingSO.buildingPrefab, potentialPosition, Quaternion.identity);
         bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
-        mapRecursion(indices.I, indices.J, Visited, visualTransform.gameObject.GetComponent<Building>(), out bool safe,ILconstrict,IRconstrict,JDconstrict,JUconstrict);
+
+        // Start the recursive check
+        mapRecursion(indices.I, indices.J, Visited, visualTransform.gameObject.GetComponent<Building>(), out bool safe, ILconstrict, IRconstrict, JDconstrict, JUconstrict);
+
         Debug.Log(safe);
-        if(safe)
+        if (safe)
         {
             building = buildingSO.building;
             Spawn(visualTransform.position);
             Destroy(visualTransform.gameObject);
         }
-
     }
-    public void mapRecursion(int I, int J, bool[,] Visited, Building instantiatedBuilding, out bool safe,int ILconstrict,int IRconstrict,int JDconstrict,int JUconstrict)
+
+    public void mapRecursion(int I, int J, bool[,] Visited, Building instantiatedBuilding, out bool safe, int ILconstrict, int IRconstrict, int JDconstrict, int JUconstrict)
     {
         safe = true;
+
+        // Check if the current position is out of bounds
+        if (I < 0 || J < 0 || I >= GridManager.Instance.GetWidth() || J >= GridManager.Instance.GetHeight())
+        {
+            // Out of bounds, but don't mark as unsafe; just return
+            return;
+        }
+
+        // Check if the position has already been visited
         if (Visited[I, J])
         {
             return;
         }
-        if (I < 0 || J < 0 || I >= GridManager.Instance.GetWidth() ||J <= GridManager.Instance.GetHeight() || I >= ILconstrict||I<=IRconstrict|| J <= JUconstrict || J >=JDconstrict)
-        {
-            safe = false;
-            return;
-        }
+
+        // Mark the current position as visited
         Visited[I, J] = true;
-        RecursiveCheck(I, J, Visited, instantiatedBuilding, out bool safeToBuild);
-        if (safeToBuild)
-        {
-            safe = true; return;
-        }
-        else if (!safeToBuild)
-        {
-            
-            
-                mapRecursion(I + 1, J, Visited, instantiatedBuilding, out safe,IRconstrict, ILconstrict,JUconstrict,JDconstrict);
-                mapRecursion(I, J + 1, Visited, instantiatedBuilding, out safe, IRconstrict, ILconstrict, JUconstrict, JDconstrict);
-                mapRecursion(I - 1, J, Visited, instantiatedBuilding, out safe, IRconstrict, ILconstrict, JUconstrict, JDconstrict);
-                mapRecursion(I, J - 1, Visited, instantiatedBuilding, out safe, IRconstrict, ILconstrict, JUconstrict, JDconstrict);
 
-            
+        // Check if the position is within the constriction bounds
+        if (I <= IRconstrict && I >= ILconstrict && J <= JUconstrict && J >= JDconstrict)
+        {
+            // If within bounds, check if it's safe to build here
+            RecursiveCheck(I, J, Visited, instantiatedBuilding, out bool safeToBuild);
+
+            if (safeToBuild)
+            {
+                safe = true;
+                return;
+            }
+            else
+            {
+                safe = false; // Update safe if not safe to build
+            }
         }
 
+        // Continue to recurse in all directions
+        mapRecursion(I + 1, J, Visited, instantiatedBuilding, out safe, ILconstrict, IRconstrict, JDconstrict, JUconstrict);
+        mapRecursion(I, J + 1, Visited, instantiatedBuilding, out safe, ILconstrict, IRconstrict, JDconstrict, JUconstrict);
+        mapRecursion(I - 1, J, Visited, instantiatedBuilding, out safe, ILconstrict, IRconstrict, JDconstrict, JUconstrict);
+        mapRecursion(I, J - 1, Visited, instantiatedBuilding, out safe, ILconstrict, IRconstrict, JDconstrict, JUconstrict);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Unit : Entity, IDestructibleObject
 {
     private float moveSpeed = 3f;
-    [SerializeField] protected UnitSO unitSO;
+    [SerializeField] public UnitSO unitSO;
     private PathFinder pathFinder;
     //State related variables
     private enum UnitState
