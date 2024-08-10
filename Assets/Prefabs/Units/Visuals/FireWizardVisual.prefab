@@ -13561,7 +13561,7 @@ GameObject:
   - component: {fileID: 8703495393937863130}
   m_Layer: 0
   m_Name: FireWizardVisual
-  m_TagString: Untagged
+  m_TagString: Building or Human character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

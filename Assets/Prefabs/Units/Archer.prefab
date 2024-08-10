@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Archer
       objectReference: {fileID: 0}
+    - target: {fileID: 2936519566783919823, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
+      propertyPath: m_TagString
+      value: Building or Human character
+      objectReference: {fileID: 0}
     - target: {fileID: 7172290462020704586, guid: 9dfcbb7650bf2fc4480475d3a8857ffb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -188,6 +192,10 @@ PrefabInstance:
     - target: {fileID: 6216945325560857339, guid: 8850a5e1373375c4297ee142207e9206, type: 3}
       propertyPath: m_Name
       value: ArcherVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 6216945325560857339, guid: 8850a5e1373375c4297ee142207e9206, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2802269737228965918, guid: 8850a5e1373375c4297ee142207e9206, type: 3}

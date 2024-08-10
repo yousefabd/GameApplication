@@ -214,4 +214,8 @@ public class Unit : Entity, IDestructibleObject
     {
         return unitSO.maxHealth;
     }
+    public Indices GetCurrentGridPosition() 
+    {
+        return currentGridPosition; 
+    }
 }

@@ -237,6 +237,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BuilderVisual
       objectReference: {fileID: 0}
+    - target: {fileID: 881281592263501144, guid: 069c3bce43d011f4ca8a64af6a7632e9, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 2174087078517676791, guid: 069c3bce43d011f4ca8a64af6a7632e9, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1.5

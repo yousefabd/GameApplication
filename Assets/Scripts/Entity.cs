@@ -13,5 +13,8 @@ public class Entity : MonoBehaviour
         return entity;
     }
 
+
+
     public ResourceType resourceType;
+
 }

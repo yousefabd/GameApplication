@@ -16,6 +16,14 @@ public class Gold : Entity, IDestructibleObject, IRecourses
     public void Initialize(Vector3Int cellPosition, float size)
     {
 
+
+        if (boxCollider == null)
+        {
+            //Debug.LogError("BoxCollider2D is missing on the Stone prefab.");
+            return;
+        }
+        // Set the size of the stone object
+
         transform.localScale = new Vector3(size, size, 1);
 
         transform.position = new Vector3(cellPosition.x, cellPosition.y, 0);
