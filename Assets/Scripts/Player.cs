@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public enum Team
 {
-    HUMANS, GOBLINS
+    HUMANS, GOBLINS, NEUTRAL
 }
 public class Player : MonoBehaviour
 {
