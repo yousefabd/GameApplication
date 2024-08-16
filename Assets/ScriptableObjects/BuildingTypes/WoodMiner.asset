@@ -13,19 +13,10 @@ MonoBehaviour:
   m_Name: WoodMiner
   m_EditorClassIdentifier: 
   stringName: 
-  buildingPrefab: {fileID: 0}
-  health: 0
-  goldStorage: 0
-  buildingSprite: {fileID: 0}
+  buildingPrefab: {fileID: 2842107502295780058, guid: 1afe64f9edabe714494e85c9e3f7b7fd, type: 3}
+  health: 1000
+  buildingSprite: {fileID: 21300000, guid: 793ca27a5a3378149aaa12abe85933f4, type: 3}
   price: 0
   buildingType: 0
   resourceType: 0
-  resourceGenerator: 0
-  resourceGeneratorData:
-    TimerMax: 0
-    ResourceType: 0
-  unitSpawner: 0
   unitGenerationData: []
-  unitEvolver: 0
-  defenseTower: 0
-  baseBuilding: 0

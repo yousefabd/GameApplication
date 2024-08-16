@@ -22,3 +22,4 @@ MonoBehaviour:
   attackPower: 13
   attackCooldown: 1
   soldierType: 0
+  price: 1000

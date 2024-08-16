@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
@@ -36,12 +37,18 @@ public class BuildingManager : MonoBehaviour
 
     private void Start()
     {
-
         mainCamera = Camera.main;
+        StartCoroutine(PlaceBuildingAfterDelay());
+    }
+
+    private IEnumerator PlaceBuildingAfterDelay()
+    {
+        yield return new WaitForSeconds(1f); // Wait for 1 second
+
         Indices indices = new Indices();
         indices.I = 40;
         indices.J = 20;
-        placeBuilding(MainBuilding,indices,0,80,0,40);
+        placeBuilding(MainBuilding, indices, 0, 80, 0, 40);
     }
 
     private void Update()
@@ -92,15 +99,7 @@ public class BuildingManager : MonoBehaviour
         {
             safe = false;
         }
-           if (building.buildingSO.buildingType == BuildingType.ResourceGenerator)
-        {
-            AutoMiner autoMiner = visualObject.GetComponent<AutoMiner>();
-            if (autoMiner != null)
-            {
-                Debug.Log(autoMiner.CanBuild());
-                safe = autoMiner.CanBuild();
-            }
-        }
+        
 
 
 
@@ -114,6 +113,13 @@ public class BuildingManager : MonoBehaviour
         Debug.Log("type count is " + Player.Instance.gameRules.buildingCount[building.buildingSO.buildingType]);
         if (safe && Player.Instance.currentBuildingCount[building.buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[building.buildingSO.buildingType])
         {
+            if (building.buildingSO.buildingType == BuildingType.ResourceGenerator)
+            {
+                AutoMiner autoMiner = visualObject?.GetComponent<AutoMiner>();
+                safe = autoMiner.CanBuild();
+                   
+           
+            }
             Color whiteColor = new Color(1f, 1f, 1f, 0.7f);
             material.color = whiteColor;
 
@@ -153,7 +159,7 @@ public class BuildingManager : MonoBehaviour
         BuildAfterCheck(instantiatedBuilding);
         ResourceManager.Instance.updateResource(ResourceType.GOLD, -building.buildingSO.price);
         setNeighborCells(position, instantiatedBuilding);
-        onBuilt(instantiatedBuilding);
+        built?.Invoke(building);
         instantiatedBuilding.SetBuildingState(BuildingState.BUILT);
         instantiatedBuilding.UpdateChildVisibility();
         BuildingCells.Clear();

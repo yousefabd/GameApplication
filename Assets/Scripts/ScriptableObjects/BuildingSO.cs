@@ -8,6 +8,8 @@ public class BuildingSO : ScriptableObject
     public float health;
     public Sprite buildingSprite;
     public int price;
+    public int wood;
+    public int stone;
 
 
    public BuildingType buildingType;

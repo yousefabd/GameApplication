@@ -18,3 +18,5 @@ MonoBehaviour:
   UnitEvolverCount: 1
   DefenseTowerCount: 1
   BaseBuildingCount: 1
+  SwordsmanCount: 3
+  RangerCount: 3

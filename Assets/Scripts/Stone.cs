@@ -61,6 +61,7 @@ public class Stone : Entity, IDestructibleObject, IRecourses
 public void Damage(Vector3 position, float value)
     {
         HealthPoints -= value;
+        ResourceManager.Instance.updateResource(ResourceType.STONE, -(int)value);
         OnDamaged?.Invoke(value);
         if (HealthPoints <= 0)
         {

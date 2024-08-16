@@ -14,11 +14,17 @@ public class ResourceManager : MonoBehaviour
         resourceDictionary.Add(ResourceType.WOOD, 0);
         resourceDictionary.Add(ResourceType.GOLD, 10000);
         resourceDictionary.Add(ResourceType.STONE, 0);
+
+        goblinResourceDictionary = new Dictionary<ResourceType, int>();
+        goblinResourceDictionary.Add(ResourceType.WOOD, 200);
+        goblinResourceDictionary.Add(ResourceType.GOLD,10000);
+        goblinResourceDictionary.Add(ResourceType.STONE, 50); 
     }
     private static Dictionary<ResourceType, int> resourceDictionary ;
+    private static Dictionary<ResourceType, int> goblinResourceDictionary ;
 
-   
-    
+  
+
 
     public static Action resourceChanged;
     public void updateResource(ResourceType key,int amount)

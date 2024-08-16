@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1dea029ef3dd4f4bb8f332d9bf6cdd6, type: 3}
-  m_Name: StoneMiner
+  m_Name: House
   m_EditorClassIdentifier: 
-  stringName: Stone Miner
-  buildingPrefab: {fileID: 5507524737327974680, guid: 761b673bdd3fcc149bc5b6464abf3b38, type: 3}
+  stringName: House
+  buildingPrefab: {fileID: 5878199650790698104, guid: 70a61bec08e470f43bd1f9ec8ad3d6cf, type: 3}
   health: 1000
-  buildingSprite: {fileID: 21300000, guid: 2263e91ebcd2a254dab5f4caccb4a7af, type: 3}
-  price: 0
-  buildingType: 1
-  resourceType: 2
+  buildingSprite: {fileID: 21300000, guid: 7b2f645eac44cef4c8ae6554a2c7a085, type: 3}
+  price: 5000
+  buildingType: 3
+  resourceType: 0
   unitGenerationData: []
