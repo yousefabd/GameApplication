@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1557664828841576607}
   m_Layer: 0
   m_Name: WoodMiner
-  m_TagString: Resource Harvester
+  m_TagString: Undefined
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
