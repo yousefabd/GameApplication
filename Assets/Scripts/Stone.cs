@@ -50,7 +50,7 @@ public class Stone : Entity, IDestructibleObject, IRecourses
     {
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
         var entity = instance.GetComponent<Entity>();
-        team = Team.HUMANS;
+        team = Team.NEUTRAL;
         return entity;
 
 

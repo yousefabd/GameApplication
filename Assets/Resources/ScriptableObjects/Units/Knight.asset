@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffba350de75a0514ea72d9b9bae8b8c9, type: 3}
   m_Name: Knight
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3459294907322867196, guid: 30dbf352cef218543a13196ea88be85b, type: 3}
+  prefab: {fileID: 420685169315859773, guid: 34a9de5a7f5797645a59e7e4202723df, type: 3}
   icon: {fileID: 21300000, guid: d3e0e6a338dc6db439ecca5cba611001, type: 3}
   unitName: Knight
   maxHealth: 200

@@ -9,16 +9,16 @@ public class TDTowerBase : MonoBehaviour
         TDPlayer.Instance.OnBuildTower += Player_OnBuild;
     }
 
-    private void Player_OnBuild(TowerSO towerSO,Vector3 position)
+    private void Player_OnBuild(TowerSO towerSO,Transform towerBaseTransform)
     {
-        if (position == transform.position)
+        if (towerBaseTransform.Equals(transform))
         {
             Build(towerSO);
         }
     }
     private void Build(TowerSO towerSO)
     {
-        TDTower tower =TDTower.Build(towerSO.prefab, transform.position);
+        TDTower tower =TDTower.Build(towerSO.prefab, transform);
         tower.SpawnUnit();
         gameObject.SetActive(false);
     }

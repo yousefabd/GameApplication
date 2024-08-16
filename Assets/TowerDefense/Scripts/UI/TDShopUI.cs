@@ -15,8 +15,9 @@ public class TDShopUI : MonoBehaviour
         shopItemTemplate.gameObject.SetActive(false);
         backButton.onClick.AddListener(() =>
         {
+            Time.timeScale = 1.0f;
             gameObject.SetActive(false);    
-            TDPlayer.Instance.NextWave();
+            TDGameManager.Instance.NextWave();
         });
         gameObject.SetActive(false);
     }
@@ -28,21 +29,43 @@ public class TDShopUI : MonoBehaviour
 
     private void CreateShopItems()
     {
-        Button repair =CreateItem(500, "Repair Castle");
+        Button repair =CreateItem(100, "Repair Castle");
         repair.onClick.AddListener(() =>
         {  
             if (TDCastle.Instance.Repair(100))
             {
-                TDCurrencyManager.Instance.Buy(500);
+                TDCurrencyManager.Instance.Buy(100);
             }
         });
-        CreateItem(1000, "Fortify Castle");
-        CreateItem(1300, "Increase cursor damage");
+        Button fortify = CreateItem(1000, "Fortify Castle");
+        fortify.onClick.AddListener(() =>
+        {
+            TDCastle.Instance.Fortify();
+            TDCurrencyManager.Instance.Buy(1000);
+        });
+        Button cursor = CreateItem(1300, "Increase cursor damage",1);
+        cursor.onClick.AddListener(() =>
+        {
+            TDPlayer.Instance.UpgradeCursor();
+            TDCurrencyManager.Instance.Buy(1300);
+        });
+        Button multidamage = CreateItem(2500, "Cursor Multi-Damage", 1);
+        multidamage.onClick.AddListener(() =>
+        {
+            TDPlayer.Instance.CursorMultiTarget();
+            TDCurrencyManager.Instance.Buy(2500);
+        });
+        Button doubleincome = CreateItem(2500, "Double Income", 2);
+        doubleincome.onClick.AddListener(() =>
+        {
+            TDWaveManager.Instance.DoubleIncome();
+            TDCurrencyManager.Instance.Buy(2500);
+        });
     }
-    private Button CreateItem(int cost,string description)
+    private Button CreateItem(int cost,string description,int allowedTimes = int.MaxValue)
     {
         Transform shopItemTransform = Instantiate(shopItemTemplate, items);
         ShopItemButtonUI shopItem=shopItemTransform.GetComponent<ShopItemButtonUI>();
-        return shopItem.SetButton(cost, description);
+        return shopItem.SetButton(cost, description,allowedTimes);
     }
 }

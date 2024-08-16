@@ -19,10 +19,15 @@ public class BuildingManager : MonoBehaviour
     private Transform visualTransform;
 
     public event Action<Building> built;
+    public event Action<Unit> spawned;
 
     public void onBuilt(Building building)
     {
         built?.Invoke(building);
+    }
+    public void onSpawned(Unit unit)
+    {
+        spawned?.Invoke(unit);  
     }
     private void Awake()
     {

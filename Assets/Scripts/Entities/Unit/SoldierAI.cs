@@ -56,7 +56,7 @@ public class SoldierAI : MonoBehaviour
         {
             if (soldierController.CanAttack(transform.position))
             {
-                if (currentAttackCooldown <= 0f)
+                if (currentAttackCooldown <= 0f && !soldierController.IsDying())
                 {
                     OnAttack?.Invoke();
                     currentAttackCooldown = soldierController.GetAttackCoolDown();

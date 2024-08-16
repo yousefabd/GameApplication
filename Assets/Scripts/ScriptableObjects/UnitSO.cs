@@ -20,4 +20,6 @@ public class UnitSO : ScriptableObject
     public float attackCooldown;
     public SoldierType soldierType;
 
+    public int price;
+
 }

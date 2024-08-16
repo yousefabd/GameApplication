@@ -18,7 +18,8 @@ public class WaveCompleteChoices : MonoBehaviour
         });
         nextWave.onClick.AddListener(() =>
         {
-            TDPlayer.Instance.NextWave();
+            TDGameManager.Instance.NextWave();
+            Time.timeScale = 1.0f;
             gameObject.SetActive(false);
         });
         gameObject.SetActive(false);

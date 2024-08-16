@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7459213135486111609
 RectTransform:
   m_ObjectHideFlags: 0
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 3949565821775843616}
   - component: {fileID: 8495046277843394525}
   m_Layer: 5
-  m_Name: UIBuildingImage
+  m_Name: UIUnitImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -298,14 +298,14 @@ GameObject:
   - component: {fileID: 533810573227797540}
   - component: {fileID: 2325923142148771038}
   - component: {fileID: 162273110992976104}
-  - component: {fileID: 8916831917276894583}
+  - component: {fileID: 2574848378013968952}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &533810573227797540
 RectTransform:
   m_ObjectHideFlags: 0
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &8916831917276894583
+--- !u!114 &2574848378013968952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -431,10 +431,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8552761664303725708}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 404b36f457cdcf941ad475da324a801c, type: 3}
+  m_Script: {fileID: 11500000, guid: 2660a8834991150409c0f45cb208574b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  counter: {fileID: 162273110992976104}
-  price: {fileID: 4027706457015164972}
-  buildingType: 0
-  buildingPrice: 0
+  unitCountText: {fileID: 162273110992976104}
+  unitPriceText: {fileID: 4027706457015164972}
+  soldierType: 0
+  unitPrice: 0

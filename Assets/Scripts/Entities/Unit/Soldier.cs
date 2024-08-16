@@ -17,7 +17,7 @@ public class Soldier : Unit
     //events
     public event Action<Vector3> OnNormalAttack;
     public event Action OnStartAttacking;
-    public event Action OnRangedAttack;
+    public event Action <Vector3>OnRangedAttack;
     public event Action<Vector3, float> OnAttack;
     public event Action OnClearTarget;
     protected override void Awake()
@@ -79,8 +79,8 @@ public class Soldier : Unit
     public void RangedAttack()
     {
         ToIdle();
-        WeaponProjectile weaponProjectile = WeaponProjectile.Throw(transform.position, projectileSO.prefab, currentTargetEnemy,GetTeam());
-        OnRangedAttack?.Invoke();
+        WeaponProjectile weaponProjectile = WeaponProjectile.SmartThrow(transform.position, projectileSO.prefab, currentTargetEnemy,GetTeam());
+        OnRangedAttack?.Invoke(currentTargetEnemy.transform.position-transform.position);
     }
     private void Soldier_OnTakeAction()
     {
@@ -118,6 +118,19 @@ public class Soldier : Unit
                     {
                         closestRange = Vector3.Distance(hitEntity.transform.position, transform.position);
                         closestEntity = hitEntity;
+                        if(hitEntity is Unit)
+                        {
+                            if(!(hitEntity as Unit).IsDying())
+                            {
+                                closestRange = Vector3.Distance(hitEntity.transform.position, transform.position);
+                                closestEntity = hitEntity;
+                            }
+                        }
+                        else
+                        {
+                            closestRange = Vector3.Distance(hitEntity.transform.position, transform.position);
+                            closestEntity = hitEntity;
+                        }
                     }
                 }
             }
@@ -131,7 +144,7 @@ public class Soldier : Unit
     }
     public virtual void Attack()
     {    
-        OnNormalAttack?.Invoke(Vector2.up);
+        OnNormalAttack?.Invoke(currentTargetEnemy.transform.position-transform.position);
         float luckyPoints = (float) (random.NextDouble()*(attackDamage/4f));
         OnAttack?.Invoke(currentTargetEnemy.transform.position, attackDamage + luckyPoints);
         if (Player.Instance != null)
@@ -147,6 +160,13 @@ public class Soldier : Unit
 
     public bool HasTarget()
     {
+        if(currentTargetEnemy is  Unit)
+        {
+            if(currentTargetEnemy != null)
+            {
+                return !(currentTargetEnemy as Unit).IsDying();
+            }
+        }
         return currentTargetEnemy != null;
     }
     public Vector3 GetTargetWorldPosition()

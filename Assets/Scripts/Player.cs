@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public enum Team
 {
-    HUMANS, GOBLINS
+    HUMANS, GOBLINS, NEUTRAL
 }
 public class Player : MonoBehaviour
 {
@@ -20,7 +20,9 @@ public class Player : MonoBehaviour
     public static Player Instance { get; private set; }
 
     public Dictionary<BuildingType,int> currentBuildingCount;
-
+    public static Dictionary<SoldierType, int> currentMaxCount;
+    public Dictionary<SoldierType, int> currentCount;
+    
     public GameRules gameRules;
 
     private void Awake()
@@ -32,18 +34,27 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
+        // Initialize currentBuildingCount from gameRules and set all counts to 0
         currentBuildingCount = new Dictionary<BuildingType, int>(gameRules.buildingCount);
         var keys = currentBuildingCount.Keys.ToList();
         for (int i = 0; i < keys.Count; i++)
         {
-            currentBuildingCount[keys[i]] = 0;
+            currentBuildingCount[keys[i]] = 0;  // Set the count for each building type to 0
         }
+
+        // Initialize currentMaxCount and currentCount from gameRules
+        currentMaxCount = new Dictionary<SoldierType, int>(gameRules.unitCount);
+        currentCount = new Dictionary<SoldierType, int>(gameRules.unitCount);
+
+        var unitKeys = currentCount.Keys.ToList();
+        for (int i = 0; i < unitKeys.Count; i++)
+        {
+            currentCount[unitKeys[i]] = 0;  // Set the count for each soldier type to 0
+        }
+
         ScreenInteractionManager.Instance.OnRightMouseButtonClicked += Player_HandleInteraction;
         ScreenInteractionManager.Instance.OnAreaSelected += ScreenInteractionManager_OnAreaSelected;
         Unit.OnFinishedPath += Unit_OnFinishedPath;
-       
-
-
     }
 
  

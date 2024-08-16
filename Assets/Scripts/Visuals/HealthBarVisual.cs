@@ -25,13 +25,16 @@ public class HealthBarVisual : MonoBehaviour
             {
                 (destructibleObject as Unit).OnMaxHealthChanged += HealthBarVisual_OnMaxHealthChanged;
             }
+            else if (destructibleObject is TDCastle)
+            {
+                (destructibleObject as TDCastle).OnFortify += HealthBarVisual_OnMaxHealthChanged;
+            }
         }
     }
 
     private void HealthBarVisual_OnMaxHealthChanged(float newMaxHealth)
     {
         maxHealth = newMaxHealth;
-        currentHealth = newMaxHealth;
         UpdateVisual();
     }
 

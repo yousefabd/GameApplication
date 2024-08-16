@@ -38,13 +38,19 @@ public class Character4DAnimator : MonoBehaviour
 
         }
     }
-    private void Soldier_OnRangedAttack()
+    private void Soldier_OnRangedAttack(Vector3 dir)
     {
-        animationManager.ShotBow();
+        dir.Normalize();
+        Vector2 direction=RoundToVector2(dir);
+        character4D.SetDirection(direction);
+        animationManager.Attack();
     }
 
-    private void Soldier_OnNormalAttack(Vector3 direction)
+    private void Soldier_OnNormalAttack(Vector3 dir)
     {
+        dir.Normalize();
+        Vector2 direction = RoundToVector2(dir);
+        character4D.SetDirection(direction);
         int attackAnimation = random.Next(2);
         switch (attackAnimation)
         {
@@ -77,31 +83,7 @@ public class Character4DAnimator : MonoBehaviour
     private void Unit_OnMoveCell(Vector3 moveDir)
     {
         moveDir = moveDir.normalized;
-        Vector2 direction = Vector2.up;
-        if (moveDir.x >= 0.65f)
-        {
-            direction.x = 1.0f;
-            direction.y = 0.0f;
-        }
-        else if (moveDir.x <= -0.65f)
-        {
-            direction.x = -1.0f;
-            direction.y = 0.0f;
-        }
-        else if (moveDir.y >= 0.65f)
-        {
-            direction.x = 0.0f;
-            direction.y = 1.0f;
-        }
-        else if (moveDir.y <= -0.65f)
-        {
-            direction.x = 0.0f;
-            direction.y = -1.0f;
-        }
-        else
-        {
-            direction = lastDir;
-        }
+        Vector2 direction = RoundToVector2(moveDir);
         character4D.SetDirection(direction);
         lastDir = direction;
         if (moveDir == Vector3.zero)
@@ -112,5 +94,23 @@ public class Character4DAnimator : MonoBehaviour
         {
             animationManager.SetState(Assets.HeroEditor4D.Common.Scripts.Enums.CharacterState.Walk);
         }
+    }
+    public Vector2 RoundToVector2(Vector3 direction)
+    {
+        float roundedX;
+        float roundedY;
+        roundedX = Mathf.Round(direction.x);
+        roundedY = Mathf.Round(direction.y);
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            roundedY = 0f;
+        }
+        else
+        {
+            roundedX = 0f;
+        }
+        if (roundedX == 0f && roundedY == 0f)
+            return lastDir;
+        return new Vector2(roundedX, roundedY);
     }
 }
