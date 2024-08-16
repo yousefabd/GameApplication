@@ -8,13 +8,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenuScene.unity
     guid: f07b6e0dc6e09c949b35eb3b891699e3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PathfindingSystem.unity
     guid: 97475161974f4104aa0b3e57eb027dda
   - enabled: 1
+    path: Assets/Scenes/MapScene.unity
+    guid: 851542c0b4b7c604b971e553ec0b872f
+  - enabled: 1
+    path: Assets/Scenes/test.unity
+    guid: 084a529abe848ff41bd7ed534afd756d
+  - enabled: 1
+    path: Assets/Scenes/SnowScene.unity
+    guid: 099b8c0acabfc22499f84757877b48fd
+  - enabled: 1
     path: Assets/Scenes/LoadingScene.unity
     guid: 230ae0756eb7be74290d423384e2e4bc
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PathfindingSystem1.unity
     guid: f2cd2eee825ad454a9dbd6ccf7ad42ea
   m_configObjects: {}

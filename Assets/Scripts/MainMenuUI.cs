@@ -13,7 +13,7 @@ public class MainMenuUI : MonoBehaviour
     {
         playButton.onClick.AddListener(() =>
         {
-            Loader.Load(Loader.Scene.PathfindingSystem1);
+            Loader.Load(Loader.Scene.MapScene);
         });
         quitButton.onClick.AddListener(() =>
         {

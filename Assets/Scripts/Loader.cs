@@ -8,7 +8,10 @@ public static class Loader
     {
         MainMenuScene,
         PathfindingSystem1,
-        LoadingScene
+        LoadingScene,
+        SnowScene,
+        MapScene,
+        test
     }
 
 

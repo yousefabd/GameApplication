@@ -207,7 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce386d40dd18e44789c3e99f025dac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceType: 0
   unitSO: {fileID: 11400000, guid: f3687c1ea11ea3944924f82e4f4a903e, type: 2}
+  currentTargetEnemy: {fileID: 0}
   projectileSO: {fileID: 11400000, guid: b87e7302801164b45b681c909eecb13c, type: 2}
 --- !u!114 &8388319547757020046
 MonoBehaviour:
