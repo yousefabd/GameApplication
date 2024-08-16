@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,6 +8,7 @@ using UnityEngine;
 public class TDCurrencyManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI currencyText;
+    public event Action OnBuy;
     public static TDCurrencyManager Instance {  get; private set; }
     int currentCurrency = 0;
     private void Awake()
@@ -19,7 +21,7 @@ public class TDCurrencyManager : MonoBehaviour
         TDUnitSpawner.Instance.OnUnitDestroyed += UnitSpawner_OnUnitDestroyed;
     }
 
-    private void UnitSpawner_OnUnitDestroyed(float health)
+    private void UnitSpawner_OnUnitDestroyed(float health,Vector3 obj)
     {
         AddToCurrency(TDWaveManager.Instance.GetUnitKillPrize((int)health));
     }
@@ -42,6 +44,7 @@ public class TDCurrencyManager : MonoBehaviour
     public void Buy(int amount)
     {
         currentCurrency -= amount;
+        OnBuy?.Invoke();
         UpdateVisual();
     }
 }

@@ -144,7 +144,7 @@ public class Unit : Entity, IDestructibleObject
         }
 
     }
-    public void Damage(Vector3 position, float value)
+    public override void Damage(Vector3 position, float value)
     {
         if (currentUnitState == UnitState.DYING)
             return;
@@ -218,6 +218,10 @@ public class Unit : Entity, IDestructibleObject
     }
     public float GetMoveSpeed()
     {
+        if (!IsWalking())
+        {
+            return 0f;
+        }
         return moveSpeed;
     }
     public Vector3 GetMoveDir()
