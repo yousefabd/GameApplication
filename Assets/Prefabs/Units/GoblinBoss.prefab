@@ -481,6 +481,22 @@ PrefabInstance:
       propertyPath: unitSO
       value: 
       objectReference: {fileID: 11400000, guid: e93be5a63b5c45f4393bccb1ac95ba4d, type: 2}
+    - target: {fileID: 6031115367325014655, guid: 4746f820e349d30479de3f9db11eaf7f, type: 3}
+      propertyPath: attackSounds.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6031115367325014655, guid: 4746f820e349d30479de3f9db11eaf7f, type: 3}
+      propertyPath: attackSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 2bbe30338b037d441a889c73cae4d3ae, type: 3}
+    - target: {fileID: 6031115367325014655, guid: 4746f820e349d30479de3f9db11eaf7f, type: 3}
+      propertyPath: attackSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: bba7f85e4cb019943844ae7614a8d5a2, type: 3}
+    - target: {fileID: 6031115367325014655, guid: 4746f820e349d30479de3f9db11eaf7f, type: 3}
+      propertyPath: attackSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 108ec728fd9046e4086249d334d57fdd, type: 3}
     - target: {fileID: 6453919585462229703, guid: 4746f820e349d30479de3f9db11eaf7f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

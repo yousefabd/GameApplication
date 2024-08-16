@@ -41,6 +41,7 @@ public class AutoMiner : MonoBehaviour
     {
         if(TryGetComponent<Building>(out Building building))
         {
+
             if(building.buildingSO.buildingType == BuildingType.ResourceGenerator && building.resource != null)
             {
               if(building.resource is IRecourses)

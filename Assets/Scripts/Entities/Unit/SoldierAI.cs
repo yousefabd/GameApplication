@@ -42,7 +42,7 @@ public class SoldierAI : MonoBehaviour
                 break;
         }
         currentAttackCooldown -= Time.deltaTime;
-        GridManager.Instance.WorldToGridPosition(transform.position, out now.I, out now.J);
+        GridManager.Instance?.WorldToGridPosition(transform.position, out now.I, out now.J);
        // Debug.Log("Wizar indices are : "+now.I +" " + now.J);
 
     }

@@ -9,7 +9,7 @@ using UnityEngine;
 class CharacterOpponentAI : MonoBehaviour
 {
     public event EventHandler onAlmostDead;
-    public event EventHandler onDoneHealing;
+    //public event EventHandler onDoneHealing;
 
     private bool healing = false;
    

@@ -23,17 +23,17 @@ public class Wood : Entity, IDestructibleObject,IRecourses
         }
         if (size == 1f)
         {
-            HealthPoints = 5f;
+            HealthPoints = 50f;
            // boxCollider.size = new Vector2(1.501378f, 2.130224f); 
         }
         else if (size == 2f)
         {
-            HealthPoints = 10f;
+            HealthPoints = 100f;
             //boxCollider.size = new Vector2(3.002756f, 4.260448f);
         }
         else if (size == 3f)
         {
-            HealthPoints = 25f;
+            HealthPoints = 250f;
           //  boxCollider.size = new Vector2(4.504134f, 6.390672f);
         }
 
@@ -51,7 +51,7 @@ public class Wood : Entity, IDestructibleObject,IRecourses
     public override void Damage(Vector3 position, float value)
     {
         HealthPoints -= value;
-        ResourceManager.Instance.updateResource(ResourceType.WOOD, -(int)value);
+        ResourceManager.Instance.updateResource(ResourceType.WOOD, (int)value);
         OnDamaged?.Invoke(value);
         if (HealthPoints <= 0)
         {

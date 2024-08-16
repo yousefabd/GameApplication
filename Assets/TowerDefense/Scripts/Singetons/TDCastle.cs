@@ -32,7 +32,7 @@ public class TDCastle : Entity,IDestructibleObject
     }
 
 
-    public void Damage(Vector3 position,float value)
+    public override void Damage(Vector3 position,float value)
     {
         if (position == transform.position)
         {

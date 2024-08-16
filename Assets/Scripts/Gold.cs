@@ -34,15 +34,15 @@ public class Gold : Entity, IDestructibleObject, IRecourses
         }
         if (size == 1f)
         {
-            HealthPoints = 5f;
+            HealthPoints = 5000f;
         }
         else if (size == 2f)
         {
-            HealthPoints = 10f;
+            HealthPoints = 10000f;
         }
         else if (size == 3f)
         {
-            HealthPoints = 25f;
+            HealthPoints = 25000f;
         }
     }
 

@@ -11,8 +11,6 @@ public class TDTower : MonoBehaviour
     [SerializeField] TowerSO towerSO;
     public Transform towerBaseTransform;
     public Transform unitTransform;
-    private float destroyTimerMax = 1.5f;
-    private float destroyTimer = 0f;
     public event Action OnBeginDestroy;
     public static TDTower Build(Transform prefab,Transform towerBaseTransform)
     {
@@ -30,7 +28,7 @@ public class TDTower : MonoBehaviour
     public void Sell()
     {
         TDCurrencyManager.Instance.Buy(-1 * (towerSO.cost/4));
-        //Destroy(gameObject);
+        Destroy(gameObject);
         Destroy(unitTransform.gameObject);
         OnBeginDestroy?.Invoke();
         towerBaseTransform.gameObject.SetActive(true);

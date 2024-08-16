@@ -9,9 +9,11 @@ public class TDGameManager : MonoBehaviour
     private enum TDGameState  {STARTING,COUNTDOWN,PLAYING};
     private TDGameState currentGameState;
     private float countdownTimer = 4f;
+    private float countdownSecond = 0f;
     public event Action OnNextWave;
     public event Action OnDisplayShop;
     public event Action OnCountDownStarted;
+    public event Action<float> OnSecondPassed;
     private void Awake()
     {
         Instance = this;
@@ -33,6 +35,12 @@ public class TDGameManager : MonoBehaviour
     private void Countdown()
     {
         countdownTimer -= Time.deltaTime;
+        countdownSecond -= Time.deltaTime;
+        if(countdownSecond < 0f)
+        {
+            countdownSecond = 1f;
+            OnSecondPassed?.Invoke(countdownTimer);
+        }
         if (countdownTimer < 0)
         {
             countdownTimer = 4f;

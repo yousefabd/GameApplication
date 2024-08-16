@@ -485,6 +485,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sniper
       objectReference: {fileID: 0}
+    - target: {fileID: 6996330857053674151, guid: 0ab0959ef1aa6bb42aec530d4c671a1a, type: 3}
+      propertyPath: attackSounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6996330857053674151, guid: 0ab0959ef1aa6bb42aec530d4c671a1a, type: 3}
+      propertyPath: attackSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: c94d9f7784e63e0419d00083bc954a63, type: 3}
     - target: {fileID: 7725303985697905183, guid: 0ab0959ef1aa6bb42aec530d4c671a1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
