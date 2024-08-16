@@ -14,18 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stringName: Unit Spawner
   buildingPrefab: {fileID: 4685395275106013804, guid: dad4c6d0a7bd7744495219dfd1197eca, type: 3}
-  health: 1000
-  goldStorage: 0
+  health: 1200
   buildingSprite: {fileID: 21300000, guid: db496b837482d24479b51481fe1da8a7, type: 3}
-  price: 0
+  price: 2500
+  wood: 40
+  stone: 10
   buildingType: 2
-  resourceGenerator: 0
-  resourceGeneratorData:
-    TimerMax: 0
-    ResourceType: 0
-  unitSpawner: 1
+  resourceType: 0
   unitGenerationData:
   - {fileID: 11400000, guid: aac63c2b62365f4438c9a0939d30d88c, type: 2}
-  unitEvolver: 0
-  defenseTower: 0
-  baseBuilding: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,23 +49,35 @@ public class GridManager : MonoBehaviour
     }
    public void CreatePlayerBase()
     {
-      
+        try
+        {
+
             Cell unitCell = gridMap.GetValue(initialUnitPosition[1]);
             Indices indices = unitCell.GetIndices();
             Unit unit;
             unit = unitCell.SpawnUnit(testUnitSOList[1], GridToWorldPositionCentered(indices));
             unitCell.SetEntity(unit);
             gridMap.UpdateValues();
-        
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+        }
+
     }
     public void CreatePlayerBase1()
     {
+        try
+        {
             Cell unitCell = gridMap.GetValue(initialUnitPosition1[0]);
             Indices indices = unitCell.GetIndices();
             Unit unit;
             unit = unitCell.SpawnUnit(testUnitSOList[0], GridToWorldPositionCentered(indices));
             unitCell.SetEntity(unit);
             gridMap.UpdateValues();
+        }
+        catch (ArgumentOutOfRangeException){
+        }
+
     }
 
     public void UpdateValues()

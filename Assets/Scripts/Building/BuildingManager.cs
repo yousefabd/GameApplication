@@ -47,9 +47,9 @@ public class BuildingManager : MonoBehaviour
         yield return new WaitForSeconds(1f); // Wait for 1 second
 
         Indices indices = new Indices();
-        indices.I = 40;
-        indices.J = 20;
-        placeBuilding(MainBuilding, indices, 0, 80, 0, 40);
+        indices.I = 80;
+        indices.J = 40;
+        placeBuilding(MainBuilding, indices, 0, 160, 0, 80);
     }
 
     private void Update()
@@ -70,20 +70,34 @@ public class BuildingManager : MonoBehaviour
     // Functionality for UI
     public void UIHelper(BuildingSO buildingSO)
     {
-        if (buildingSO.price <= ResourceManager.Instance.getGoldResource()
-            && buildingSO.wood <= ResourceManager.Instance.getStoneResource()
-            && buildingSO.stone <= ResourceManager.Instance.getWoodResource()
-            && (Player.Instance.currentBuildingCount[buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[buildingSO.buildingType]))
+        // Check if the building can be placed based on resources and current building count
+        bool canAfford = buildingSO.price <= ResourceManager.Instance.getGoldResource();
+        bool hasEnoughWood = buildingSO.wood <= ResourceManager.Instance.getWoodResource();
+        bool hasEnoughStone = buildingSO.stone <= ResourceManager.Instance.getStoneResource();
+        bool canBuildMore = Player.Instance.currentBuildingCount[buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[buildingSO.buildingType];
+
+        // Log the resource checks for debugging
+        Debug.Log($"Can Afford: {canAfford}, Has Enough Wood: {hasEnoughWood}, Has Enough Stone: {hasEnoughStone}, Can Build More: {canBuildMore}");
+
+        // Proceed only if all conditions are met
+        if (canAfford && hasEnoughWood && hasEnoughStone && canBuildMore)
         {
+            Debug.Log("Building conditions met. Proceeding to build.");
+
+            // Destroy the previous visual transform if it exists and is not destroyed
             if (visualTransform != null && !(visualTransform.gameObject.IsDestroyed()))
             {
                 Destroy(visualTransform);
             }
 
+            // Set the building and spawn the new visual transform
             building = buildingSO.building;
             visualTransform = SpawnForCheck(GetMouseWorldPosition(), building);
         }
-
+        else
+        {
+            Debug.Log("Building conditions not met. Cannot proceed.");
+        }
     }
     public Transform SpawnForCheck(Vector3 position, Building visualBuilding)
     {
@@ -92,7 +106,7 @@ public class BuildingManager : MonoBehaviour
     }
     public void CheckAndSpawn(Transform visualTransform)
     {
-        GridManager.Instance.GetValue(visualTransform.position).GetIndices(out int I, out int J);
+        GridManager.Instance    .GetValue(visualTransform.position).GetIndices(out int I, out int J);
         bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
         GameObject visualObject = visualTransform.gameObject;
         Check(I, J, Visited, visualObject.GetComponent<Building>(), out bool safe);

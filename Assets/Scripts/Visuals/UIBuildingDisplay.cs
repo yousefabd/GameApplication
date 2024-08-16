@@ -36,6 +36,7 @@ public class UIBuildingDisplay : MonoBehaviour
             buttonText.buildingStone = buildingSO.stone;
             GameObject buttonInstance = Instantiate(UIButton, UIParent);
             Button button = buttonInstance.AddComponent<Button>();
+            Debug.Log(buildingSO);
             button.onClick.AddListener(() => BuildingManager.Instance.UIHelper(buildingSO));    
         }
     }
