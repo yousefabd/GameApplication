@@ -7,6 +7,8 @@ TagManager:
   - Building or Human character
   - Goblin Base
   - Resource Node
+  - Resource Harvester
+  - Undefined
   layers:
   - Default
   - TransparentFX

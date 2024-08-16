@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 7725303985697905183, guid: 0ab0959ef1aa6bb42aec530d4c671a1a, type: 3}
   icon: {fileID: 21300000, guid: 62de5ca48be71564e8ce598303ded414, type: 3}
-  unitName: Archer
+  unitName: Goblin Archer
   maxHealth: 90
   moveSpeed: 2.5
-  team: 0
+  team: 1
   interactionRadius: 4
   attackPower: 0
   attackCooldown: 1.5
   soldierType: 1
+  price: 0

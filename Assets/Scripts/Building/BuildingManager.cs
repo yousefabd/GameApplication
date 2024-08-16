@@ -119,8 +119,6 @@ public class BuildingManager : MonoBehaviour
         }
         
 
-
-
             if (!safe)
         {
             Color redColor = new Color(1f, 0f, 0f, 0.7f);
