@@ -48,6 +48,10 @@ public class Soldier : Unit
                 soldierAI.OnAttack += RangedAttack;
                 break;
         }
+        if (unitSO.team== Team.GOBLINS) 
+        {
+            gameObject.AddComponent<CharacterOpponentAI>();
+        }
     }
 
     private void Player_OnClearTarget()

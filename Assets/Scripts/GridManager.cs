@@ -9,6 +9,7 @@ public class GridManager : MonoBehaviour
     private const int gridHeight = 80;
     private const float cellSize = 1f;
     private List<Vector3> initialUnitPosition;
+    private List<Vector3> initialUnitPosition1;
     [SerializeField] private List<UnitSO> testUnitSOList;
 
     private Grid<Cell> gridMap;
@@ -20,12 +21,19 @@ public class GridManager : MonoBehaviour
         Instance = this;
         //giving a static list of initial characters position temporarily in the future we should get that list from the Map
         CreateGridMap();
-        initialUnitPosition = new List<Vector3> { new Vector3(0.5f, 0.5f, 0), new Vector3(1.5f, 0.5f, 0), new Vector3(-5.5f, 2.5f, 0f), new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
+        initialUnitPosition = new List<Vector3> 
+        { new Vector3(0.5f, 0.5f, 0), new Vector3(1.5f, 0.5f, 0), new Vector3(-5.5f, 2.5f, 0f), 
+            new Vector3(-4.5f, 2.5f, 0f), new Vector3(-3.5f, 2.5f, 0f), new Vector3(5.5f, 2.5f, 0f), new Vector3(-5.5f, 5.5f, 0f) };
+        initialUnitPosition1 = new List<Vector3>
+        { new Vector3(1.5f, 1.5f, 0), new Vector3(2.5f, 1.5f, 0), new Vector3(-4.5f, 3.5f, 0f),
+            new Vector3(-3.5f, 3.5f, 0f), new Vector3(-3.5f, 5.5f, 0f), new Vector3(5.5f, 6.5f, 0f), new Vector3(-6.5f, 8.5f, 0f) };
     }
     private void Start()
     {
-        //CreatePlayerBase();
+     InvokeRepeating("CreatePlayerBase1", 1, 100);
+     InvokeRepeating("CreatePlayerBase", 10, 100);   
     }
+
 
     public void CreateGridMap()
     {
@@ -36,20 +44,26 @@ public class GridManager : MonoBehaviour
             return cell;
         });
     }
-   /* public void CreatePlayerBase()
+   public void CreatePlayerBase()
     {
-        for (int i = 0; i < initialUnitPosition.Count; i++)
-        {
-            Cell unitCell = gridMap.GetValue(initialUnitPosition[i]);
+      
+            Cell unitCell = gridMap.GetValue(initialUnitPosition[1]);
             Indices indices = unitCell.GetIndices();
             Unit unit;
-            if (i < 1)
-                unit = unitCell.SpawnUnit(testUnitSOList[0], GridToWorldPositionCentered(indices));
-            else unit = unitCell.SpawnUnit(testUnitSOList[1], GridToWorldPositionCentered(indices));
+            unit = unitCell.SpawnUnit(testUnitSOList[1], GridToWorldPositionCentered(indices));
             unitCell.SetEntity(unit);
             gridMap.UpdateValues();
-        }
-    }*/
+        
+    }
+    public void CreatePlayerBase1()
+    {
+            Cell unitCell = gridMap.GetValue(initialUnitPosition1[0]);
+            Indices indices = unitCell.GetIndices();
+            Unit unit;
+            unit = unitCell.SpawnUnit(testUnitSOList[0], GridToWorldPositionCentered(indices));
+            unitCell.SetEntity(unit);
+            gridMap.UpdateValues();
+    }
 
     public void UpdateValues()
     {

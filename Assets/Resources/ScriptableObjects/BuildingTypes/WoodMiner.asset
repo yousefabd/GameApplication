@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1dea029ef3dd4f4bb8f332d9bf6cdd6, type: 3}
+  m_Name: WoodMiner
+  m_EditorClassIdentifier: 
+  stringName: 
+  buildingPrefab: {fileID: 2842107502295780058, guid: 1afe64f9edabe714494e85c9e3f7b7fd, type: 3}
+  health: 0
+  buildingSprite: {fileID: 21300000, guid: 793ca27a5a3378149aaa12abe85933f4, type: 3}
+  price: 0
+  team: 0
+  buildingType: 1
+  resourceType: 0
+  unitGenerationData: []

@@ -7,14 +7,14 @@ using UnityEngine.UI;
 
 public class Building : Entity, IDestructibleObject 
 {   
-    public BuildingSO buildingSO;
+    public  BuildingSO buildingSO;
     private BuildingState buildingState;
 
     public List<Cell> neighborCellList;
     public List<Cell> builtCellList;
 
 
-    public void SetBuildingState(BuildingState newBuildingState) { buildingState = newBuildingState; }    
+   public void SetBuildingState(BuildingState newBuildingState) { buildingState = newBuildingState; }    
    public BuildingState GetBuildingState() { return buildingState; }
 
     private void Awake()
@@ -52,7 +52,6 @@ public class Building : Entity, IDestructibleObject
         {
             HealthPoints = buildingSO.health;
             HealthPoints = 0;
-            
         }
     }
     public void UpdateChildVisibility()
@@ -88,6 +87,7 @@ public class Building : Entity, IDestructibleObject
             processCompletion += 1;
             BuildProcess();
         }
+       // Healing();
     }
 
   
@@ -163,11 +163,7 @@ private void Healing()
                 unit.HealthPoints += 10;
 
             }
-                
 
-            
-            
-            
         }
     }
 

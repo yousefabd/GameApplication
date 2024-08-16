@@ -8,9 +8,10 @@ public class BuildingSO : ScriptableObject
     public float health;
     public Sprite buildingSprite;
     public int price;
+    public Team team;
 
 
-   public BuildingType buildingType;
+    public BuildingType buildingType;
     public ResourceType resourceType;
 
 

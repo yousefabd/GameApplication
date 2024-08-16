@@ -34,9 +34,13 @@ public class BuildingManager : MonoBehaviour
 
         mainCamera = Camera.main;
         Indices indices = new Indices();
+        Indices indices1 = new Indices();
         indices.I = 40;
         indices.J = 20;
-        placeBuilding(MainBuilding,indices,0,80,0,40);
+        indices1.I = 50;
+        indices1.J = 30;
+        /*placeBuilding(MainBuilding,indices,0,80,0,-40);
+        placeBuilding(secondaryBuilding,indices1,0,80,0,40);*/
     }
 
     private void Update()
@@ -142,9 +146,9 @@ public class BuildingManager : MonoBehaviour
         }
 
         // Spawn the actual building
-        Debug.Log(building);
+        //Debug.Log(building);
         Building instantiatedBuilding = Instantiate(building.buildingSO.buildingPrefab, position, Quaternion.identity).GetComponent<Building>();
-        Debug.Log(instantiatedBuilding);
+        //Debug.Log(instantiatedBuilding);
         BuildAfterCheck(instantiatedBuilding);
         ResourceManager.Instance.updateResource(ResourceType.GOLD, -building.buildingSO.price);
         setNeighborCells(position, instantiatedBuilding);
@@ -316,10 +320,12 @@ public class BuildingManager : MonoBehaviour
 
     }
 
-    [SerializeField] private BuildingSO MainBuilding;
+    /*[SerializeField] private BuildingSO MainBuilding;
+    [SerializeField] private BuildingSO secondaryBuilding*/
 
     public void placeBuilding(BuildingSO buildingSO, Indices indices, int ILconstrict, int IRconstrict, int JDconstrict, int JUconstrict)
     {
+        //Debug.Log(buildingSO.buildingPrefab);
         Vector3 potentialPosition = GridManager.Instance.GridToWorldPosition(indices);
         Transform visualTransform = Instantiate(buildingSO.buildingPrefab, potentialPosition, Quaternion.identity);
         bool[,] Visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
@@ -327,7 +333,7 @@ public class BuildingManager : MonoBehaviour
         // Start the recursive check
         mapRecursion(indices.I, indices.J, Visited, visualTransform.gameObject.GetComponent<Building>(), out bool safe, ILconstrict, IRconstrict, JDconstrict, JUconstrict);
 
-        Debug.Log(safe);
+        //Debug.Log(safe);
         if (safe)
         {
             building = buildingSO.building;
