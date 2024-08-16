@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AutoMiner : MonoBehaviour
 {
     public ResourceType buildingResource;
     private Entity resourceEntity;
-    public bool CanBuild()
+    public bool CanBuild(out Entity rresource)
     {
         BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
         Vector2 colliderSize = boxCollider.size;
@@ -27,29 +28,50 @@ public class AutoMiner : MonoBehaviour
                 {
                     resourceEntity = resource;
                     Debug.Log("miner collision: " + collider);
+                    rresource = resourceEntity;
                     return true; // Found a matching resource
                 }
             }
         }
-
+        rresource = null;
         return false; // No matching resource found
     }
 
     private void Start()
     {
-        StartCoroutine(UpdateResourceCoroutine());
-    }
-
-    private IEnumerator UpdateResourceCoroutine()
-    {
-        while (true)
+        if(TryGetComponent<Building>(out Building building))
         {
-            if (GetComponent<Building>().GetBuildingState() == Building.BuildingState.BUILT)
+            if(building.buildingSO.buildingType == BuildingType.ResourceGenerator && building.resource != null)
             {
-                ResourceManager.Instance.updateResource(GetComponent<Building>().buildingSO.resourceType, 1);
+              if(building.resource is IRecourses)
+                {
+                    StartCoroutine(ProcessResourceAfterDelay(building.resource));
+                }
             }
-            yield return new WaitForSeconds(1);
         }
+    }
+    private IEnumerator ProcessResourceAfterDelay(Entity resource)
+    {
+        while (!(resource.gameObject.IsDestroyed()))
+        {
+            switch (resource)
+            {
+                case Gold:
+                    resource.Damage(resource.gameObject.transform.position, 500);
+                    break;
+                case Stone:
+                    resource.Damage(resource.gameObject.transform.position, 5);
+                    break;
+                case Wood:
+                    resource.Damage(resource.gameObject.transform.position, 20);
+                    break;
+                default:
+                    break;
+            }
+            yield return new WaitForSeconds(1f);
+
+        }
+
     }
 
 

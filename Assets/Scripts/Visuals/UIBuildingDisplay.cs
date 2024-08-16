@@ -32,6 +32,8 @@ public class UIBuildingDisplay : MonoBehaviour
             buttonText.buildingType = buildingSO.buildingType;
             //Debug.Log(buildingSO.buildingType);
             buttonText.buildingPrice = buildingSO.price;
+            buttonText.buildingWood = buildingSO.wood;
+            buttonText.buildingStone = buildingSO.stone;
             GameObject buttonInstance = Instantiate(UIButton, UIParent);
             Button button = buttonInstance.AddComponent<Button>();
             button.onClick.AddListener(() => BuildingManager.Instance.UIHelper(buildingSO));    

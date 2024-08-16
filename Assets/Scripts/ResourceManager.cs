@@ -11,9 +11,9 @@ public class ResourceManager : MonoBehaviour
     {
         Instance = this;
         resourceDictionary = new Dictionary<ResourceType, int>();
-        resourceDictionary.Add(ResourceType.WOOD, 0);
+        resourceDictionary.Add(ResourceType.WOOD, 200);
         resourceDictionary.Add(ResourceType.GOLD, 10000);
-        resourceDictionary.Add(ResourceType.STONE, 0);
+        resourceDictionary.Add(ResourceType.STONE, 50);
 
         goblinResourceDictionary = new Dictionary<ResourceType, int>();
         goblinResourceDictionary.Add(ResourceType.WOOD, 200);

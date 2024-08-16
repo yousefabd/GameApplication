@@ -13,7 +13,7 @@ public class Building : Entity, IDestructibleObject
     public List<Cell> neighborCellList;
     public List<Cell> builtCellList;
 
-
+    public Entity resource;
    public void SetBuildingState(BuildingState newBuildingState) { buildingState = newBuildingState; }    
    public BuildingState GetBuildingState() { return buildingState; }
 

@@ -22,6 +22,7 @@ public class BuildingManager : MonoBehaviour
     public event Action<Building> built;
     public event Action<Unit> spawned;
 
+    public Entity resource;
     public void onBuilt(Building building)
     {
         built?.Invoke(building);
@@ -69,7 +70,10 @@ public class BuildingManager : MonoBehaviour
     // Functionality for UI
     public void UIHelper(BuildingSO buildingSO)
     {
-        if (buildingSO.price <= ResourceManager.Instance.getGoldResource() && (Player.Instance.currentBuildingCount[buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[buildingSO.buildingType]))
+        if (buildingSO.price <= ResourceManager.Instance.getGoldResource()
+            && buildingSO.wood <= ResourceManager.Instance.getStoneResource()
+            && buildingSO.stone <= ResourceManager.Instance.getWoodResource()
+            && (Player.Instance.currentBuildingCount[buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[buildingSO.buildingType]))
         {
             if (visualTransform != null && !(visualTransform.gameObject.IsDestroyed()))
             {
@@ -113,19 +117,25 @@ public class BuildingManager : MonoBehaviour
         Debug.Log("type count is " + Player.Instance.gameRules.buildingCount[building.buildingSO.buildingType]);
         if (safe && Player.Instance.currentBuildingCount[building.buildingSO.buildingType] < Player.Instance.gameRules.buildingCount[building.buildingSO.buildingType])
         {
-            if (building.buildingSO.buildingType == BuildingType.ResourceGenerator)
-            {
-                AutoMiner autoMiner = visualObject?.GetComponent<AutoMiner>();
-                safe = autoMiner.CanBuild();
-                   
            
-            }
             Color whiteColor = new Color(1f, 1f, 1f, 0.7f);
             material.color = whiteColor;
 
             if (Input.GetMouseButton(0))
             {
-                
+                if (building.buildingSO.buildingType == BuildingType.ResourceGenerator)
+                {
+                    AutoMiner autoMiner = visualObject?.GetComponent<AutoMiner>();
+                    resource = null;
+                    safe = autoMiner.CanBuild(out Entity node);
+                    if (safe)
+                    {
+                        resource = node;
+                    }
+                    else
+                        return;
+
+                }
                 Spawn(visualTransform.position);
                 
                     Destroy(visualTransform);
@@ -158,6 +168,9 @@ public class BuildingManager : MonoBehaviour
         Debug.Log(instantiatedBuilding);
         BuildAfterCheck(instantiatedBuilding);
         ResourceManager.Instance.updateResource(ResourceType.GOLD, -building.buildingSO.price);
+        ResourceManager.Instance.updateResource(ResourceType.WOOD, -building.buildingSO.wood);
+        ResourceManager.Instance.updateResource(ResourceType.STONE, -building.buildingSO.stone);
+        building.resource = resource;
         setNeighborCells(position, instantiatedBuilding);
         built?.Invoke(building);
         instantiatedBuilding.SetBuildingState(BuildingState.BUILT);

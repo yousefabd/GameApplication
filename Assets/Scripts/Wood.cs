@@ -48,7 +48,7 @@ public class Wood : Entity, IDestructibleObject,IRecourses
         return entity;
     }
 
-    public void Damage(Vector3 position, float value)
+    public override void Damage(Vector3 position, float value)
     {
         HealthPoints -= value;
         ResourceManager.Instance.updateResource(ResourceType.WOOD, -(int)value);
