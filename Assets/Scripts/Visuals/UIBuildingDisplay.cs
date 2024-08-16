@@ -30,6 +30,8 @@ public class UIBuildingDisplay : MonoBehaviour
             UIButton.transform.GetComponent<Image>().sprite = null;
             ButtonTextController buttonText = UIButton.transform.GetChild(1).GetComponent<ButtonTextController>();
             buttonText.buildingType = buildingSO.buildingType;
+            Debug.Log(buildingSO.buildingType);
+            buttonText.buildingPrice = buildingSO.price;
             GameObject buttonInstance = Instantiate(UIButton, UIParent);
             Button button = buttonInstance.AddComponent<Button>();
             button.onClick.AddListener(() => BuildingManager.Instance.UIHelper(buildingSO));    

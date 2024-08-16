@@ -7,6 +7,7 @@ public class UIUnitDisplay : MonoBehaviour
 {
     [SerializeField] private Transform UIParent;
     [SerializeField] private GameObject UIButton;
+   
 
     public static UIUnitDisplay Instance;
 
@@ -15,24 +16,31 @@ public class UIUnitDisplay : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-    }
+  
     public void createButtons(List<UnitSO> unitSOList, Building building)
     {
         //Debug.Log("entered");
-        UIManager.Instance.SwitchContent(true);
+        //UIManager.Instance.SwitchContent(true); 
 
         foreach (UnitSO unitSO in unitSOList)
         {
+            UIButton.transform.GetChild(0).GetComponent<Image>().sprite = unitSO.icon;
+            UIButton.transform.GetComponent<Image>().sprite = null;
+
+            UnitButtonTextController buttonText = UIButton.transform.GetChild(1).GetComponent<UnitButtonTextController>();
+            Debug.Log(unitSO.soldierType);
+            buttonText.soldierType = unitSO.soldierType;
+            
+            buttonText.unitPrice = unitSO.price;
+            Debug.Log(Player.currentMaxCount[unitSO.soldierType]);
+            Debug.Log(Player.Instance.currentCount[unitSO.soldierType]);
+            Debug.Log(unitSO.price);
+
+
+
             GameObject buttonInstance = Instantiate(UIButton, UIParent);
-            Button button = buttonInstance.GetComponent<Button>();
-
-            // Set the button's image sprite
-            Image buttonImage = buttonInstance.transform.GetChild(0).GetComponent<Image>();
-            buttonImage.sprite = unitSO.icon;
-
-            // Add listener for button click
+            Button button = buttonInstance.AddComponent<Button>();
+            Debug.Log(button);
             button.onClick.AddListener(() => building.Spawner(unitSO));
         }
     }

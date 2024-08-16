@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public enum SoldierType { SWORDSMAN,RANGER}
 public class Soldier : Unit
 {
-    private Entity currentTargetEnemy;
+    public Entity currentTargetEnemy;
     private float attackRadius;
     private float attackDamage;
     [SerializeField] private ProjectileSO projectileSO;

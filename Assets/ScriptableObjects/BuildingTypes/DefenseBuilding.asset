@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1dea029ef3dd4f4bb8f332d9bf6cdd6, type: 3}
   m_Name: DefenseBuilding
   m_EditorClassIdentifier: 
-  stringName: 
+  stringName: Defense Tower
   buildingPrefab: {fileID: 7733108270738238660, guid: 7a803679464a67c44994d32c2bb60caa, type: 3}
   health: 1000
   goldStorage: 0

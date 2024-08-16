@@ -10,19 +10,18 @@ public class ResourceManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        resourceDictionary = new Dictionary<string, int>();
-        resourceDictionary.Add("WOOD", 0);
-        resourceDictionary.Add("GOLD", 0);
-        resourceDictionary.Add("STONE", 0);
+        resourceDictionary = new Dictionary<ResourceType, int>();
+        resourceDictionary.Add(ResourceType.WOOD, 0);
+        resourceDictionary.Add(ResourceType.GOLD, 10000);
+        resourceDictionary.Add(ResourceType.STONE, 0);
     }
-    private static Dictionary<string, int> resourceDictionary ;
-    private string wood = "WOOD", gold="GOLD", stone="STONE";
+    private static Dictionary<ResourceType, int> resourceDictionary ;
 
    
     
 
     public static Action resourceChanged;
-    public void updateResource(string key,int amount)
+    public void updateResource(ResourceType key,int amount)
     {
         int oldAmount;
         resourceDictionary.TryGetValue(key, out oldAmount);
@@ -31,15 +30,15 @@ public class ResourceManager : MonoBehaviour
     }
     public int getGoldResource()
     {
-        return resourceDictionary[gold];
+        return resourceDictionary[ResourceType.GOLD];
     }
     public int getWoodResource()
     {
-        return resourceDictionary[wood];
+        return resourceDictionary[ResourceType.WOOD];
     }
     public int getStoneResource()
     {
-        return resourceDictionary[stone];
+        return resourceDictionary[ResourceType.STONE];
     }
 
 }

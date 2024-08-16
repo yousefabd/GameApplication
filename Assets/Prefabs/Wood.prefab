@@ -189,7 +189,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adf2777eb3ea0c14b9f37e313425a8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceType: 1
   prefab: {fileID: 9103891957308768971}
+  resourceType: 1
 --- !u!210 &-3923909087221758471
 SortingGroup:
   m_ObjectHideFlags: 0

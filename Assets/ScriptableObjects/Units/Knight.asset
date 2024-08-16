@@ -17,7 +17,7 @@ MonoBehaviour:
   unitName: Knight
   maxHealth: 200
   moveSpeed: 2
-  team: 1
+  team: 0
   interactionRadius: 1.5
   attackPower: 13
   attackCooldown: 1

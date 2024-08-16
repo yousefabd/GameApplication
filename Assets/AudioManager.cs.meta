@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+<<<<<<< Updated upstream
+=======
+<<<<<<<< HEAD:Assets/Scripts/CharacterOpponentAI.cs.meta
+guid: 36cd3fe3e04329d4c83783ae80d4e9dd
+========
+>>>>>>> Stashed changes
+guid: 38c65a2e7e4334f44b48d018eda53ae4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

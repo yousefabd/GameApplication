@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d443a662219c246870b8bcd53716b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceType: 0
   unitSO: {fileID: 0}
 --- !u!1 &3036405489921200653
 GameObject:
@@ -235,6 +236,10 @@ PrefabInstance:
     - target: {fileID: 881281592263501144, guid: 069c3bce43d011f4ca8a64af6a7632e9, type: 3}
       propertyPath: m_Name
       value: BuilderVisual
+      objectReference: {fileID: 0}
+    - target: {fileID: 881281592263501144, guid: 069c3bce43d011f4ca8a64af6a7632e9, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 2174087078517676791, guid: 069c3bce43d011f4ca8a64af6a7632e9, type: 3}
       propertyPath: m_LocalPosition.y

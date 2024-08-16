@@ -10,7 +10,7 @@ public class Wood : Entity, IDestructibleObject,IRecourses
     public event Action<float> OnDamaged;
     public event Action OnDestroyed;
 
-
+    public ResourceType resourceType = ResourceType.WOOD;
     public void Initialize(Vector3Int cellPosition, float size)
     {
         transform.localScale = new Vector3(size, size, 1);
@@ -43,7 +43,7 @@ public class Wood : Entity, IDestructibleObject,IRecourses
     {
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
         var entity = instance.GetComponent<Entity>();
-        team = Team.HUMANS;
+        team = Team.NEUTRAL;
 
         return entity;
     }

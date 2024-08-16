@@ -10,10 +10,19 @@ public class Gold : Entity, IDestructibleObject, IRecourses
     public event Action<float> OnDamaged;
     private BoxCollider2D boxCollider;
     public event Action OnDestroyed;
+    public ResourceType resourceType = ResourceType.GOLD;
 
 
     public void Initialize(Vector3Int cellPosition, float size)
     {
+
+
+        if (boxCollider == null)
+        {
+            //Debug.LogError("BoxCollider2D is missing on the Stone prefab.");
+            return;
+        }
+        // Set the size of the stone object
 
         transform.localScale = new Vector3(size, size, 1);
 
@@ -42,7 +51,7 @@ public class Gold : Entity, IDestructibleObject, IRecourses
     {
         GameObject instance = Instantiate(prefab, position, Quaternion.identity);
         var entity = instance.GetComponent<Entity>();
-        team = Team.HUMANS;
+        team = Team.NEUTRAL;
 
         return entity;
     }

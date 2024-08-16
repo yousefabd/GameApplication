@@ -14,9 +14,12 @@ public class GameRules : ScriptableObject
     public int DefenseTowerCount;
     public int BaseBuildingCount;
 
+    public int SwordsmanCount, RangerCount;
+
+
     // Dictionary to hold the counts of each building type
     public Dictionary<BuildingType, int> buildingCount = new Dictionary<BuildingType, int>();
-
+    public Dictionary<SoldierType,int> unitCount = new Dictionary<SoldierType,int>();
     private void OnEnable()
     {
         // Initialize the dictionary with the counts
@@ -26,5 +29,12 @@ public class GameRules : ScriptableObject
         buildingCount[BuildingType.UnitEvolver] = UnitEvolverCount;
         buildingCount[BuildingType.DefenseTower] = DefenseTowerCount;
         buildingCount[BuildingType.BaseBuilding] = BaseBuildingCount;
+
+        unitCount[SoldierType.SWORDSMAN] = SwordsmanCount;
+        unitCount[SoldierType.RANGER] = RangerCount;
+
+        // Debugging output
+        Debug.Log("Building Count Initialized: " + buildingCount.Count);
+        Debug.Log("Unit Count Initialized: " + unitCount.Count);
     }
 }

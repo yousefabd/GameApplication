@@ -3,19 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
+
     [SerializeField] GameObject BuildingContent;
     [SerializeField] GameObject UnitContent;
 
-    private bool scrollToggle = false;
+    [SerializeField] Transform contentParent;
 
-    public static UIManager Instance;
-
-    private GameObject buildingContent;
+    private bool unitToggle = false;
     private GameObject unitContent;
-
+    public static UIManager Instance;
     private void Awake()
     {
         Instance = this;
@@ -23,14 +22,10 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        // Initialize the buildingContent and unitContent
-        buildingContent = BuildingContent;
-        unitContent = UnitContent;
-
-        if (!scrollToggle)
+        
+        if (!unitToggle)
         {
-            buildingContent.SetActive(true);
-            unitContent.SetActive(false);
+            BuildingContent.SetActive(true);
         }
     }
 
@@ -41,42 +36,48 @@ public class UIManager : MonoBehaviour
 
     public void SwitchContent(bool setToggle)
     {
-        scrollToggle = setToggle;
-        if (scrollToggle)
+        unitToggle = setToggle;
+        if (unitToggle)
         {
-            buildingContent.SetActive(false);
-            unitContent.SetActive(true);
+            BuildingContent.SetActive(false);
+           unitContent = Instantiate(UnitContent, contentParent);
+           unitContent.SetActive(true);
         }
-        else
+        else if (!unitToggle)
         {
-            buildingContent.SetActive(true);
-            unitContent.SetActive(false);
+            BuildingContent.SetActive(true);
+            Destroy(unitContent.gameObject);
+            
+            
         }
     }
 
     public void checkIfMousePressed()
     {
-        Debug.Log("wtf");
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("mouse pressed");
 
-
-            GridManager.Instance.WorldToGridPosition(BuildingManager.Instance.GetMouseWorldPosition(), out int i, out int j);
-            Indices indices = new Indices(i,j);
-            Collider2D[] colliders = GridManager.Instance.OverlapAll(indices);
-
-            foreach (Collider2D collider in colliders)
+            PointerEventData pointerData = new PointerEventData(EventSystem.current)
             {
-                Debug.Log(collider);
+                position = Input.mousePosition
+            };
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
+
+            if (results.Count > 0)
+            {
+
+                return;
             }
+            GridManager.Instance.WorldToGridPosition(BuildingManager.Instance.GetMouseWorldPosition(), out int i, out int j);
+            Indices indices = new Indices(i, j);
+            Collider2D[] colliders = GridManager.Instance.OverlapAll(indices);
 
             if (colliders.Length == 0 || colliders[0].gameObject.GetComponent<Building>() == null)
             {
                 SwitchContent(false);
             }
-
-
         }
     }
 }

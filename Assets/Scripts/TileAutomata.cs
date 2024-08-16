@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEditor;
-using Unity.VisualScripting;
-using System;
+
 
 
 
@@ -280,6 +278,40 @@ public class TileAutomata : MonoBehaviour
 
         HashSet<Vector3Int> occupiedPositions = new HashSet<Vector3Int>();
 
+
+        //for (int i = 0; i < goldCount; i++)
+        //{
+        //    Vector3Int position = GetRandomValidPosition(occupiedPositions);
+        //    float size = GetRandomSize();
+        //    if (position != Vector3Int.zero)
+        //    {
+        //        occupiedPositions.Add(position);
+        //        distributeResource(position, size, goldPrefab);
+        //    }
+        //}
+
+        //for (int i = 0; i < woodCount; i++)
+        //{
+        //    Vector3Int position = GetRandomValidPosition(occupiedPositions);
+        //    float size = GetRandomSize();
+        //    if (position != Vector3Int.zero)
+        //    {
+        //        occupiedPositions.Add(position);
+        //        distributeResource(position, size, woodPrefab);
+        //    }
+        //}
+
+        //for (int i = 0; i < stoneCount; i++)
+        //{
+        //    Vector3Int position = GetRandomValidPosition(occupiedPositions);
+        //    float size = GetRandomSize();
+        //    if (position != Vector3Int.zero)
+        //    {
+        //        occupiedPositions.Add(position);
+        //        distributeResource(position, size, stonePrefab);
+        //    }
+        //}
+
         int goldPerQuadrant = goldCount / 4;
         int woodPerQuadrant = woodCount / 4;
         int stonePerQuadrant = stoneCount / 4;
@@ -303,7 +335,23 @@ public class TileAutomata : MonoBehaviour
         DistributeInQuadrant(stonePerQuadrant, stonePrefab, occupiedPositions, 0, width / 2, 0, height / 2);
 
     }
- 
+
+    //private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions)
+    //{
+    //    for (int attempt = 0; attempt < 100; attempt++)
+    //    {
+    //        int x = Random.Range(-34, 36); 
+    //        int y = Random.Range(-34, 36); 
+    //        Vector3Int position = new Vector3Int(x, y, 0);
+
+    //        if (!occupiedPositions.Contains(position) && IsPositionValidForResource(position))
+    //        {
+    //            return position;
+    //        }
+    //    }
+    //    return Vector3Int.zero;
+    //}
+
 
     private bool IsNearHole(Vector3Int position, int bufferZoneSize)
     {
@@ -338,11 +386,15 @@ public class TileAutomata : MonoBehaviour
     //        return false;
     //    }
 
+
+
+
     //    int bufferZoneSize = 7;
     //    if (IsNearHole(position, bufferZoneSize))
     //    {
     //        return false;
     //    }
+
 
     //    return true;
     //}
@@ -360,9 +412,16 @@ public class TileAutomata : MonoBehaviour
         }
     }
     private Vector3Int GetRandomValidPosition(HashSet<Vector3Int> occupiedPositions, int xMin, int xMax, int yMin, int yMax)
+
+
+  
     {
+
+
+
         for (int attempt = 0; attempt < 100; attempt++)
         {
+
             int x = UnityEngine.Random.Range(xMin + 7, xMax - 7);
             int y = UnityEngine.Random.Range(yMin + 7, yMax - 7);
             Vector3Int position = new Vector3Int(x, y, 0);
@@ -373,8 +432,8 @@ public class TileAutomata : MonoBehaviour
             }
         }
         return Vector3Int.zero;
-    }
 
+    }
     private float GetRandomSize()
     {
         float size;
@@ -530,9 +589,13 @@ public class TileAutomata : MonoBehaviour
                             gold.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(gold, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
+
                             Debug.Log("Gold placed at: " + adjustedWorldPos);
+
+                           // Debug.Log("Gold placed at: " + adjustedWorldPos);
+
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException)
                         {
                             continue;
                         }
@@ -570,9 +633,9 @@ public class TileAutomata : MonoBehaviour
                             wood.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(wood, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 1));
-                            Debug.Log("Wood placed at: " + adjustedWorldPos);
+                            //Debug.Log("Wood placed at: " + adjustedWorldPos);
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException)
                         {
                             continue;
                         }
@@ -610,9 +673,9 @@ public class TileAutomata : MonoBehaviour
                             stone.transform.position = adjustedWorldPos;
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(stone, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
-                            Debug.Log("Stone placed at: " + adjustedWorldPos);
+                            //Debug.Log("Stone placed at: " + adjustedWorldPos);
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException)
                         {
                             continue;
                         }

@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-   
-    private Vector3 gridOriginPosition = new Vector3(-39f,-39f);
-    private const int gridWidth = 80;
-    private const int gridHeight = 80;
+    //private Vector3 gridOriginPosition = new Vector3(-16f, -9f);
+    //private const int gridWidth = 32;
+    //private const int gridHeight = 18;
+    private Vector3 gridOriginPosition = new Vector3(-99f,-99f);
+    private const int gridWidth = 160;
+    private const int gridHeight = 160;
     private const float cellSize = 1f;
     private List<Vector3> initialUnitPosition;
     [SerializeField] private List<UnitSO> testUnitSOList;

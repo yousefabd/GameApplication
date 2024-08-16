@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ResourceGenerator : MonoBehaviour
 {
-    private float timer;
+   /* private float timer;
     private float timerMax;
     private BuildingSO buildingSO;
     private Resource resourceManager = Resource.Instance;
@@ -20,5 +20,5 @@ public class ResourceGenerator : MonoBehaviour
             timer += timerMax;
             resourceManager.UpdateResource(1, buildingSO.resourceGeneratorData.ResourceType);
         }
-    }
+    }*/
 }
