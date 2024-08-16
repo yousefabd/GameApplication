@@ -13,7 +13,7 @@ public class MainMenuUI : MonoBehaviour
     {
         playButton.onClick.AddListener(() =>
         {
-            Loader.Load(Loader.Scene.PathfindingSystem1);
+            SwitchListUI.Instance.ShowGameModes();
         });
         quitButton.onClick.AddListener(() =>
         {

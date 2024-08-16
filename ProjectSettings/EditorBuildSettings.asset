@@ -8,13 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenuScene.unity
     guid: f07b6e0dc6e09c949b35eb3b891699e3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PathfindingSystem.unity
     guid: 97475161974f4104aa0b3e57eb027dda
   - enabled: 1
     path: Assets/Scenes/LoadingScene.unity
     guid: 230ae0756eb7be74290d423384e2e4bc
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PathfindingSystem1.unity
     guid: f2cd2eee825ad454a9dbd6ccf7ad42ea
+  - enabled: 1
+    path: Assets/TowerDefense/TowerDefenseMode.unity
+    guid: 0f23f998d1c8ec947a8b551e751b8c5e
   m_configObjects: {}

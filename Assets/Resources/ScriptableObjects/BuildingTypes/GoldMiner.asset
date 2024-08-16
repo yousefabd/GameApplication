@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1dea029ef3dd4f4bb8f332d9bf6cdd6, type: 3}
+  m_Name: GoldMiner
+  m_EditorClassIdentifier: 
+  stringName: 
+  buildingPrefab: {fileID: 4411028847599530040, guid: 30ea8b84d1e92104e8d3a94216d72d75, type: 3}
+  health: 0
+  buildingSprite: {fileID: 21300000, guid: 8ead931dd91bff8489e75de9c414f17f, type: 3}
+  price: 0
+  team: 0
+  buildingType: 1
+  resourceType: 0
+  unitGenerationData: []

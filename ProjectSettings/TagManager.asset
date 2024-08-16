@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Building or Human character
+  - Goblin Base
+  - Resource Node
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - Resources
   - 
   - Camera
-  - 
+  - Minimap
   - 
   - 
   - 

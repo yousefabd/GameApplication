@@ -38,12 +38,12 @@ public class Cell
             Debug.LogError("A unit in the cell (" + indices.I + ", " + indices.J + ")" + " already exists!");
             return entity as Unit;
         }
-        else
-        {
+        
+        
             entity = Unit.Spawn(characterSO, position);
             SetEntity(entity);
             return entity as Unit;
-        }
+        
     }
     public void ClearEntity()
     {

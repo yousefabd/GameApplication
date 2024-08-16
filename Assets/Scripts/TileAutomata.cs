@@ -590,7 +590,7 @@ public class TileAutomata : MonoBehaviour
                             Vector3Int gridCellPosition = topMap.WorldToCell(adjustedWorldPos);
                             GridManager.Instance.SetEntity(gold, new Indices(gridCellPosition.x + width / 2 - 2, gridCellPosition.y + height / 2 - 2));
 
-                            Debug.Log("Gold placed at: " + adjustedWorldPos);
+                            //Debug.Log("Gold placed at: " + adjustedWorldPos);
 
                            // Debug.Log("Gold placed at: " + adjustedWorldPos);
 

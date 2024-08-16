@@ -12,6 +12,7 @@ public class SoldierAI : MonoBehaviour
     private float currentAttackCooldown = 0f;
     //events
     public event Action OnAttack;
+    Indices now;
     private void Start()
     {
         soldierController = GetComponent<Soldier>();
@@ -41,6 +42,9 @@ public class SoldierAI : MonoBehaviour
                 break;
         }
         currentAttackCooldown -= Time.deltaTime;
+        GridManager.Instance.WorldToGridPosition(transform.position, out now.I, out now.J);
+       // Debug.Log("Wizar indices are : "+now.I +" " + now.J);
+
     }
     private void Soldier_OnStartAttacking()
     {
@@ -52,7 +56,7 @@ public class SoldierAI : MonoBehaviour
         {
             if (soldierController.CanAttack(transform.position))
             {
-                if (currentAttackCooldown <= 0f)
+                if (currentAttackCooldown <= 0f && !soldierController.IsDying())
                 {
                     OnAttack?.Invoke();
                     currentAttackCooldown = soldierController.GetAttackCoolDown();
