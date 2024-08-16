@@ -96,20 +96,26 @@ public class Building : Entity, IDestructibleObject
     //function for spawning units around the building is neighbor cells
     public void Spawner(UnitSO unitSO)
     {
-        Debug.Log(neighborCellList.Count);
-       if(neighborCellList.Count == 0)
-        {
-            bool[,] visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
-            bool safe;
-            GridManager.Instance.WorldToGridPosition(transform.position,out int i, out int j);
-            BuildingManager.Instance.NeighborRecursiveCheck(i, j, visited, this, out safe);
-        }
-        Debug.Log(neighborCellList.Count);
-        if (unitSO != null && neighborCellList.Count > 0)
-        {
-            int randomIndex = _random.Next(0, neighborCellList.Count);
-            Cell cell = neighborCellList[randomIndex];
-            Unit.Spawn(unitSO,GridManager.Instance.GridToWorldPositionCentered(cell.GetIndices()));
+        Debug.Log("curr" + Player.Instance.currentCount[unitSO.soldierType]);
+        Debug.Log("max" +Player.currentMaxCount[unitSO.soldierType]);
+        if (Player.Instance.currentCount[unitSO.soldierType] + 1 <= Player.currentMaxCount[unitSO.soldierType] && ResourceManager.Instance.getGoldResource() - unitSO.price >= 0) {
+            Debug.Log(neighborCellList.Count);
+            if (neighborCellList.Count == 0)
+            {
+                bool[,] visited = new bool[GridManager.Instance.GetWidth(), GridManager.Instance.GetHeight()];
+                bool safe;
+                GridManager.Instance.WorldToGridPosition(transform.position, out int i, out int j);
+                BuildingManager.Instance.NeighborRecursiveCheck(i, j, visited, this, out safe);
+            }
+            Debug.Log(neighborCellList.Count);
+            if (unitSO != null && neighborCellList.Count > 0)
+            {
+                int randomIndex = _random.Next(0, neighborCellList.Count);
+                Cell cell = neighborCellList[randomIndex];
+                Unit.Spawn(unitSO, GridManager.Instance.GridToWorldPositionCentered(cell.GetIndices()));
+                Player.Instance.currentCount[unitSO.soldierType]++;
+                ResourceManager.Instance.updateResource(ResourceType.GOLD, -unitSO.price);
+            }
         }
     }
     
