@@ -117,11 +117,25 @@ public class BuildingManager : MonoBehaviour
         {
             safe = false;
         }
-        
+        if (building.buildingSO.buildingType == BuildingType.ResourceGenerator)
+        {
+            AutoMiner autoMiner = visualObject?.GetComponent<AutoMiner>();
+            resource = null;
+            bool mine = autoMiner.CanBuild(out Entity node);
+
+            if (mine)
+            {
+                resource = node;
+            }
+            else
+                safe = false;
+
+
+        }
 
 
 
-            if (!safe)
+        if (!safe)
         {
             Color redColor = new Color(1f, 0f, 0f, 0.7f);
             material.color = redColor;
@@ -141,13 +155,15 @@ public class BuildingManager : MonoBehaviour
                 {
                     AutoMiner autoMiner = visualObject?.GetComponent<AutoMiner>();
                     resource = null;
-                    safe = autoMiner.CanBuild(out Entity node);
-                    if (safe)
+                    bool mine = autoMiner.CanBuild(out Entity node);
+
+                    if (mine)
                     {
                         resource = node;
                     }
                     else
-                        return;
+                        safe = false;
+                        
 
                 }
                 Spawn(visualTransform.position);
@@ -184,13 +200,14 @@ public class BuildingManager : MonoBehaviour
         ResourceManager.Instance.updateResource(ResourceType.GOLD, -building.buildingSO.price);
         ResourceManager.Instance.updateResource(ResourceType.WOOD, -building.buildingSO.wood);
         ResourceManager.Instance.updateResource(ResourceType.STONE, -building.buildingSO.stone);
-        building.resource = resource;
+        instantiatedBuilding.resource = resource;
         setNeighborCells(position, instantiatedBuilding);
         built?.Invoke(building);
         instantiatedBuilding.SetBuildingState(BuildingState.BUILT);
         instantiatedBuilding.UpdateChildVisibility();
         BuildingCells.Clear();
         building = null;
+        resource = null;
         return instantiatedBuilding;
     }
     public void AIUIHelper(BuildingSO buildingSO, Vector3 position)

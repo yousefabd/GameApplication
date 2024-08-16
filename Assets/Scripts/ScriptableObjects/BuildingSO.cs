@@ -10,7 +10,7 @@ public class BuildingSO : ScriptableObject
     public int price;
     public int wood;
     public int stone;
-
+    public Team team;
 
    public BuildingType buildingType;
     public ResourceType resourceType;

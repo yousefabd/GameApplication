@@ -32,17 +32,17 @@ public class Stone : Entity, IDestructibleObject, IRecourses
         }
         if (size == 1f)
         {
-            HealthPoints = 5f;
+            HealthPoints = 50f;
             //boxCollider.size = new Vector2(2.984772f, 2.405883f);
         }
         else if (size == 2f)
         {
-            HealthPoints = 10f;
+            HealthPoints = 100f;
             //boxCollider.size = new Vector2(5.969544f, 4.811766f);
         }
         else if (size == 3f)
         {
-            HealthPoints = 25f;
+            HealthPoints = 250f;
             // boxCollider.size = new Vector2(8.954316f, 7.217649f);
         }
     }
@@ -61,7 +61,7 @@ public class Stone : Entity, IDestructibleObject, IRecourses
 public override void Damage(Vector3 position, float value)
     {
         HealthPoints -= value;
-        ResourceManager.Instance.updateResource(ResourceType.STONE, -(int)value);
+        ResourceManager.Instance.updateResource(ResourceType.STONE, (int)value);
         OnDamaged?.Invoke(value);
         if (HealthPoints <= 0)
         {
