@@ -54,8 +54,8 @@ public class ScreenInteractionManager : MonoBehaviour
             if (selectionAreaTransform != null)
             {
                 selectionAreaTransform?.gameObject.SetActive(false);
-                OnAreaSelected?.Invoke(startPosition, mousePosition);
             }
+            OnAreaSelected?.Invoke(startPosition, mousePosition);
         }
         if (Input.GetMouseButtonDown(1))
         {

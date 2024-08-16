@@ -17,6 +17,7 @@ public class TDWaveManager : MonoBehaviour
     private float minUnitSpawnCooldown;
     private float maxUnitHealthPoints;
     private float incrementFactor;
+    private float incomeFactor = 0.008f;
     //state variables
     private int currentWave;
     private float currentUnitSpeed;
@@ -149,7 +150,7 @@ public class TDWaveManager : MonoBehaviour
     }
     public int GetUnitKillPrize(int unitHealth)
     {
-        return (int)((0.008f * incrementFactor) * unitHealth);
+        return (int)((incomeFactor * incrementFactor) * unitHealth);
     }
     public void Restart()
     {
@@ -159,5 +160,9 @@ public class TDWaveManager : MonoBehaviour
         currentWaveTimerCount = 0f;
         currentUnitHealthPoints = 100f;
         OnRestart?.Invoke();
+    }
+    public void DoubleIncome()
+    {
+        incomeFactor *= 2;
     }
 }

@@ -10,6 +10,7 @@ public class TDCastle : Entity,IDestructibleObject
     public event Action<float> OnDamaged;
     public event Action OnDestroyed;
     public event Action<int> OnGameOver;
+    public event Action <float>OnFortify;
     public static TDCastle Instance { get; private set; }
     public float HealthPoints { get; set; }
 
@@ -64,5 +65,15 @@ public class TDCastle : Entity,IDestructibleObject
         }
         return false;
     }
-
+    public void Fortify()
+    {
+        castleHealth += 1000;
+        HealthPoints += 1000;
+        OnFortify?.Invoke(castleHealth);
+        OnDamaged?.Invoke(-1*HealthPoints);
+    }
+    public float GetMaxHealth()
+    {
+        return castleHealth;
+    }
 }

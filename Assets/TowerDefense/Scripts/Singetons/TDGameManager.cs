@@ -59,6 +59,7 @@ public class TDGameManager : MonoBehaviour
 
     public void StartGame()
     {
+        Debug.Log("Starting Game");
         currentGameState= TDGameState.COUNTDOWN;
     }
 }

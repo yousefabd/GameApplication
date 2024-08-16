@@ -10,12 +10,18 @@ public class BuildingGhostVisual : MonoBehaviour
         Instance = this;
         TDPlayer.Instance.OnSelectTower += Player_OnSelectTower;
         TDPlayer.Instance.OnBuildTower += Player_OnBuildTower;
+        TDPlayer.Instance.OnDeselectTower += Player_OnDeselectTower;
         gameObject.SetActive(false);
     }
 
-    private void Player_OnBuildTower(TowerSO arg1, Vector3 arg2)
+    private void Player_OnDeselectTower()
     {
-        gameObject.SetActive(false);
+        TDMouseObject.Instance.ToggleActive(transform);
+    }
+
+    private void Player_OnBuildTower(TowerSO arg1, Transform arg2)
+    {
+        TDMouseObject.Instance.ToggleActive(transform);
     }
     private void Update()
     {
@@ -25,6 +31,9 @@ public class BuildingGhostVisual : MonoBehaviour
     {
         SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = towerSO.prefab.GetComponent<SpriteRenderer>().sprite;
-        gameObject.SetActive(true);
+        if (!gameObject.activeSelf)
+        {
+            TDMouseObject.Instance.ToggleActive(transform);
+        }
     }
 }

@@ -8,6 +8,7 @@ using UnityEngine.Rendering;
 public class TDUnitSpawner : MonoBehaviour
 {
     [SerializeField] List<UnitSO> unitSOList;
+    [SerializeField] UnitSO bossUnit;
     [SerializeField] TowerSO towerSO;
     [SerializeField] TDCastle castle;
     private float maxSpawnCooldown = 3f;
@@ -18,8 +19,9 @@ public class TDUnitSpawner : MonoBehaviour
     private int currentSpawnIndicator = 1;
     private System.Random random;
     private int currentUnitCount = 0;
+    private bool spawnedBoss = false;
     private enum UnitSpawnState { IDLE,SPAWNING}
-    private UnitSpawnState currentSpawnState=UnitSpawnState.SPAWNING;
+    private UnitSpawnState currentSpawnState=UnitSpawnState.IDLE;
     public event Action<Unit> OnUnitSpawned;
     public event Action<float> OnUnitDestroyed;
     public static TDUnitSpawner Instance { get; private set; }
@@ -40,7 +42,7 @@ public class TDUnitSpawner : MonoBehaviour
     {
         currentSpawnState = UnitSpawnState.SPAWNING;
         TDWaveManager.Instance.GetUnitVariables(out currentUnitSpeed, out currentUnitDamage, out maxSpawnCooldown, out currentUnitHealth);
-        if (TDWaveManager.Instance.GetCurrentWave() >= 10)
+        if (TDWaveManager.Instance.GetCurrentWave() >= 10 && currentSpawnIndicator == 1)
         {
             currentSpawnIndicator++;
         }
@@ -49,6 +51,7 @@ public class TDUnitSpawner : MonoBehaviour
     private void WaveManager_OnFinishedWave()
     {
         currentSpawnState = UnitSpawnState.IDLE;
+        spawnedBoss = false;
     }
 
     private void Update()
@@ -63,6 +66,10 @@ public class TDUnitSpawner : MonoBehaviour
                 {
                     SpawnUnit();
                     currentSpawnCooldown = GetUnitSpawnCooldown();
+                    if (TDWaveManager.Instance.GetCurrentWave() % 5 == 0)
+                    {
+                        SpawnBoss();
+                    }
                 }
                 break;
         }
@@ -86,7 +93,27 @@ public class TDUnitSpawner : MonoBehaviour
         Transform highlightedCellTransform = selectedTransform.Find("HighlightedCell");
         Destroy(highlightedCellTransform.gameObject);
     }
-
+    private void SpawnBoss()
+    {
+        if (!spawnedBoss)
+        {
+            spawnedBoss = true;
+            currentUnitCount++;
+            Vector3 spawnPoint = WayPointPath.Instance.GetRandomPath(out List<Vector3> path);
+            Transform unitTransform = Instantiate(bossUnit.prefab, spawnPoint, Quaternion.identity);
+            Unit unit = unitTransform.GetComponent<Unit>();
+            unit.SetPath(path);
+            unit.ToggleSelect(true);
+            unit.SetSpeed(GetUnitSpeed() / 2f);
+            (unit as Soldier).SetAttackDamage(currentUnitDamage * 4f);
+            unit.SetMaxHealth(currentUnitHealth * 20f);
+            unit.OnDestroyed += Unit_OnDestroyed;
+            OnUnitSpawned?.Invoke(unit);
+            Transform selectedTransform = unitTransform.Find("Selected");
+            Transform highlightedCellTransform = selectedTransform.Find("HighlightedCell");
+            Destroy(highlightedCellTransform.gameObject);
+        }
+    }
     private void Unit_OnDestroyed()
     {
         currentUnitCount--;

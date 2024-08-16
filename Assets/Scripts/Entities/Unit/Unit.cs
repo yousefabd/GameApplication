@@ -5,7 +5,7 @@ using UnityEngine;
 public class Unit : Entity, IDestructibleObject
 {
     private float moveSpeed = 3f;
-    [SerializeField] protected UnitSO unitSO;
+    [SerializeField] public UnitSO unitSO;
     private PathFinder pathFinder;
     //State related variables
     private enum UnitState
@@ -20,6 +20,7 @@ public class Unit : Entity, IDestructibleObject
     public float HealthPoints { get; set; }
     private float dieTimer = 1.5f;
     private bool movementPaused = false;
+    private Vector3 currentMoveDir=Vector3.zero;
     //events
     public event Action<bool> OnSelect;
     public event Action<Vector3> OnMoveCell;
@@ -68,6 +69,7 @@ public class Unit : Entity, IDestructibleObject
     private void WalkPath()
     {
         Vector3 nextTarget = currentPath[currentPathIndex];
+        currentMoveDir = nextTarget - transform.position;
         if (!movementPaused)
             transform.position = Vector3.MoveTowards(transform.position, nextTarget, moveSpeed * Time.deltaTime);
         if (Vector3.Distance(transform.position, nextTarget) < 0.05)
@@ -213,5 +215,17 @@ public class Unit : Entity, IDestructibleObject
     public float GetMaxHealth()
     {
         return unitSO.maxHealth;
+    }
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;
+    }
+    public Vector3 GetMoveDir()
+    {
+        return currentMoveDir.normalized;
+    }
+    public bool IsDying()
+    {
+        return currentUnitState == UnitState.DYING;
     }
 }

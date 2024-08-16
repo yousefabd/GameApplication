@@ -62,6 +62,67 @@ public class WeaponProjectile : MonoBehaviour
         projectile.team = team;
         return projectile;
     }
+    public static WeaponProjectile SmartThrow(Vector3 originPosition, Transform prefab, Entity target, Team team)
+    {
+        if (target == null)
+        {
+            return null;
+        }
+        else if (target is not Unit)
+        {
+            return Throw(originPosition, prefab, target, team);
+        }
+        Vector3 offset = new Vector3(0f, yOffset, 0f);
+        Transform projectileTransform = Instantiate(prefab, originPosition + offset, Quaternion.identity);
+        WeaponProjectile projectile = projectileTransform.GetComponent<WeaponProjectile>();
+        projectile.targetPosition =
+            CalculateInterceptionPoint(originPosition,
+                                       target.transform.position + offset,
+                                       projectile.projectileSO.speed,
+                                       (target as Unit).GetMoveSpeed(),
+                                       (target as Unit).GetMoveDir());
+        projectile.target = target;
+        projectile.RotateToTarget();
+        projectile.team = team;
+        return projectile;
+    }
+    private static Vector3 CalculateInterceptionPoint(Vector3 originPosition,Vector3 enemyPosition,float arrowSpeed,float enemySpeed,Vector3 enemyMoveDir)
+    {
+
+        Vector3 left = enemyPosition;
+        Vector3 right = enemyPosition + enemyMoveDir * 10;
+        Vector3 interceptionPoint = enemyPosition;
+        float projectileTime = 1000, enemyTime = 0;
+        int precision = 36;
+        while (precision>0)
+        {
+            Vector3 m = (left + right) / 2;
+            float p_t = Vector3.Distance(originPosition, m) / arrowSpeed;
+            float e_t = Vector3.Distance(enemyPosition, m) / enemySpeed;
+            if (p_t < e_t)
+            {
+                projectileTime = p_t;
+                enemyTime = e_t;
+                right = m;
+            }
+            else if (p_t > e_t)
+            {
+                projectileTime = p_t;
+                enemyTime = e_t;
+                left = m;
+            }
+            else
+            {
+                projectileTime = p_t;
+                enemyTime = e_t;
+                interceptionPoint = m;
+                break;
+            }
+            interceptionPoint = m;
+            precision--;
+        }
+        return interceptionPoint;
+    }
     public void Attack()
     {
         Vector3 offset = new Vector3(0f, yOffset, 0f);
