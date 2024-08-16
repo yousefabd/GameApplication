@@ -16,8 +16,9 @@ MonoBehaviour:
   buildingPrefab: {fileID: 7733108270738238660, guid: 7a803679464a67c44994d32c2bb60caa, type: 3}
   health: 1000
   buildingSprite: {fileID: 95532343, guid: d7d99efdb07092c49afa1d44433bebbf, type: 3}
-  price: 0
-  team: 0
+  price: 4000
+  wood: 100
+  stone: 50
   buildingType: 4
   resourceType: 0
   unitGenerationData: []

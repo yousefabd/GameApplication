@@ -12,7 +12,10 @@ public class Entity : MonoBehaviour
         Entity entity = null;
         return entity;
     }
-
+    public virtual void Damage(Vector3 position, float value)
+    {
+       
+    }
 
 
     public ResourceType resourceType;

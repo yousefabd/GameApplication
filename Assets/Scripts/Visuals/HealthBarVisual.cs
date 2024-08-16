@@ -30,6 +30,8 @@ public class HealthBarVisual : MonoBehaviour
                 (destructibleObject as TDCastle).OnFortify += HealthBarVisual_OnMaxHealthChanged;
             }
         }
+        Debug.Log(destructibleObject);
+        Debug.Log(currentHealth);
     }
 
     private void HealthBarVisual_OnMaxHealthChanged(float newMaxHealth)
@@ -48,4 +50,5 @@ public class HealthBarVisual : MonoBehaviour
     {
         health.fillAmount = (currentHealth / maxHealth);
     }
+    
 }

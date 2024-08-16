@@ -17,6 +17,8 @@ MonoBehaviour:
   health: 1000
   buildingSprite: {fileID: 21300000, guid: 7b2f645eac44cef4c8ae6554a2c7a085, type: 3}
   price: 5000
+  wood: 10
+  stone: 10
   buildingType: 3
   resourceType: 0
   unitGenerationData: []

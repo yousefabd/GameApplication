@@ -13,7 +13,7 @@ public class Building : Entity, IDestructibleObject
     public List<Cell> neighborCellList;
     public List<Cell> builtCellList;
 
-
+    public Entity resource;
    public void SetBuildingState(BuildingState newBuildingState) { buildingState = newBuildingState; }    
    public BuildingState GetBuildingState() { return buildingState; }
 
@@ -51,7 +51,6 @@ public class Building : Entity, IDestructibleObject
         if (buildingState == BuildingState.BUILT)
         {
             HealthPoints = buildingSO.health;
-            HealthPoints = 0;
         }
     }
     public void UpdateChildVisibility()
@@ -77,7 +76,6 @@ public class Building : Entity, IDestructibleObject
         color.a = opacity;
         material.color = color;
 
-        HealthPoints = Mathf.Lerp(0f, buildingSO.health, (float)processCompletion / 100f);
     }
 
     private void Update()
@@ -87,7 +85,10 @@ public class Building : Entity, IDestructibleObject
             processCompletion += 1;
             BuildProcess();
         }
-       // Healing();
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            Damage( this.gameObject.transform.position,100);
+        }
     }
 
   
@@ -120,13 +121,16 @@ public class Building : Entity, IDestructibleObject
     }
     
     //logic to damage building
-    public void Damage(Vector3 position, float value)
+    public override void Damage(Vector3 position,float value)
     {
-        if (GridManager.Instance.GetValue(position).GetEntity() == this)
+        Debug.Log("before)");
+        if (gameObject.transform.position == position)
         {
+            Debug.Log("good");
             OnDamaged?.Invoke(value);
             HealthPoints -= value;
-            if (HealthPoints < 0) { 
+            if (HealthPoints < 0)
+            {
                 Destruct();
                 OnDestroyed?.Invoke();
 
@@ -137,7 +141,7 @@ public class Building : Entity, IDestructibleObject
     public void Destruct()
     {
         setCellsNull();
-        Destroy(buildingSO.buildingPrefab.gameObject);
+        Destroy(this.gameObject);
     }
 
     private void setCellsNull()
@@ -156,6 +160,7 @@ public class Building : Entity, IDestructibleObject
             UIUnitDisplay.Instance.createButtons(buildingSO.unitGenerationData, this);
         }
     }
+   
    
 
 private void Healing()
