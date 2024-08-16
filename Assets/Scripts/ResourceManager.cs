@@ -8,7 +8,7 @@ public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager Instance;
     private void Awake()
-    {
+    {   
         Instance = this;
         resourceDictionary = new Dictionary<ResourceType, int>();
         resourceDictionary.Add(ResourceType.WOOD, 200);
@@ -22,9 +22,6 @@ public class ResourceManager : MonoBehaviour
     }
     private static Dictionary<ResourceType, int> resourceDictionary ;
     private static Dictionary<ResourceType, int> goblinResourceDictionary ;
-
-  
-
 
     public static Action resourceChanged;
     public void updateResource(ResourceType key,int amount)
@@ -45,6 +42,22 @@ public class ResourceManager : MonoBehaviour
     public int getStoneResource()
     {
         return resourceDictionary[ResourceType.STONE];
+    }
+    public Dictionary<ResourceType, int> GetGoblinsResources() 
+    { 
+       return goblinResourceDictionary;
+    }
+    public int getGoblinGoldResource()
+    {
+        return goblinResourceDictionary[ResourceType.GOLD];
+    }
+    public int getGoblinWoodResource()
+    {
+        return goblinResourceDictionary[ResourceType.WOOD];
+    }
+    public int getGoblinStoneResource()
+    {
+        return goblinResourceDictionary[ResourceType.STONE];
     }
 
 }
