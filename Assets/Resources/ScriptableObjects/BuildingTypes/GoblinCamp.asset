@@ -25,5 +25,4 @@ MonoBehaviour:
   unitGenerationData:
   - {fileID: 11400000, guid: b84ac44dd37ab7c49a328ed213ca9591, type: 2}
   - {fileID: 11400000, guid: d39d502d3aade954e804376364121684, type: 2}
-  - {fileID: 11400000, guid: 0f1f4b0f8168f2a499b61e6ced19010a, type: 2}
   - {fileID: 11400000, guid: e93be5a63b5c45f4393bccb1ac95ba4d, type: 2}

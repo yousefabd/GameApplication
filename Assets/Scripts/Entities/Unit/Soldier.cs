@@ -143,10 +143,8 @@ public class Soldier : Unit
         OnNormalAttack?.Invoke(currentTargetEnemy.transform.position-transform.position);
         float luckyPoints = (float) (random.NextDouble()*(attackDamage/4f));
         OnAttack?.Invoke(currentTargetEnemy.transform.position, attackDamage + luckyPoints);
-        if (Player.Instance != null)
-        {
-            Player.Instance.OnAttackCallback(currentTargetEnemy.transform.position, attackDamage + luckyPoints);
-        }
+        if(Player.Instance !=null)
+            currentTargetEnemy.Damage(currentTargetEnemy.transform.position, attackDamage + luckyPoints);
     }
 
     public bool CanAttack(Vector3 standingPosition)

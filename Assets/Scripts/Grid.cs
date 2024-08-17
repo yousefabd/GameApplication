@@ -43,7 +43,7 @@ public class Grid<TGridObject>
                 gridArray[i, j] = CreateGridObject(i, j);
             }
         }
-        showDebug = true;
+        showDebug = false;
         if (showDebug)
         {
             worldTextRef = new TextMesh[width, height];
@@ -132,6 +132,10 @@ public class Grid<TGridObject>
     }
     public void UpdateValues()
     {
+        if (true)
+        {
+            return;
+        }
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
