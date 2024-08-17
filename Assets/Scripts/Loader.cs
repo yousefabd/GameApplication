@@ -9,7 +9,10 @@ public static class Loader
         MainMenuScene,
         test,
         LoadingScene,
-        TowerDefenseMode
+        TowerDefenseMode,
+        SnowScene,
+        MapScene,
+
     }
 
 
