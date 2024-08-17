@@ -35,7 +35,7 @@ public class TDAudioManager : MonoBehaviour
         }
     }
 
-    private void PlaySound(AudioClip audioClip,Vector3 position,float volume = 1f)
+    private void PlaySound(AudioClip audioClip,Vector3 position,float volume = 2f)
     {
         AudioSource.PlayClipAtPoint(audioClip,position,volume);
     }
