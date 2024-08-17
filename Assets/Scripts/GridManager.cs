@@ -31,10 +31,14 @@ public class GridManager : MonoBehaviour
         { new Vector3(1.5f, 1.5f, 0), new Vector3(2.5f, 1.5f, 0), new Vector3(-4.5f, 3.5f, 0f),
             new Vector3(-3.5f, 3.5f, 0f), new Vector3(-3.5f, 5.5f, 0f), new Vector3(5.5f, 6.5f, 0f), new Vector3(-6.5f, 8.5f, 0f) };
     }
+    public Grid<Cell> GetgridMap() { return gridMap; }
     private void Start()
     {
-     InvokeRepeating("CreatePlayerBase1", 1, 100);
-     InvokeRepeating("CreatePlayerBase", 10, 100);   
+     //InvokeRepeating("CreatePlayerBase", 1, 20);
+     //InvokeRepeating("CreatePlayerBase1", 5, 3);
+     //InvokeRepeating("CreatePlayerBase2", 8, 10);
+     //InvokeRepeating("CreatePlayerBase3", 10, 15);
+        //InvokeRepeating("GG", 2, 2);
     }
 
 
@@ -47,38 +51,60 @@ public class GridManager : MonoBehaviour
             return cell;
         });
     }
+    /*public void GG() 
+    {
+        GameObject[] k = GameObject.FindGameObjectsWithTag("Goblin");
+        foreach (GameObject g in k) 
+        {
+            if (g.TryGetComponent<CharacterOpponentAI>(out CharacterOpponentAI c)) 
+            {
+                if (c == null) { g.AddComponent<CharacterOpponentAI>(); }
+            }
+        }
+            }*/
    public void CreatePlayerBase()
     {
-        try
-        {
 
-            Cell unitCell = gridMap.GetValue(initialUnitPosition[1]);
-            Indices indices = unitCell.GetIndices();
-            Unit unit;
-            unit = unitCell.SpawnUnit(testUnitSOList[1], GridToWorldPositionCentered(indices));
-            unitCell.SetEntity(unit);
-            gridMap.UpdateValues();
-        }
-        catch (ArgumentOutOfRangeException)
-        {
-        }
-
-    }
-    public void CreatePlayerBase1()
-    {
-        try
-        {
-            Cell unitCell = gridMap.GetValue(initialUnitPosition1[0]);
-            Indices indices = unitCell.GetIndices();
+        GameObject goblinBase = GameObject.FindGameObjectWithTag("Goblin Base");
+        Vector3 position = new Vector3(goblinBase.transform.position.x - 2, goblinBase.transform.position.y - 2);
+        Cell unitCell = gridMap.GetValue(position);
+        Indices indices = unitCell.GetIndices();
             Unit unit;
             unit = unitCell.SpawnUnit(testUnitSOList[0], GridToWorldPositionCentered(indices));
             unitCell.SetEntity(unit);
+        unit.gameObject.AddComponent<CharacterOpponentAI>();
+        gridMap.UpdateValues();
+ 
+    }
+    public void CreatePlayerBase1()
+    {
+        GameObject goblinBase = GameObject.FindGameObjectWithTag("Goblin Base");
+        Vector3 position = new Vector3(goblinBase.transform.position.x - 2, goblinBase.transform.position.y - 2);
+        Cell unitCell = gridMap.GetValue(position);
+        Indices indices = unitCell.GetIndices();
+            Unit unit;
+            unit = unitCell.SpawnUnit(testUnitSOList[1], GridToWorldPositionCentered(indices));
+            unitCell.SetEntity(unit);
+            unit.gameObject.AddComponent<CharacterOpponentAI>();
             gridMap.UpdateValues();
-        }
-        catch (ArgumentOutOfRangeException){
-        }
+
 
     }
+    public void CreatePlayerBase2()
+    {
+
+        GameObject goblinBase = GameObject.FindGameObjectWithTag("Goblin Base");
+        Vector3 position = new Vector3(goblinBase.transform.position.x - 2, goblinBase.transform.position.y - 2);
+        Cell unitCell = gridMap.GetValue(position);
+        Indices indices = unitCell.GetIndices();
+        Unit unit;
+        unit = unitCell.SpawnUnit(testUnitSOList[2], GridToWorldPositionCentered(indices));
+        unitCell.SetEntity(unit);
+        unit.gameObject.AddComponent<CharacterOpponentAI>();
+        gridMap.UpdateValues();
+
+    }
+
 
     public void UpdateValues()
     {

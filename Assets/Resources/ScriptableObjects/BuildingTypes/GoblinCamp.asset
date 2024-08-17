@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stringName: Goblins Camp
   buildingPrefab: {fileID: 2224796090200938017, guid: 00aa8ec8f337cab4eb609fc9328ada6f, type: 3}
-  health: 100
+  health: 1200
   buildingSprite: {fileID: 21300000, guid: 8a2fb6bb0cbf5de40b7713c3b630daf9, type: 3}
   price: 0
-  team: 0
+  wood: 0
+  stone: 0
+  team: 1
   buildingType: 2
   resourceType: 0
   unitGenerationData:
   - {fileID: 11400000, guid: b84ac44dd37ab7c49a328ed213ca9591, type: 2}
   - {fileID: 11400000, guid: d39d502d3aade954e804376364121684, type: 2}
+  - {fileID: 11400000, guid: 0f1f4b0f8168f2a499b61e6ced19010a, type: 2}
+  - {fileID: 11400000, guid: e93be5a63b5c45f4393bccb1ac95ba4d, type: 2}

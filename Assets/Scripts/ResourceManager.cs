@@ -20,15 +20,21 @@ public class ResourceManager : MonoBehaviour
         goblinResourceDictionary.Add(ResourceType.GOLD,10000);
         goblinResourceDictionary.Add(ResourceType.STONE, 50); 
     }
-    private static Dictionary<ResourceType, int> resourceDictionary ;
-    private static Dictionary<ResourceType, int> goblinResourceDictionary ;
+    private static Dictionary<ResourceType, int> resourceDictionary;
+    private static Dictionary<ResourceType, int> goblinResourceDictionary;
 
     public static Action resourceChanged;
     public void updateResource(ResourceType key,int amount)
     {
         int oldAmount;
         resourceDictionary.TryGetValue(key, out oldAmount);
-        resourceDictionary[key] += amount;
+        resourceDictionary[key]+= amount;
+    }
+    public void updateResourceGoblin(ResourceType key, int amount)
+    {
+        int oldAmount;
+        goblinResourceDictionary.TryGetValue(key, out oldAmount);
+        goblinResourceDictionary[key] += amount;
         resourceChanged?.Invoke();
     }
     public int getGoldResource()

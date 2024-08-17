@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 6344147833605916237}
   - component: {fileID: 1557664828841576607}
   m_Layer: 0
-  m_Name: WoodMiner
-  m_TagString: Building or Human character
+  m_Name: WoodMinerGoblin
+  m_TagString: Resource Harvester
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resourceType: 1
-  buildingSO: {fileID: 11400000, guid: 44d48ec5dca427b4c8b1039087b04e1f, type: 2}
+  buildingSO: {fileID: 11400000, guid: e91166769dbaeb645b155c5379845c66, type: 2}
   resource: {fileID: 0}
 --- !u!61 &6344147833605916237
 BoxCollider2D:

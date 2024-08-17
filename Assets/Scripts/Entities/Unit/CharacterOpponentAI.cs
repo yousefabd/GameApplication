@@ -35,7 +35,7 @@ class CharacterOpponentAI : MonoBehaviour
         gameObject.TryGetComponent<Soldier>(out thisGoblin);
         maxHealth = thisGoblin.unitSO.maxHealth;
 
-        InvokeRepeating("MakePlan", 2, 3);
+        InvokeRepeating("MakePlan", 2, 20);
         InvokeRepeating("SetGoblinHome", 5, 120);
     }
 

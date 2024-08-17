@@ -12,22 +12,18 @@ public class GameManager : MonoBehaviour
     //singleton pattern
     public static GameManager Instance { get; private set; }
 
-    [SerializeField] private BuildingSO humansMainBuilding;
     [SerializeField] private BuildingSO goblinsMainBuilding;
 
-    private Indices humansMainBuildingIndices = new Indices();
     private Indices goblinsMainBuildingIndices = new Indices();
     private void Start()
     {
         Instance = this;
 
-        humansMainBuildingIndices.I = 15;
-        humansMainBuildingIndices.J = 15;
-        goblinsMainBuildingIndices.I = 65;
-        goblinsMainBuildingIndices.J = 65;
+        goblinsMainBuildingIndices.I = 130;
+        goblinsMainBuildingIndices.J = 130;
 
-        BuildingManager.Instance.placeBuilding(humansMainBuilding, humansMainBuildingIndices, 0, 30, 0, 30);
-        BuildingManager.Instance.placeBuilding(goblinsMainBuilding, goblinsMainBuildingIndices, 50, 80, 50, 80);
+  
+        BuildingManager.Instance.placeBuilding(goblinsMainBuilding, goblinsMainBuildingIndices, 100, 160, 100, 160);
     }
     private void Update()
     {
@@ -47,8 +43,5 @@ public class GameManager : MonoBehaviour
         return building.buildingSO; 
     }
 
-    public BuildingSO GetHumansMainBuilding()
-    {
-        return humansMainBuilding;
-    }
+
 }

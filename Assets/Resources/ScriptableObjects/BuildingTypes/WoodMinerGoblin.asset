@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1dea029ef3dd4f4bb8f332d9bf6cdd6, type: 3}
-  m_Name: HumansMainBuilding
+  m_Name: WoodMinerGoblin
   m_EditorClassIdentifier: 
-  stringName: HumansMainBuilding
-  buildingPrefab: {fileID: 8076932680027831932, guid: b1a230b45b9a746458d7aa4dcb7daf15, type: 3}
+  stringName: Wood Miner Goblin
+  buildingPrefab: {fileID: 2842107502295780058, guid: 6d01320d35d368b44b7f4e80fdad5557, type: 3}
   health: 1000
-  buildingSprite: {fileID: 21300000, guid: c2cbaca0d16110e4290f3191e2b466c0, type: 3}
-  price: 6000
-  wood: 120
-  stone: 30
-  team: 0
-  buildingType: 5
-  resourceType: 0
+  buildingSprite: {fileID: 21300000, guid: 2263e91ebcd2a254dab5f4caccb4a7af, type: 3}
+  price: 0
+  wood: 0
+  stone: 0
+  team: 1
+  buildingType: 1
+  resourceType: 1
   unitGenerationData: []

@@ -12,50 +12,65 @@ public class ComputerPlayer : MonoBehaviour
     STRATEGIES strategy = new STRATEGIES();
 
     List<KeyValuePair<GameObject, double>>prioritizedNodes = new List<KeyValuePair<GameObject, double>>();
-    List<KeyValuePair<GameObject,double>> prioritzedBuildings = new List<KeyValuePair<GameObject,double>>();
 
     Indices lastPoinInMap = new Indices(80, 80);
     Indices lastSearchingPoinInMap = new Indices(0, 0);
 
-    int mainBuildingPriority = 10;
-    bool defendingNow;
+    int k = 2;
 
+    BuildingSO BB;
     private void Start()
     {
         strategy = STRATEGIES.NONE;
-        Invoke("AssigningMainBuilding", 2);
+        //InvokeRepeating("SpawnGoblins",5,7)
     }
 
     private void Update()
     {
 
         //When to gather resources 
-        if (strategy != STRATEGIES.RESOURCE_GATHERING && !ResourcesStausGood())
+        if (strategy != STRATEGIES.RESOURCE_GATHERING && (Time.time<=10.0f))
         {
-            Debug.Log("Condition is satisfied!");
+            Debug.Log("Resource Gathering Condition is satisfied");
             strategy = STRATEGIES.RESOURCE_GATHERING;
             onResourceGathering += ComputerPlayer_onResourceGathering;
             onResourceGathering?.Invoke(this, EventArgs.Empty);
         }
 
         //When to Produce unit
-        if (strategy != STRATEGIES.UNIT_PRODUCTION && ResourcesStausGood())
+        if (strategy != STRATEGIES.UNIT_PRODUCTION&&(Time.time > 10.0f) )
         {
+            Debug.Log("Unit production Condition is satisfied");
             strategy = STRATEGIES.UNIT_PRODUCTION;
             onUnitProduction += ComputerPlayer_onUnitProduction;
             onUnitProduction?.Invoke(this, EventArgs.Empty);
         }
     }
+    public void SpawnGoblins(BuildingSO building) 
+    {
+        Vector3 B = new Vector3(building.buildingPrefab.gameObject.transform.position.x+1, building.buildingPrefab.gameObject.transform.position.y-1);
+        Cell unitCell = GridManager.Instance.GetgridMap().GetValue(B);
+        Indices indices = unitCell.GetIndices();
+        Unit unit;
+        int r = UnityEngine.Random.Range(0, 3);
+        BuildingSO b = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/GoblinCamp");
+        unit = unitCell.SpawnUnit(b.unitGenerationData[r], GridManager.Instance.GridToWorldPositionCentered(indices));
+        unitCell.SetEntity(unit);
+        GridManager.Instance.GetgridMap().UpdateValues();
+    }
 
 
     private void ComputerPlayer_onUnitProduction(object sender, EventArgs e)
     {
+        Debug.Log("I AM AT : ComputerPlayer_onUnitProduction");
         if (onResourceGathering != null)
         {
+            Debug.Log("I CANCELED SUBSCRIPTION FOR onResourceGathering");
             CancelInvoke("GatherResources");
             onResourceGathering -= ComputerPlayer_onUnitProduction;
         }
         InvokeRepeating("UnitProduction",3,10);
+        Debug.Log("Invoke InvokeRepeating(\"UnitProduction\",3,10); was called");
     }
 
 
@@ -113,20 +128,10 @@ public class ComputerPlayer : MonoBehaviour
         
         }
     }
-    private bool ResourcesStausGood() 
-    {
-        Dictionary<ResourceType,int> tempo = ResourceManager.Instance.GetGoblinsResources();
-        int woodValue = 0 ;int stoneValue = 0;int goldValue = 0;
-        foreach (KeyValuePair<ResourceType, int> kvp in tempo)
-        {
-            if (kvp.Key == ResourceType.WOOD){woodValue = kvp.Value;}
-       else if (kvp.Key == ResourceType.STONE){stoneValue = kvp.Value; }
-       else if (kvp.Key == ResourceType.GOLD){goldValue = kvp.Value; }
-        }
-        if (woodValue >= 200 || stoneValue >= 50 || goldValue >= 10000)
-        {
+    private bool ResourcesStausGood()
+    { 
+    if (ResourceManager.Instance.getGoblinStoneResource() >= 50 || ResourceManager.Instance.getGoblinWoodResource() >= 200 || ResourceManager.Instance.getGoldResource() >= 10000)
             return true;
-        }
         return false;
     }
 
@@ -163,7 +168,7 @@ public class ComputerPlayer : MonoBehaviour
                 if (currentNode.Key.TryGetComponent<Wood>(out Wood wood))
                 {
                     //The needed harvester is Wood Miner                
-                     resourceHarvester = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/WoodMiner");
+                     resourceHarvester = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/WoodMinerGoblin");
 
                 //Check if there is another node in the list
                 if (prioritizedNodes.Count >= 2 && resourceHarvester.buildingPrefab.TryGetComponent<BoxCollider2D>(out BoxCollider2D boxCollider))
@@ -180,24 +185,38 @@ public class ComputerPlayer : MonoBehaviour
                         GridManager.Instance.WorldToGridPosition(harvesterPosition, out harvesterIndices.I, out harvesterIndices.J);
 
                         //Check if you have enough resources,PLace and update resources and then add the harvester to the list of buildings ,else return and resort the list
-                        BuildingManager.Instance.placeBuilding
+                        if (!Affordable(resourceHarvester))
+                            return;
+                            BuildingManager.Instance.placeBuilding
                                             (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
-                        prioritizedNodes.RemoveAt(0);
-                        prioritizedNodes.RemoveAt(1);
-                        //prioritzedBuildings.Add(new KeyValuePair <typeof resourceHarvester, >);
-                        return;
+                            ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.wood);
+                            ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.stone);
+                            ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.price);
+
+                            prioritizedNodes.RemoveAt(0);
+                            prioritizedNodes.RemoveAt(1);
+                            return;
                     }
                   
                 }
                     harvesterPosition = currentNode.Key.transform.position;
 
                     GridManager.Instance.WorldToGridPosition(harvesterPosition, out harvesterIndices.I, out harvesterIndices.J);
-
+                harvesterIndices.I += k;
+                harvesterIndices.J+= k;
                 //Check if you have enough resources,PLace and update resources and then add the harvester to the list of buildings ,else return and resort the list
-                BuildingManager.Instance.placeBuilding
-                (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
-                    prioritizedNodes.RemoveAt(0);
+                if (!Affordable(resourceHarvester))
                     return;
+                    BuildingManager.Instance.placeBuilding
+                (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
+                ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.wood);
+                ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.stone);
+                ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.price);
+
+                prioritizedNodes.RemoveAt(0);
+                    return;
+                
+                
                 }
 
 
@@ -207,7 +226,7 @@ public class ComputerPlayer : MonoBehaviour
                 else if (currentNode.Key.TryGetComponent<Stone>(out Stone stone))
                 {
                     //The needed harvester is Stone Miner
-                    resourceHarvester = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/StoneMiner");
+                    resourceHarvester = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/StoneMinerGoblin");
 
                 //Check if there is another node in the list
                 if (prioritizedNodes.Count >= 2 && resourceHarvester.buildingPrefab.TryGetComponent<BoxCollider2D>(out BoxCollider2D boxCollider))
@@ -222,36 +241,48 @@ public class ComputerPlayer : MonoBehaviour
                         harvesterPosition = Vector3.Lerp(currentNode.Key.transform.position, nextNode.Key.transform.position, 0.5f);
 
                         GridManager.Instance.WorldToGridPosition(harvesterPosition, out harvesterIndices.I, out harvesterIndices.J);
+                        if (!Affordable(resourceHarvester))
+                            return;
+                            BuildingManager.Instance.placeBuilding
+                                            (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
+                            ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.wood);
+                            ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.stone);
+                            ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.price);
 
-                        //Check if you have enough resources,PLace and update resources and then add the harvester to the list of buildings ,else return and resort the list
-                        BuildingManager.Instance.placeBuilding
-                                                (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
-                        prioritizedNodes.RemoveAt(0);
-                        prioritizedNodes.RemoveAt(1);
-                        return;
+                            prioritizedNodes.RemoveAt(0);
+                            prioritizedNodes.RemoveAt(1);
+                            return;
                     }
                     
                 }
                     harvesterPosition = currentNode.Key.transform.position;
                     GridManager.Instance.WorldToGridPosition(harvesterPosition, out harvesterIndices.I, out harvesterIndices.J);
-
-                //Check if you have enough resources,PLace and update resources and then add the harvester to the list of buildings ,else return and resort the list
-                BuildingManager.Instance.placeBuilding
-                                            (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
-                    prioritizedNodes.RemoveAt(0);
+                
+                harvesterIndices.I += k;
+                harvesterIndices.J += k;
+                if (!Affordable(resourceHarvester))
                     return;
 
-                }
+                    BuildingManager.Instance.placeBuilding
+                (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
+                ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.wood);
+                ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.stone);
+                ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.price);
+
+                prioritizedNodes.RemoveAt(0);
+                    
+                    return;               
+            }
 
 
 
-                //Or is It Gold?
+            //Or is It Gold?
 
 
-                else if (currentNode.Key.TryGetComponent<Gold>(out Gold gold))
+            else if (currentNode.Key.TryGetComponent<Gold>(out Gold gold))
                 {
                     //The needed harvester is Stone Miner
-                    resourceHarvester = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/GoldMiner");
+                    resourceHarvester = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/GoldMinerGoblin");
 
                 //Check if there is another node in the list
                 if (prioritizedNodes.Count >= 2 && resourceHarvester.buildingPrefab.TryGetComponent<BoxCollider2D>(out BoxCollider2D boxCollider))
@@ -266,24 +297,37 @@ public class ComputerPlayer : MonoBehaviour
                         harvesterPosition = Vector3.Lerp(currentNode.Key.transform.position, nextNode.Key.transform.position, 0.5f);
 
                         GridManager.Instance.WorldToGridPosition(harvesterPosition, out harvesterIndices.I, out harvesterIndices.J);
+                        if (!Affordable(resourceHarvester))
+                            return;
+                            BuildingManager.Instance.placeBuilding
+                                            (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
+                            ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.wood);
+                            ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.stone);
+                            ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.price);
 
-                        //Check if you have enough resources,PLace and update resources and then add the harvester to the list of buildings ,else return and resort the list
-                        BuildingManager.Instance.placeBuilding
-                                                (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
-                        prioritizedNodes.RemoveAt(0);
-                        prioritizedNodes.RemoveAt(1);
-                        return;
+                            prioritizedNodes.RemoveAt(0);
+                            prioritizedNodes.RemoveAt(1);
+                            return;
                     }
                    
                 }
                     harvesterPosition = currentNode.Key.transform.position;
                     GridManager.Instance.WorldToGridPosition(harvesterPosition, out harvesterIndices.I, out harvesterIndices.J);
-                //Check if you have enough resources,PLace and update resources and then add the harvester to the list of buildings ,else return and resort the list
-                BuildingManager.Instance.placeBuilding
-                                            (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
-                    prioritizedNodes.RemoveAt(0);
+                k = 2;
+                harvesterIndices.I += k;
+                harvesterIndices.J += k;
 
+                if (!Affordable(resourceHarvester))
                     return;
+                    BuildingManager.Instance.placeBuilding
+                (resourceHarvester, harvesterIndices, harvesterIndices.I - 1, harvesterIndices.I + 1, harvesterIndices.J - 1, harvesterIndices.J + 1);
+                ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.wood);
+                ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.stone);
+                ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -resourceHarvester.price);
+                prioritizedNodes.RemoveAt(0);
+                    
+                    return;
+               
 
                 }
             return;
@@ -293,44 +337,66 @@ public class ComputerPlayer : MonoBehaviour
         return;
     }
 
-     public void AssigningMainBuilding() 
-     {
-        KeyValuePair<GameObject, double> tempo = new KeyValuePair<GameObject, double>(GameManager.Instance.GetGoblinsMainBuildingAsGameObject(),1);
-        prioritzedBuildings.Add(tempo);
-     }
     public void UnitProduction() 
     {
         BuildingSO attackingBuilding;
         Indices attackingBuildingIndices = new Indices();
 
         GameObject theBuildingToDefend;
-        int luckyNumber = UnityEngine.Random.Range(0, 1);
-
+        int luckyNumber = UnityEngine.Random.Range(0, 15);
+        Debug.Log("Lucky number is " + luckyNumber);
         if (luckyNumber == 0)
         {
-            attackingBuilding = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/DefenseBuilding");
-            theBuildingToDefend = GameObject.FindGameObjectWithTag("Goblin base");
+            Debug.Log("We are gonna build DefenseBuilding next to the Goblin Base ");
+            attackingBuilding = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/DefenseBuildingGoblins");
+            theBuildingToDefend = GameObject.FindGameObjectWithTag("Goblin Base");
         }
         else 
-        { 
-            attackingBuilding = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/GoblinCamp");
-            theBuildingToDefend = GameObject.FindGameObjectWithTag("Resource Harvester");
-        }
-        if (Affordable(attackingBuilding))
         {
-            GridManager.Instance.WorldToGridPosition(theBuildingToDefend.transform.position, out attackingBuildingIndices.I, out attackingBuildingIndices.J);
-            BuildingManager.Instance.placeBuilding
-            (attackingBuilding, attackingBuildingIndices, attackingBuildingIndices.I - 1, attackingBuildingIndices.I + 1, attackingBuildingIndices.J - 1, attackingBuildingIndices.J + 1);
-            return;
+            Debug.Log("We are gonna build GoblinCamp next to the Resource Harvester ");
+            attackingBuilding = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/GoblinCamp");
+
+            theBuildingToDefend = GameObject.FindGameObjectWithTag("Resource Harvester");
+            if (theBuildingToDefend == null)
+            {
+                Debug.Log("But there is no Resource Harvester ");
+                theBuildingToDefend = GameObject.FindGameObjectWithTag("Goblin Base");
+            }
         }
+        if (!Affordable(attackingBuilding))
+        {  return; }
+            
+            GridManager.Instance.WorldToGridPosition(theBuildingToDefend.transform.position, out attackingBuildingIndices.I, out attackingBuildingIndices.J);
+         k = UnityEngine.Random.Range(-3, +3);
+        while (k == 0) { k = UnityEngine.Random.Range(-3, +3); }
+        attackingBuildingIndices.I += k;
+        attackingBuildingIndices.J -= k;
+        BuildingManager.Instance.placeBuilding
+            (attackingBuilding, attackingBuildingIndices, attackingBuildingIndices.I - 1, attackingBuildingIndices.I + 1, attackingBuildingIndices.J - 1, attackingBuildingIndices.J + 1);
+        ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -attackingBuilding.wood);
+        ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -attackingBuilding.stone);
+        ResourceManager.Instance.updateResourceGoblin(ResourceType.WOOD, -attackingBuilding.price);
+        if (attackingBuilding == Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/GoblinCamp"))
+        { 
+            BB = attackingBuilding;
+            InvokeRepeating("MethodInBetween", 1, 10);
+        }
+        Debug.Log(attackingBuilding + "Is instantiated");
+        return;
+        
     }
+    public void MethodInBetween() { SpawnGoblins(BB); }
     private bool Affordable(BuildingSO building) 
     {
-        if(building.wood<=ResourceManager.Instance.getGoblinWoodResource() && building.stone <= ResourceManager.Instance.getGoblinStoneResource()
+        Debug.Log("Goblin gold : " + ResourceManager.Instance.getGoblinGoldResource());
+        Debug.Log("Goblin wood : " + ResourceManager.Instance.getGoblinWoodResource());
+        Debug.Log("Goblin stone : " + ResourceManager.Instance.getGoblinStoneResource());
+        if (building.wood<=ResourceManager.Instance.getGoblinWoodResource() && building.stone <= ResourceManager.Instance.getGoblinStoneResource()
             &&building.price<=ResourceManager.Instance.getGoblinGoldResource())
         return true;
         return false;
     }
+
     public void Attack() { }
     public void Defense() { }
 }

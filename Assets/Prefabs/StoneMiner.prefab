@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4826078381062782978}
   m_Layer: 0
   m_Name: StoneMiner
-  m_TagString: Resource Harvester
+  m_TagString: Building or Human character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

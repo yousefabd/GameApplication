@@ -477,6 +477,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GoblinBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 1358232740786386242, guid: 4746f820e349d30479de3f9db11eaf7f, type: 3}
+      propertyPath: m_TagString
+      value: Goblin
+      objectReference: {fileID: 0}
     - target: {fileID: 4899099991266302499, guid: 4746f820e349d30479de3f9db11eaf7f, type: 3}
       propertyPath: unitSO
       value: 

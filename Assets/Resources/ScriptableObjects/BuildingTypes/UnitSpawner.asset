@@ -19,7 +19,11 @@ MonoBehaviour:
   price: 2500
   wood: 40
   stone: 10
+  team: 0
   buildingType: 2
   resourceType: 0
   unitGenerationData:
   - {fileID: 11400000, guid: aac63c2b62365f4438c9a0939d30d88c, type: 2}
+  - {fileID: 11400000, guid: 6e3d28e20fdacc7468f903a5a9af3969, type: 2}
+  - {fileID: 11400000, guid: c826a3ee0093a4c4c98101e86dd55ee9, type: 2}
+  - {fileID: 11400000, guid: f3687c1ea11ea3944924f82e4f4a903e, type: 2}

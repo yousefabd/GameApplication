@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 7801261631354393588}
   - component: {fileID: -7226467071185550965}
   m_Layer: 0
-  m_Name: GoldMiner
-  m_TagString: Building or Human character
+  m_Name: GoldMinerGoblin
+  m_TagString: Resource Harvester
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resourceType: 0
-  buildingSO: {fileID: 11400000, guid: e6e5c99a4b828974295ee11a31e5e134, type: 2}
+  buildingSO: {fileID: 11400000, guid: 0518d07b16bf6fb478ff64080143eee5, type: 2}
   resource: {fileID: 0}
 --- !u!61 &7801261631354393588
 BoxCollider2D:

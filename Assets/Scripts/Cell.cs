@@ -41,6 +41,9 @@ public class Cell
         
         
             entity = Unit.Spawn(characterSO, position);
+        if (entity.gameObject.TryGetComponent<SoldierAI>(out SoldierAI c))
+            if (c.gameObject.tag.Equals("Goblin"))
+                entity.gameObject.AddComponent<CharacterOpponentAI>();
             SetEntity(entity);
             return entity as Unit;
         
