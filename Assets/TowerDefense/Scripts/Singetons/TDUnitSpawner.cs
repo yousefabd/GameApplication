@@ -23,7 +23,7 @@ public class TDUnitSpawner : MonoBehaviour
     private enum UnitSpawnState { IDLE,SPAWNING}
     private UnitSpawnState currentSpawnState=UnitSpawnState.IDLE;
     public event Action<Unit> OnUnitSpawned;
-    public event Action<float> OnUnitDestroyed;
+    public event Action<float,Vector3> OnUnitDestroyed;
     public static TDUnitSpawner Instance { get; private set; }
     private void Awake()
     {
@@ -117,7 +117,7 @@ public class TDUnitSpawner : MonoBehaviour
     private void Unit_OnDestroyed()
     {
         currentUnitCount--;
-        OnUnitDestroyed?.Invoke(currentUnitHealth);
+        OnUnitDestroyed?.Invoke(currentUnitHealth,transform.position);
     }
 
     private float GetUnitSpeed()

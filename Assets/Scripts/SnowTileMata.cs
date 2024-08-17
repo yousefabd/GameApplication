@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEditor;
 using Unity.VisualScripting;
-using System;
 
 
 
@@ -518,6 +516,7 @@ public class SnowTileMata : MonoBehaviour
                         }
                         catch (NullReferenceException ex)
                         {
+                            Debug.Log(ex);
                             continue;
                         }
                     }
@@ -558,6 +557,7 @@ public class SnowTileMata : MonoBehaviour
                         }
                         catch (NullReferenceException ex)
                         {
+                            Debug.Log(ex.ToString());
                             continue;
                         }
                     }
@@ -598,6 +598,7 @@ public class SnowTileMata : MonoBehaviour
                         }
                         catch (NullReferenceException ex)
                         {
+                            Debug.LogError(ex.ToString());
                             continue;
                         }
                     }

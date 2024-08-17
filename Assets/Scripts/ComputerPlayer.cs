@@ -316,17 +316,18 @@ public class ComputerPlayer : MonoBehaviour
             attackingBuilding = Resources.Load<BuildingSO>("ScriptableObjects/BuildingTypes/GoblinCamp");
             theBuildingToDefend = GameObject.FindGameObjectWithTag("Resource Harvester");
         }
-        GridManager.Instance.WorldToGridPosition(theBuildingToDefend.transform.position, out attackingBuildingIndices.I,out attackingBuildingIndices.J);
-        //Check if it is
-        if(Affordable(attackingBuilding))
-        BuildingManager.Instance.placeBuilding
-        (attackingBuilding, attackingBuildingIndices, attackingBuildingIndices.I - 1, attackingBuildingIndices.I + 1, attackingBuildingIndices.J - 1, attackingBuildingIndices.J + 1);
-        return;
+        if (Affordable(attackingBuilding))
+        {
+            GridManager.Instance.WorldToGridPosition(theBuildingToDefend.transform.position, out attackingBuildingIndices.I, out attackingBuildingIndices.J);
+            BuildingManager.Instance.placeBuilding
+            (attackingBuilding, attackingBuildingIndices, attackingBuildingIndices.I - 1, attackingBuildingIndices.I + 1, attackingBuildingIndices.J - 1, attackingBuildingIndices.J + 1);
+            return;
+        }
     }
     private bool Affordable(BuildingSO building) 
     {
         if(building.wood<=ResourceManager.Instance.getGoblinWoodResource() && building.stone <= ResourceManager.Instance.getGoblinStoneResource()
-            /*&building.gold<=ResourceManager.Instance.getGoblinGoldResource()&*/)
+            &&building.price<=ResourceManager.Instance.getGoblinGoldResource())
         return true;
         return false;
     }

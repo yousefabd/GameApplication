@@ -396,6 +396,22 @@ PrefabInstance:
       propertyPath: projectileSO
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8454042079084005093, guid: 15f8bfd0c40e46949b38436794048920, type: 3}
+      propertyPath: attackSounds.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8454042079084005093, guid: 15f8bfd0c40e46949b38436794048920, type: 3}
+      propertyPath: attackSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 2bbe30338b037d441a889c73cae4d3ae, type: 3}
+    - target: {fileID: 8454042079084005093, guid: 15f8bfd0c40e46949b38436794048920, type: 3}
+      propertyPath: attackSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: bba7f85e4cb019943844ae7614a8d5a2, type: 3}
+    - target: {fileID: 8454042079084005093, guid: 15f8bfd0c40e46949b38436794048920, type: 3}
+      propertyPath: attackSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 108ec728fd9046e4086249d334d57fdd, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1357093375693012887, guid: 15f8bfd0c40e46949b38436794048920, type: 3}

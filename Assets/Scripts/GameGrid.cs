@@ -435,6 +435,7 @@ public class GameGrid : MonoBehaviour
                         }
                         catch (NullReferenceException ex)
                         {
+                            Debug.Log(ex);
                             continue;
                         }
                     }
@@ -475,6 +476,7 @@ public class GameGrid : MonoBehaviour
                         }
                         catch (NullReferenceException ex)
                         {
+                            Debug.Log(ex.ToString());
                             continue;
                         }
                     }
@@ -515,6 +517,7 @@ public class GameGrid : MonoBehaviour
                         }
                         catch (NullReferenceException ex)
                         {
+                            Debug.Log(ex);
                             continue;
                         }
                     }
