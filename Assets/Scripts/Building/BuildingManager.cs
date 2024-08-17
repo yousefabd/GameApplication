@@ -56,8 +56,8 @@
             indices.J = 40;
             placeBuilding(MainBuilding, indices, 0, 160, 0, 80);
             yield return new WaitForSeconds(5f);
-            indices.I = 110;
-            indices.J = 40;
+            indices.I = 85;
+            indices.J = 45;
             placeBuilding(defenseBuilding, indices, 0, 160, 0, 80);
 
         }
