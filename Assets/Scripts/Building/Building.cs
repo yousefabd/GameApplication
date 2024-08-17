@@ -140,6 +140,10 @@ public class Building : Entity, IDestructibleObject
     //logic to destroy building after damage
     public void Destruct()
     {
+        if(buildingSO.buildingType == BuildingType.BaseBuilding)
+        {
+            BuildingManager.Instance.onLose(this.GetTeam());
+        }
         setCellsNull();
         Destroy(this.gameObject);
     }
