@@ -12,7 +12,7 @@ public class MainMenuGameModesUI : MonoBehaviour
     {
         StrategyBuilder.onClick.AddListener(() =>
         {
-            Loader.Load(Loader.Scene.PathfindingSystem1);
+            Loader.Load(Loader.Scene.test);
         });
         TowerDefense.onClick.AddListener(() =>
         {

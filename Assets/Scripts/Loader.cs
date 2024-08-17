@@ -7,9 +7,12 @@ public static class Loader
     public enum Scene
     {
         MainMenuScene,
-        PathfindingSystem1,
+        test,
         LoadingScene,
-        TowerDefenseMode
+        TowerDefenseMode,
+        SnowScene,
+        MapScene,
+
     }
 
 
